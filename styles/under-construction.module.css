@@ -1,0 +1,17 @@
+.container {
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+.img-fluid {
+    max-width: 300px;
+}
+
+.title {
+    font-size: 2.5rem;
+    color: #2e3d49;
+}
+
+.description.lead {
+    color: #6c757d;
+}
