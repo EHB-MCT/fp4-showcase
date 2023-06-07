@@ -48,6 +48,27 @@ export default function EditProfile() {
                 </div>
               </dl>
             </div>
+<div className="mt-8">
+<h2 className="text-lg font-medium text-gray-800">Final work</h2>
+              <ul className="">
+                <li className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
+                  <div className="flex-1 flex flex-col p-8">
+                    <h3 className="text-gray-900 text-lg font-medium">Final work</h3>
+                    <p className="mt-4 text-gray-500">Description of Final work</p>
+                  </div>
+                  <div className="p-6 bg-gray-50">
+                    <a
+                      href="#"
+                      className="text-base font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      View Details
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+
             <div className="mt-8">
               <h2 className="text-lg font-medium text-gray-800">Projects</h2>
               <ul className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -81,8 +102,8 @@ export default function EditProfile() {
                 </li>
                 <li className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
                   <div className="flex-1 flex flex-col p-8">
-                    <h3 className="text-gray-900 text-lg font-medium">Project 2</h3>
-                    <p className="mt-4 text-gray-500">Description of Project 2</p>
+                    <h3 className="text-gray-900 text-lg font-medium">Project 3</h3>
+                    <p className="mt-4 text-gray-500">Description of Project 3</p>
                   </div>
                   <div className="p-6 bg-gray-50">
                     <a
@@ -98,7 +119,7 @@ export default function EditProfile() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
         </>
     );
 }
