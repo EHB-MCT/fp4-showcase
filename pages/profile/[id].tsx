@@ -79,6 +79,20 @@ export default function EditProfile() {
                     </a>
                   </div>
                 </li>
+                <li className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
+                  <div className="flex-1 flex flex-col p-8">
+                    <h3 className="text-gray-900 text-lg font-medium">Project 2</h3>
+                    <p className="mt-4 text-gray-500">Description of Project 2</p>
+                  </div>
+                  <div className="p-6 bg-gray-50">
+                    <a
+                      href="#"
+                      className="text-base font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      View Details
+                    </a>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
