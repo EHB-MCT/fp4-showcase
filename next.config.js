@@ -8,6 +8,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'i.ibb.co',
             },
+            {
+                protocol: 'https',
+                hostname: 'w7.pngwing.com',
+            },
         ],
     },
 };
