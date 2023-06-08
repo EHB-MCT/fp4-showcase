@@ -1,9 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../lib/context';
 
 const Navigation: React.FC = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
+    const { user } = useContext(UserContext);
 
     const toggleMenu = () => {
         setMenuOpen(!isMenuOpen);
@@ -24,7 +27,7 @@ const Navigation: React.FC = () => {
                                 className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                                 onClick={closeMenu}
                             >
-                                FinalShow - Showcase
+                                <a>FinalShow - Showcase {user?.email}</a> 
                             </Link>
                         </div>
                     </div>
@@ -70,9 +73,9 @@ const Navigation: React.FC = () => {
                         className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                         onClick={closeMenu}
                     >
-                        Awards
+                       <a>Awards</a>
                     </Link>
-                    <Link
+                    {/* <Link
                         href="/projects"
                         className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                         onClick={closeMenu}
@@ -85,7 +88,7 @@ const Navigation: React.FC = () => {
                         onClick={closeMenu}
                     >
                         Profile
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
         </nav>
