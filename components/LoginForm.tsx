@@ -42,7 +42,7 @@ const LoginForm = () => {
         
             <form 
                 onSubmit={onSubmit}
-                className="w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5"
+                className="w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
             >
                 {mode === "register" ? (
                     <h1 className="text-center text-white text-2xl">Register User</h1>

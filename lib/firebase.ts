@@ -68,6 +68,17 @@ export function postToJSON(doc) {
 }
 
 
+export async function getAllTags(){
+  const usersRef = collection(firestore, 'tags');
+  
+}
+
+
+
+
+
+
+// <-----UPLOAD A PROJECT------>
 
 export async function uploadProject(data){
   const {imageFiles, videoFile,...restData} = data;
@@ -114,6 +125,7 @@ export async function uploadProject(data){
      // Update the data with the download URLs
   const updatedData = {
     ...restData,
+    likeCount: 0,
     imageUrls: [...imageUrls], 
     createdAt: timestamp,
     updatedAt: timestamp
@@ -134,4 +146,59 @@ export async function uploadProject(data){
     // Additional error handling
   }
 }
+
+
+
+
+
+
+
+
+// <------UPLOAD AN AWARD------->
+
+
+export async function uploadAward(data) {
+  const { cardImage, bannerImage, ...restData } = data;
+
+  // Upload the card image and get its download URL
+  const cardImageUrl = await uploadImageAndGetUrl(cardImage, "cardImage");
+
+  // Upload the banner image and get its download URL
+  const bannerImageUrl = await uploadImageAndGetUrl(bannerImage, "bannerImage");
+
+  // Update the data with the download URLs
+  const updatedData = {
+    ...restData,
+    cardImageUrl,
+    bannerImageUrl,
+    
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  };
+
+  // Add the data to the "awards" collection
+  const awardsRef = collection(firestore, "awards");
+
+  try {
+    await addDoc(awardsRef, updatedData);
+    console.log("Award uploaded successfully");
+    // Additional logic after successful upload
+  } catch (error) {
+    console.error("Error uploading award:", error);
+    // Additional error handling
+  }
+}
+
+async function uploadImageAndGetUrl(file, imageName) {
+  return new Promise((resolve, reject) => {
+    const storageRef = ref(storage, `images/${imageName}_${file.name}`);
+    const uploadTask = uploadBytes(storageRef, file);
+
+    uploadTask
+      .then((snapshot) => getDownloadURL(snapshot.ref))
+      .then((downloadUrl) => resolve(downloadUrl))
+      .catch((error) => reject(error));
+  });
+}
+
 
