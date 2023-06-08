@@ -94,12 +94,12 @@ const Navigation: React.FC = () => {
               Projects
             </a>
           </Link>
-          <Link href={`/profile/${user.uid}`}>
+          <Link href={user ? `/profile/${user.uid}` : `/register`}>
             <a
               onClick={closeMenu}
               className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >
-              {user?.email}
+              {user ? user?.email : "Login"}
             </a>
           </Link>
         </div>
