@@ -29,7 +29,7 @@ const project =  {
     const tags = ["Art", "Design", "Creativity"];
     const img = "https://via.placeholder.com/300";
     const backimg="https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png";
-   const pfp="https://marketplace.canva.com/EAFEits4-uw/1/0/1600w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-oEqs2yqaL8s.jpg"
+   const pfp="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"
    const [showMore, setShowMore] = useState(false);
 
    const toggleShowMore = () => {
@@ -52,7 +52,7 @@ const project =  {
             <div className="bg-gray-900 text-white" style={{ backgroundImage: 'url(https://i.etsystatic.com/34466454/r/il/bd263a/4597882244/il_fullxfull.4597882244_70jz.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
   <div className=" grid max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 container md:flex-row items-center justify-between">
     <div className="flex items-center">
-      <img className="h-11 mr-2" src={img} alt="Logo" />
+      <img className="h-11 mr-2" src={pfp} alt="Pfp" />
       <div>
         <h1 className="text-2xl font-bold">{author}</h1>
         <span className="text-sm">2022-2023</span>
@@ -60,48 +60,95 @@ const project =  {
     </div>   
   </div>
   <div className="flex flex-col md:flex-row max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 container items-center justify-between">
-  <div className="flex flex-wrap justify-center md:justify-start">
-    <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mr-4 mb-2">
-      Insta
-    </a>
-    <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mr-4 mb-2">
-      LinkedIn
-    </a>
-    <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mb-2">
-      Website
-    </a>
+  <div className="flex flex-wrap justify-center md:justify-start gap-x-2">
+  <button
+      type="button"
+      data-te-ripple-init
+      data-te-ripple-color="light"
+      className="mb-2 inline-block rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
+      style={{ backgroundColor: '#c13584' }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+        />
+      </svg>
+    </button>
+    <button
+      type="button"
+      data-te-ripple-init
+      data-te-ripple-color="light"
+      className="mb-2 inline-block rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
+      style={{ backgroundColor: '#0077b5' }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"
+        />
+      </svg>
+    </button>
+    <button
+      type="button"
+      data-te-ripple-init
+      data-te-ripple-color="light"
+      className="mb-2 inline-block rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
+      style={{ backgroundColor: '#333' }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+        />
+      </svg>
+    </button>
   </div>
   <div className="flex flex-wrap justify-center md:justify-end">
-    <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mr-4 mb-2">
-      Award1
-    </a>
-    <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mr-4 mb-2">
-      Award2
-    </a>
-    <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mb-2">
-      Award3
-    </a>
-  </div>
+  <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mr-4 mb-2">
+    <img src="https://images.vexels.com/media/users/3/127646/isolated/preview/bb4029ca0e2f6ffb36a5c80dba5e54e0-first-place-round-badge.png" alt="Award 1" className="w-16 h-16 rounded-full" />
+  </a>
+</div>
 </div> 
 </div>
     <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-    <header>
     <div className="about-me">
-      <h1 className="py-6 text-3xl font-bold mb-4 text-gray-800 flex items-center">
-        About Me
-      </h1>
-      <p
-        className={`initial-text h-10 overflow-hidden ${expanded ? 'h-auto' : ''}`}
-      >
-        A long description is a way to provide long alternative text for non-text elements, such as images. Generally, alternative text exceeding 250 characters, which cannot be made more concise without making it less descriptive or meaningful, should have a long description. Examples of suitable use of long descriptions are charts, graphs, maps, infographics, and other complex images.
+  <h1 className="py-6 text-3xl font-bold mb-4 text-gray-800 flex items-center">
+    About Me
+  </h1>
+  <p className={`initial-text h-10 overflow-hidden ${expanded ? 'h-auto' : ''}`}>
+    A long description is a way to provide long alternative text for non-text elements, such as images. Generally, alternative text exceeding 250 characters, which cannot be made more concise without making it less descriptive or meaningful, should have a long description. Examples of suitable use of long descriptions are charts, graphs, maps, infographics, and other complex images.
 
-        As with alternative text, long descriptions should be descriptive and meaningful. It should also include all text that is incorporated into the image. A long description should provide visually impaired users with as much information as sighted users would understand from the image.
-      </p>
-      <div className="flex justify-center" onClick={toggleExpand}>
-        {expanded ? 'Read less' : 'Read more'}
-      </div>
-    </div>
-</header>
+    As with alternative text, long descriptions should be descriptive and meaningful. It should also include all text that is incorporated into the image. A long description should provide visually impaired users with as much information as sighted users would understand from the image.
+  </p>
+  {expanded && (
+    <aside
+      className="h-5 bg-white opacity-40 mt-0px"
+    />
+  )}
+  {!expanded && (
+    <div
+      className="h-5 bg-white opacity-80 mt-[-14px]"
+    />
+  )}
+  <div className="flex justify-center" onClick={toggleExpand}>
+    <button className="underline">
+      {expanded ? 'Read less' : 'Read more'}
+    </button>
+  </div>
+</div>
 <div>
 <h1 className="py-6 text-3xl font-bold mb-4 text-gray-800 flex items-center">
     Final work
