@@ -67,9 +67,9 @@ const Card: React.FC<CardProps> = ({ project }) => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-lg max-w-xs min-w-max w-80 relative m-4">
+        <div  className="bg-white rounded-lg shadow-lg max-w-xs min-w-max w-80 relative">
             <div
-                className="flex absolute right-2 top-2 p-2 bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 hover:bg-gray-300 cursor-pointer"
+                className=" z-10 flex absolute right-2 top-2 p-2 bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 hover:bg-gray-300 cursor-pointer"
                 onClick={handleClickLike}
             >
                 <Image src="" alt="" width={20} height={20} className="mr-2" />
