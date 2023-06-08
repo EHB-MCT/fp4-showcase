@@ -1,7 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore, collection, where, getDocs, query, limit } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getFirestore, collection, where, getDocs, query, limit,addDoc , serverTimestamp} from "firebase/firestore";
+import { getStorage , ref, uploadBytes, getDownloadURL,UploadTask} from "firebase/storage";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -66,3 +66,72 @@ export function postToJSON(doc) {
     updatedAt: data.updatedAt.toMillis(),
   };
 }
+
+
+
+export async function uploadProject(data){
+  const {imageFiles, videoFile,...restData} = data;
+
+
+  const imageUrls = await Promise.all(
+    imageFiles.map((file) => {
+      return new Promise((resolve, reject) => {
+        const storageRef = ref(storage, `images/${file.name}`);
+        const uploadTask = uploadBytes(storageRef, file);
+  
+        uploadTask
+          .then((snapshot) => getDownloadURL(snapshot.ref))
+          .then((downloadUrl) => resolve(downloadUrl))
+          .catch((error) => reject(error));
+      });
+    })
+  );
+
+
+
+  // Convert video file to download URL
+  /*const videoUrl = await new Promise((resolve, reject) => {
+    const storageRef = ref(storage, `videos/${videoFile.name}`);
+    const uploadTask = uploadBytes(storageRef, videoFile);
+    uploadTask.on(
+      STATE_CHANGED,
+      null,
+      reject,
+      async () => {
+        try {
+          const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadUrl);
+        } catch (error) {
+          reject(error);
+        }
+      }
+    );
+  });*/
+
+   // Add the createdAt and updatedAt fields to the data object
+   const timestamp = serverTimestamp();
+
+     // Update the data with the download URLs
+  const updatedData = {
+    ...restData,
+    imageUrls: [...imageUrls], 
+    createdAt: timestamp,
+    updatedAt: timestamp
+  };
+
+
+
+  // add the data to the "projects" collection
+  const projectRef = collection(firestore, "projects");
+
+  try {
+    // Add the data to the "projects" collection
+    await addDoc(projectRef, updatedData);
+    console.log("Project uploaded successfully");
+    // Additional logic after successful upload
+  } catch (error) {
+    console.error("Error uploading project:", error);
+    // Additional error handling
+  }
+}
+
