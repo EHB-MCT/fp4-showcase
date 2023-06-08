@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import tagsData from "../data/tags.json";
+import { firestore, uploadProject } from "../lib/firebase.ts";
 
 const UploadProjectForm = () => {
   const [title, setTitle] = useState("");
@@ -13,6 +14,13 @@ const UploadProjectForm = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [videoFile, setVideoFile] = useState(null);
 
+  const clearVideoField = () => {
+    setVideoFile(null);
+  };
+
+  const clearImageFields = () => {
+    setImageFiles([]);
+  };
 
   const handleClusterSelect = (event) => {
     const selectedCluster = event.target.value;
@@ -27,7 +35,6 @@ const UploadProjectForm = () => {
     // Clear the newTag input field
     setNewTag("");
   };
-
 
   const handleTagSelect = (event) => {
     const selectedTag = event.target.value;
@@ -47,16 +54,14 @@ const UploadProjectForm = () => {
   };
 
   const handleLinkChange = () => {
-  
-  // Check if the new link is not empty
-  if (newLink.trim() !== "") {
-    setAddedLinks((prevAddedLinks) => [...prevAddedLinks, newLink]);
-  }
+    // Check if the new link is not empty
+    if (newLink.trim() !== "") {
+      setAddedLinks((prevAddedLinks) => [...prevAddedLinks, newLink]);
+    }
 
     // Clear the newTag input field
     setNewLink("");
   };
-
 
   const handleRemoveLink = (index) => {
     setAddedLinks((prevAddedLinks) => {
@@ -87,12 +92,33 @@ const UploadProjectForm = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+ 
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Form submission logic
-    // Access the form data (title, description, selectedTags, imageFiles)
     // Perform any necessary actions (e.g., API calls, data manipulation)
+    const project = {
+      title,
+      description,
+      links: addedLinks,
+      cluster,
+      tags: selectedTags,
+      imageFiles,
+      videoFile,
+    };
+
+    // Call the uploadProject function and pass the project object
+    try {
+      await uploadProject(project);
+      console.log("Project uploaded successfully");
+      // Additional logic after successful upload
+    } catch (error) {
+      console.error("Error uploading project:", error);
+      // Additional error handling
+    }
+
     console.log("title => ", title);
     console.log("description => ", description);
     console.log("links (optional) =>", addedLinks);
@@ -109,12 +135,14 @@ const UploadProjectForm = () => {
     setNewTag("");
     setNewLink("");
     setImageFiles([]);
+    clearVideoField(); // Clear the video field
+    clearImageFields(); // Clear the image fields
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5"
+      className="w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
     >
       <h1 className="text-center text-white text-2xl">Upload Project</h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
@@ -151,7 +179,6 @@ const UploadProjectForm = () => {
           Links (optional):
         </label>
         <div className="flex w-full">
-     
           <input
             placeholder="url..."
             type="text"
@@ -169,19 +196,22 @@ const UploadProjectForm = () => {
         </div>
         {/* Render the selected tags */}
         <div className="flex flex-wrap gap-2 rounded-md">
-  {addedLinks.map((link, index) => (
-    <span key={index} className="bg-white text-gray-600 px-3 py-1 rounded-xl">
-      {link}
-      <button
-        type="button"
-        onClick={() => handleRemoveLink(index)}
-        className="ml-2 text-red-500"
-      >
-        X
-      </button>
-    </span>
-  ))}
-</div>
+          {addedLinks.map((link, index) => (
+            <span
+              key={index}
+              className="bg-white text-gray-600 px-3 py-1 rounded-xl"
+            >
+              {link}
+              <button
+                type="button"
+                onClick={() => handleRemoveLink(index)}
+                className="ml-2 text-red-500"
+              >
+                X
+              </button>
+            </span>
+          ))}
+        </div>
       </div>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
@@ -264,7 +294,6 @@ const UploadProjectForm = () => {
           onChange={handleFileChange}
           accept="video/*"
           className=" border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
-          required
         />
       </div>
 
