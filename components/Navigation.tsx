@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useContext } from "react";
@@ -27,7 +26,7 @@ const Navigation: React.FC = () => {
                   onClick={closeMenu}
                   className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                 >
-                  FinalShow - Showcase {user?.email}
+                  FinalShow - Showcase
                 </a>
               </Link>
             </div>
@@ -79,7 +78,7 @@ const Navigation: React.FC = () => {
       </div>
       <div className={`${isMenuOpen ? "block" : "hidden"}`} id="mobile-menu">
         <div className="px-2 pt-2 pb-3 space-y-1">
-          <Link href="/awards" onClick={closeMenu}>
+          <Link href="/awards">
             <a
               onClick={closeMenu}
               className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
@@ -87,7 +86,7 @@ const Navigation: React.FC = () => {
               Awards
             </a>
           </Link>
-          <Link href="/projects" onClick={closeMenu}>
+          <Link href="/projects">
             <a
               onClick={closeMenu}
               className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
@@ -95,12 +94,12 @@ const Navigation: React.FC = () => {
               Projects
             </a>
           </Link>
-          <Link href="/profile/1" onClick={closeMenu}>
+          <Link href={`/profile/${user.uid}`}>
             <a
               onClick={closeMenu}
               className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >
-              Profile
+              {user?.email}
             </a>
           </Link>
         </div>
