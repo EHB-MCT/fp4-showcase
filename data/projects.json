@@ -1,0 +1,142 @@
+[
+    {
+        "id": 0,
+        "title": "Next.js Website Development",
+        "description": "Learn how to build dynamic websites using Next.js",
+        "links": ["https://example.com/tutorial1", "https://example.com/tutorial2"],
+        "cluster": "Web & App",
+        "tags": ["React", "Frontend", "TypeScript"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 10,
+        "user_id": 1
+    },
+    {
+        "id": 1,
+        "title": "Introduction to Extended Reality",
+        "description": "Explore the possibilities of Extended Reality technologies",
+        "links": ["https://example.com/intro1", "https://example.com/intro2"],
+        "cluster": "Extended Reality",
+        "tags": ["Frontend", "JavaScript"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 5,
+        "user_id": 3
+    },
+    {
+        "id": 2,
+        "title": "Mastering Motion Design",
+        "description": "Discover the principles and techniques of motion design",
+        "links": ["https://example.com/motion1", "https://example.com/motion2"],
+        "cluster": "Motion",
+        "tags": ["React", "Frontend", "JavaScript"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 2,
+        "user_id": 2
+    },
+    {
+        "id": 3,
+        "title": "Smart Home Automation with IoT",
+        "description": "Build a smart home system using IoT technologies",
+        "links": ["https://example.com/iot1", "https://example.com/iot2"],
+        "cluster": "Smart Technology",
+        "tags": ["Backend", "JavaScript"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 7,
+        "user_id": 8
+    },
+    {
+        "id": 4,
+        "title": "TypeScript Crash Course",
+        "description": "Get started with TypeScript programming language",
+        "links": ["https://example.com/ts1", "https://example.com/ts2"],
+        "cluster": "Web & App",
+        "tags": ["TypeScript", "Frontend"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 12,
+        "user_id": 7
+    },
+    {
+        "id": 5,
+        "title": "Building Scalable Web Applications",
+        "description": "Learn how to architect and scale web applications",
+        "links": ["https://example.com/scalable1", "https://example.com/scalable2"],
+        "cluster": "Web & App",
+        "tags": ["React", "Backend", "JavaScript"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 8,
+        "user_id": 3
+    },
+    {
+        "id": 6,
+        "title": "Mobile App Development with React Native",
+        "description": "Create cross-platform mobile apps using React Native",
+        "links": ["https://example.com/reactnative1", "https://example.com/reactnative2"],
+        "cluster": "Web & App",
+        "tags": ["React", "Mobile", "JavaScript"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 3,
+        "user_id": 1
+    },
+    {
+        "id": 7,
+        "title": "Augmented Reality for Beginners",
+        "description": "Introduction to building AR experiences",
+        "links": ["https://example.com/ar1", "https://example.com/ar2"],
+        "cluster": "Extended Reality",
+        "tags": ["Frontend", "JavaScript"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 6,
+        "user_id": 6
+    },
+    {
+        "id": 8,
+        "title": "Data Visualization with D3.js",
+        "description": "Learn to create interactive data visualizations",
+        "links": ["https://example.com/d3js1", "https://example.com/d3js2"],
+        "cluster": "Motion",
+        "tags": ["Frontend", "JavaScript"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 9,
+        "user_id": 2
+    },
+    {
+        "id": 9,
+        "title": "Artificial Intelligence and Machine Learning",
+        "description": "Explore the world of AI and ML",
+        "links": ["https://example.com/ai1", "https://example.com/ai2"],
+        "cluster": "Smart Technology",
+        "tags": ["Backend", "Python"],
+        "videoFile": "",
+        "imageFiles": [
+            "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
+        ],
+        "likeCount": 4,
+        "user_id": 4
+    }
+]
