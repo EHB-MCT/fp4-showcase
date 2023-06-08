@@ -1,10 +1,10 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import tagsData from "../data/tags.json";
 import { firestore, uploadProject } from "../lib/firebase.ts";
 import { UserContext } from "../lib/context";
 
 const UploadProjectForm = () => {
-  const{user}= useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [newLink, setNewLink] = useState("");
@@ -15,6 +15,10 @@ const UploadProjectForm = () => {
   const [newTag, setNewTag] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
   const [videoFile, setVideoFile] = useState(null);
+  // for the error messages
+  const [uploadStatus, setUploadStatus] = useState(null);
+  // for the spinner loader animation
+  const [loading, setLoading] = useState(false);
 
   const clearVideoField = () => {
     setVideoFile(null);
@@ -94,10 +98,10 @@ const UploadProjectForm = () => {
     });
   };
 
- 
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    setLoading(true);
 
     // Form submission logic
     // Perform any necessary actions (e.g., API calls, data manipulation)
@@ -122,13 +126,7 @@ const UploadProjectForm = () => {
       // Additional error handling
     }
 
-    console.log("title => ", title);
-    console.log("description => ", description);
-    console.log("links (optional) =>", addedLinks);
-    console.log("cluster =>", cluster);
-    console.log("tags =>", selectedTags);
-    console.log("video file =>", videoFile);
-    console.log("image files =>", imageFiles);
+    setLoading(false);
 
     // Reset the form fields
     setTitle("");
@@ -142,10 +140,20 @@ const UploadProjectForm = () => {
     clearImageFields(); // Clear the image fields
   };
 
+  useEffect(() => {
+    let timer;
+    if (uploadStatus) {
+      timer = setTimeout(() => {
+        setUploadStatus(null);
+      }, 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [uploadStatus]);
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
+      className="w-9/10 md:w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
     >
       <h1 className="text-center text-white text-2xl">Upload Project</h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
@@ -229,7 +237,7 @@ const UploadProjectForm = () => {
         >
           <option value="">Select Cluster</option>
           <option value="Motion">Motion</option>
-          <option value="Web">Web</option>
+          <option value="Web & App">Web & App</option>
           <option value="3D">3D</option>
         </select>
       </div>
@@ -342,6 +350,15 @@ const UploadProjectForm = () => {
           return null; // Exclude video files from rendering
         })}
       </div>
+      {loading && <div className="text-white">Loading...</div>}
+
+      {uploadStatus === "success" && (
+        <p className="text-green-500">Upload successful!</p>
+      )}
+
+      {uploadStatus === "error" && (
+        <p className="text-red-500">Upload failed. Please try again.</p>
+      )}
 
       <button
         type="submit"
