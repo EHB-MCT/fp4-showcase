@@ -72,7 +72,7 @@ export default function EditProfile() {
                 {/* Image from Unsplash */}
                 <div className=" grid max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 container md:flex-row items-center justify-between">
                     <div className="flex items-center">
-                        <Image className="h-11 mr-2" src={pfp} alt="Pfp" width={45} height={45} />
+                        <img className="h-11 mr-2" src={pfp} alt="Pfp" />
                         {/* Image from Pexels */}
                         <div className="pl-2">
                             <h1 className="text-2xl font-bold">{user?.email}</h1>
@@ -118,12 +118,10 @@ export default function EditProfile() {
                     </div>
                     <div className="flex flex-wrap justify-center md:justify-end">
                         <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mr-4 mb-2">
-                            <Image
+                            <img
                                 src="https://cdn-icons-png.flaticon.com/512/429/429088.png?w=740&t=st=1686247100~exp=1686247700~hmac=bf1e0b57dd6a64d69be0bf9ed93781dd72ff1114145ff61b88f58c498decbb4f"
                                 alt="Award 1"
                                 className="w-16 h-16 rounded-full"
-                                height={64}
-                                width={64}
                             />
                             {/*Image from Freepik*/}
                         </a>
@@ -161,7 +159,7 @@ export default function EditProfile() {
                     </h1>
                     <div className="w-full rounded overflow-hidden shadow-lg bg-white relative">
                         <div className="h-48 w-full overflow-hidden">
-                            <Image className="w-full h-full object-cover" src={img} alt="Banner" layout="fill" />
+                            <img className="w-full h-full object-cover" src={img} alt="Banner" />
                         </div>
                         <span className="absolute top-0 right-0 m-2 bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">{likes} Likes</span>
                         <div className="px-6 py-4">
