@@ -1,13 +1,12 @@
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { useContext } from 'react';
-import { UserContext } from '../lib/context';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Link from "next/link";
+import React, { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../lib/context";
 
 const Navigation: React.FC = () => {
-    const [isMenuOpen, setMenuOpen] = useState(false);
-    const { user } = useContext(UserContext);
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const { user } = useContext(UserContext);
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -16,7 +15,6 @@ const Navigation: React.FC = () => {
   function closeMenu() {
     setMenuOpen(!isMenuOpen);
   }
-
 
   return (
     <nav className="bg-gray-900">
@@ -75,7 +73,6 @@ const Navigation: React.FC = () => {
                   />
                 </svg>
               </button>
-
             </div>
           </div>
         </div>
@@ -112,4 +109,4 @@ const Navigation: React.FC = () => {
   );
 };
 
-export default TopBar;
+export default Navigation;
