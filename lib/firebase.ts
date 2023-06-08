@@ -1,7 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore, collection, where, getDocs, query, limit } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getFirestore, collection, where, getDocs, query, limit,addDoc , serverTimestamp} from "firebase/firestore";
+import { getStorage , ref, uploadBytes, getDownloadURL,UploadTask} from "firebase/storage";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -66,3 +66,139 @@ export function postToJSON(doc) {
     updatedAt: data.updatedAt.toMillis(),
   };
 }
+
+
+export async function getAllTags(){
+  const usersRef = collection(firestore, 'tags');
+  
+}
+
+
+
+
+
+
+// <-----UPLOAD A PROJECT------>
+
+export async function uploadProject(data){
+  const {imageFiles, videoFile,...restData} = data;
+
+
+  const imageUrls = await Promise.all(
+    imageFiles.map((file) => {
+      return new Promise((resolve, reject) => {
+        const storageRef = ref(storage, `images/${file.name}`);
+        const uploadTask = uploadBytes(storageRef, file);
+  
+        uploadTask
+          .then((snapshot) => getDownloadURL(snapshot.ref))
+          .then((downloadUrl) => resolve(downloadUrl))
+          .catch((error) => reject(error));
+      });
+    })
+  );
+
+
+
+  // Convert video file to download URL
+  /*const videoUrl = await new Promise((resolve, reject) => {
+    const storageRef = ref(storage, `videos/${videoFile.name}`);
+    const uploadTask = uploadBytes(storageRef, videoFile);
+    uploadTask.on(
+      STATE_CHANGED,
+      null,
+      reject,
+      async () => {
+        try {
+          const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadUrl);
+        } catch (error) {
+          reject(error);
+        }
+      }
+    );
+  });*/
+
+   // Add the createdAt and updatedAt fields to the data object
+   const timestamp = serverTimestamp();
+
+     // Update the data with the download URLs
+  const updatedData = {
+    ...restData,
+    likeCount: 0,
+    imageUrls: [...imageUrls], 
+    createdAt: timestamp,
+    updatedAt: timestamp
+  };
+
+
+
+  // add the data to the "projects" collection
+  const projectRef = collection(firestore, "projects");
+
+  try {
+    // Add the data to the "projects" collection
+    await addDoc(projectRef, updatedData);
+    console.log("Project uploaded successfully");
+    // Additional logic after successful upload
+  } catch (error) {
+    console.error("Error uploading project:", error);
+    // Additional error handling
+  }
+}
+
+
+
+
+
+
+
+
+// <------UPLOAD AN AWARD------->
+
+
+export async function uploadAward(data) {
+  const { cardImage, bannerImage, ...restData } = data;
+
+  // Upload the card image and get its download URL
+  const cardImageUrl = await uploadImageAndGetUrl(cardImage, "cardImage");
+
+  // Upload the banner image and get its download URL
+  const bannerImageUrl = await uploadImageAndGetUrl(bannerImage, "bannerImage");
+
+  // Update the data with the download URLs
+  const updatedData = {
+    ...restData,
+    cardImageUrl,
+    bannerImageUrl,
+    
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  };
+
+  // Add the data to the "awards" collection
+  const awardsRef = collection(firestore, "awards");
+
+  try {
+    await addDoc(awardsRef, updatedData);
+    console.log("Award uploaded successfully");
+    // Additional logic after successful upload
+  } catch (error) {
+    console.error("Error uploading award:", error);
+    // Additional error handling
+  }
+}
+
+async function uploadImageAndGetUrl(file, imageName) {
+  return new Promise((resolve, reject) => {
+    const storageRef = ref(storage, `images/${imageName}_${file.name}`);
+    const uploadTask = uploadBytes(storageRef, file);
+
+    uploadTask
+      .then((snapshot) => getDownloadURL(snapshot.ref))
+      .then((downloadUrl) => resolve(downloadUrl))
+      .catch((error) => reject(error));
+  });
+}
+
+

@@ -1,8 +1,11 @@
-import { useState } from "react";
 import Link from "next/link";
+import React, { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../lib/context";
 
-const TopBar = () => {
+const Navigation: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const { user } = useContext(UserContext);
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -75,7 +78,7 @@ const TopBar = () => {
       </div>
       <div className={`${isMenuOpen ? "block" : "hidden"}`} id="mobile-menu">
         <div className="px-2 pt-2 pb-3 space-y-1">
-          <Link href="/awards" onClick={closeMenu}>
+          <Link href="/awards">
             <a
               onClick={closeMenu}
               className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
@@ -83,7 +86,7 @@ const TopBar = () => {
               Awards
             </a>
           </Link>
-          <Link href="/projects" onClick={closeMenu}>
+          <Link href="/projects">
             <a
               onClick={closeMenu}
               className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
@@ -91,12 +94,12 @@ const TopBar = () => {
               Projects
             </a>
           </Link>
-          <Link href="/profile/1" onClick={closeMenu}>
+          <Link href={user ? `/profile/${user.uid}` : `/register`}>
             <a
               onClick={closeMenu}
               className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >
-              Profile
+              {user ? user?.email : "Login"}
             </a>
           </Link>
         </div>
@@ -105,4 +108,4 @@ const TopBar = () => {
   );
 };
 
-export default TopBar;
+export default Navigation;

@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import tagsData from "../data/tags.json";
+import { firestore, uploadProject } from "../lib/firebase.ts";
+import { UserContext } from "../lib/context";
 
 const UploadProjectForm = () => {
+  const {user} = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [newLink, setNewLink] = useState("");
@@ -12,7 +15,19 @@ const UploadProjectForm = () => {
   const [newTag, setNewTag] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
   const [videoFile, setVideoFile] = useState(null);
+  // for the error messages
+  const [uploadStatus, setUploadStatus] = useState(null);
+  // for the spinner loader animation
+  const [loading, setLoading] = useState(false);
 
+
+  const clearVideoField = () => {
+    setVideoFile(null);
+  };
+
+  const clearImageFields = () => {
+    setImageFiles([]);
+  };
 
   const handleClusterSelect = (event) => {
     const selectedCluster = event.target.value;
@@ -27,7 +42,6 @@ const UploadProjectForm = () => {
     // Clear the newTag input field
     setNewTag("");
   };
-
 
   const handleTagSelect = (event) => {
     const selectedTag = event.target.value;
@@ -47,16 +61,14 @@ const UploadProjectForm = () => {
   };
 
   const handleLinkChange = () => {
-  
-  // Check if the new link is not empty
-  if (newLink.trim() !== "") {
-    setAddedLinks((prevAddedLinks) => [...prevAddedLinks, newLink]);
-  }
+    // Check if the new link is not empty
+    if (newLink.trim() !== "") {
+      setAddedLinks((prevAddedLinks) => [...prevAddedLinks, newLink]);
+    }
 
     // Clear the newTag input field
     setNewLink("");
   };
-
 
   const handleRemoveLink = (index) => {
     setAddedLinks((prevAddedLinks) => {
@@ -87,12 +99,40 @@ const UploadProjectForm = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+ 
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+
+    setLoading(true);
     // Form submission logic
-    // Access the form data (title, description, selectedTags, imageFiles)
     // Perform any necessary actions (e.g., API calls, data manipulation)
+    const project = {
+      title,
+      description,
+      links: addedLinks,
+      cluster,
+      tags: selectedTags,
+      imageFiles,
+      videoFile,
+      uid: user.uid
+    };
+
+    // Call the uploadProject function and pass the project object
+    try {
+      await uploadProject(project);
+      console.log("Project uploaded successfully");
+      // Additional logic after successful upload
+    } catch (error) {
+      console.error("Error uploading project:", error);
+      // Additional error handling
+    }
+
+
+    setLoading(false);
+
+
     console.log("title => ", title);
     console.log("description => ", description);
     console.log("links (optional) =>", addedLinks);
@@ -109,12 +149,24 @@ const UploadProjectForm = () => {
     setNewTag("");
     setNewLink("");
     setImageFiles([]);
+    clearVideoField(); // Clear the video field
+    clearImageFields(); // Clear the image fields
   };
+
+  useEffect(() => {
+    let timer;
+    if (uploadStatus) {
+      timer = setTimeout(() => {
+        setUploadStatus(null);
+      }, 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [uploadStatus]);
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5"
+      className="w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
     >
       <h1 className="text-center text-white text-2xl">Upload Project</h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
@@ -151,7 +203,6 @@ const UploadProjectForm = () => {
           Links (optional):
         </label>
         <div className="flex w-full">
-     
           <input
             placeholder="url..."
             type="text"
@@ -169,19 +220,22 @@ const UploadProjectForm = () => {
         </div>
         {/* Render the selected tags */}
         <div className="flex flex-wrap gap-2 rounded-md">
-  {addedLinks.map((link, index) => (
-    <span key={index} className="bg-white text-gray-600 px-3 py-1 rounded-xl">
-      {link}
-      <button
-        type="button"
-        onClick={() => handleRemoveLink(index)}
-        className="ml-2 text-red-500"
-      >
-        X
-      </button>
-    </span>
-  ))}
-</div>
+          {addedLinks.map((link, index) => (
+            <span
+              key={index}
+              className="bg-white text-gray-600 px-3 py-1 rounded-xl"
+            >
+              {link}
+              <button
+                type="button"
+                onClick={() => handleRemoveLink(index)}
+                className="ml-2 text-red-500"
+              >
+                X
+              </button>
+            </span>
+          ))}
+        </div>
       </div>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
@@ -264,7 +318,6 @@ const UploadProjectForm = () => {
           onChange={handleFileChange}
           accept="video/*"
           className=" border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
-          required
         />
       </div>
 
@@ -310,6 +363,17 @@ const UploadProjectForm = () => {
           return null; // Exclude video files from rendering
         })}
       </div>
+
+      
+      {loading && <div className="text-white">Loading...</div>}
+      {uploadStatus === "success" && (
+        <p className="text-green-500">Upload successful!</p>
+      )}
+
+      {uploadStatus === "error" && (
+        <p className="text-red-500">Upload failed. Please try again.</p>
+      )}
+
 
       <button
         type="submit"
