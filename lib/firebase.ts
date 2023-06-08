@@ -68,6 +68,11 @@ export function postToJSON(doc) {
 }
 
 
+export async function getAllTags(){
+  const usersRef = collection(firestore, 'tags');
+  
+}
+
 
 export async function uploadProject(data){
   const {imageFiles, videoFile,...restData} = data;

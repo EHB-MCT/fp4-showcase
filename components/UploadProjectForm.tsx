@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import tagsData from "../data/tags.json";
 import { firestore, uploadProject } from "../lib/firebase.ts";
+import { UserContext } from "../lib/context";
 
 const UploadProjectForm = () => {
+  const{user}= useContext(UserContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [newLink, setNewLink] = useState("");
@@ -107,6 +109,7 @@ const UploadProjectForm = () => {
       tags: selectedTags,
       imageFiles,
       videoFile,
+      uid: user.uid,
     };
 
     // Call the uploadProject function and pass the project object
