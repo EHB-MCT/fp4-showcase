@@ -20,7 +20,6 @@ const project =  {
   "likeCount": 10,
   "user_id": 1
 }
-
     const router = useRouter();
     const { id } = router.query;
     const likes = 42;
@@ -28,7 +27,6 @@ const project =  {
     const title = "Amazing Artwork";
     const tags = ["Art", "Design", "Creativity"];
     const img = "https://via.placeholder.com/300";
-    const backimg="https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png";
    const pfp="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"
    const [showMore, setShowMore] = useState(false);
 
@@ -49,10 +47,12 @@ const project =  {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="bg-gray-900 text-white" style={{ backgroundImage: 'url(https://i.etsystatic.com/34466454/r/il/bd263a/4597882244/il_fullxfull.4597882244_70jz.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+<div className="bg-gray-900 text-white" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1255&q=80)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+  {/* Image from Unsplash */}
   <div className=" grid max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 container md:flex-row items-center justify-between">
     <div className="flex items-center">
       <img className="h-11 mr-2" src={pfp} alt="Pfp" />
+        {/* Image from Pexels */}
       <div>
         <h1 className="text-2xl font-bold">{author}</h1>
         <span className="text-sm">2022-2023</span>
@@ -118,8 +118,9 @@ const project =  {
   </div>
   <div className="flex flex-wrap justify-center md:justify-end">
   <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="mr-4 mb-2">
-    <img src="https://images.vexels.com/media/users/3/127646/isolated/preview/bb4029ca0e2f6ffb36a5c80dba5e54e0-first-place-round-badge.png" alt="Award 1" className="w-16 h-16 rounded-full" />
-  </a>
+    <img src="https://cdn-icons-png.flaticon.com/512/429/429088.png?w=740&t=st=1686247100~exp=1686247700~hmac=bf1e0b57dd6a64d69be0bf9ed93781dd72ff1114145ff61b88f58c498decbb4f" alt="Award 1" className="w-16 h-16 rounded-full" />
+ {/*Image from Freepik*/}
+ </a>
 </div>
 </div> 
 </div>
