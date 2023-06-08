@@ -1,8 +1,13 @@
-import { useState } from "react";
-import Link from "next/link";
 
-const TopBar = () => {
-  const [isMenuOpen, setMenuOpen] = useState(false);
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../lib/context';
+
+const Navigation: React.FC = () => {
+    const [isMenuOpen, setMenuOpen] = useState(false);
+    const { user } = useContext(UserContext);
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -11,6 +16,7 @@ const TopBar = () => {
   function closeMenu() {
     setMenuOpen(!isMenuOpen);
   }
+
 
   return (
     <nav className="bg-gray-900">
@@ -23,7 +29,7 @@ const TopBar = () => {
                   onClick={closeMenu}
                   className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                 >
-                  FinalShow - Showcase
+                  FinalShow - Showcase {user?.email}
                 </a>
               </Link>
             </div>
@@ -69,6 +75,7 @@ const TopBar = () => {
                   />
                 </svg>
               </button>
+
             </div>
           </div>
         </div>
