@@ -7,7 +7,7 @@
         "cluster": "Web & App",
         "tags": ["React", "Frontend", "TypeScript"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 10,
@@ -21,7 +21,7 @@
         "cluster": "Extended Reality",
         "tags": ["Frontend", "JavaScript"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 5,
@@ -35,7 +35,7 @@
         "cluster": "Motion",
         "tags": ["React", "Frontend", "JavaScript"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 2,
@@ -49,7 +49,7 @@
         "cluster": "Smart Technology",
         "tags": ["Backend", "JavaScript"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 7,
@@ -63,7 +63,7 @@
         "cluster": "Web & App",
         "tags": ["TypeScript", "Frontend"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 12,
@@ -77,7 +77,7 @@
         "cluster": "Web & App",
         "tags": ["React", "Backend", "JavaScript"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 8,
@@ -91,7 +91,7 @@
         "cluster": "Web & App",
         "tags": ["React", "Mobile", "JavaScript"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 3,
@@ -105,7 +105,7 @@
         "cluster": "Extended Reality",
         "tags": ["Frontend", "JavaScript"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 6,
@@ -119,7 +119,7 @@
         "cluster": "Motion",
         "tags": ["Frontend", "JavaScript"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 9,
@@ -133,7 +133,7 @@
         "cluster": "Smart Technology",
         "tags": ["Backend", "Python"],
         "videoFile": "",
-        "imageFiles": [
+        "imageUrls": [
             "https://w7.pngwing.com/pngs/408/212/png-transparent-project-management-body-of-knowledge-project-management-professional-project-manager-management-project-miscellaneous-text-logo-thumbnail.png"
         ],
         "likeCount": 4,

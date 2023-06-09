@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         let list = [];
         const querySnapshot = await getDocs(collection(firestore, 'projects'));
         querySnapshot.forEach((doc) => {
-            if (doc.data().uid == uid) list.push(doc.data());
+            list.push(doc.data());
         });
         res.status(200).send(list);
     }

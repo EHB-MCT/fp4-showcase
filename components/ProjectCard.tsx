@@ -90,13 +90,13 @@ const Card = ({ project }) => {
                     {project.uid}
                 </p>
                 <p className="text-lg font-medium text-gray-700 cursor-pointer" onClick={handleClickCluster}>
-                    {project.cluster}
+                    {project.title}
                 </p>
             </div>
             <hr />
             <div className="p-2" style={{ maxWidth: '350px' }}>
                 <h3 className="text-lg font-medium text-gray-900 cursor-pointer" onClick={handleClickProject}>
-                    {project.title}
+                    {project.cluster}
                 </h3>
                 <div className="mt-2 mb-2 flex flex-wrap" style={{ maxWidth: '100%' }}>
                     {project.tags.map((tag: string, index: number) => (
