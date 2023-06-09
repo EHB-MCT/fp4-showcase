@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useContext } from "react";
 import tagsData from "../data/tags.json";
-import { firestore, uploadProject } from "../lib/firebase.ts";
+import { firestore, uploadProject } from "../lib/firebase";
 import { UserContext } from "../lib/context";
 
 const UploadProjectForm = () => {
