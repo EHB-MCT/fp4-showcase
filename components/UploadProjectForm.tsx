@@ -1,29 +1,41 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext,useRef } from "react";
 import tagsData from "../data/tags.json";
 import { firestore, uploadProject } from "../lib/firebase";
 import { UserContext } from "../lib/context";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const UploadProjectForm = () => {
-  const {user} = useContext(UserContext);
+  const [pdfFile, setPdfFile] = useState(null);
+  const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [newLink, setNewLink] = useState("");
   const [addedLinks, setAddedLinks] = useState([]);
+  const [addedYoutubeLinks, setAddedYoutubeLinks] = useState([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [cluster, setCluster] = useState("");
   const [newTag, setNewTag] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
-  const [videoFile, setVideoFile] = useState(null);
+  const [newYoutubeLink, setNewYoutubeLink] = useState("");
+  const [pdfFileSelected, setPdfFileSelected] = useState(false);
+
+
+  // tooltips usestates
+  const [titleTooltipVisible, setTitleTooltipVisible] = useState(false);
+  const [descriptionTooltipVisible, setDescriptionTooltipVisible] = useState(false);
+  const [linksTooltipVisible, setLinksTooltipVisible] = useState(false);
+
+
   // for the error messages
   const [uploadStatus, setUploadStatus] = useState(null);
   // for the spinner loader animation
   const [loading, setLoading] = useState(false);
 
 
-  const clearVideoField = () => {
-    setVideoFile(null);
-  };
+  const fileInputRef = useRef(null);
 
   const clearImageFields = () => {
     setImageFiles([]);
@@ -33,7 +45,8 @@ const UploadProjectForm = () => {
     const selectedCluster = event.target.value;
     setCluster(selectedCluster);
   };
-  const handleTagChange = () => {
+  const handleTagChange = (event) => {
+    event.preventDefault();
     // Check if the new tag already exists in the selected tags
     if (!selectedTags.includes(newTag) && newTag.trim() !== "") {
       setSelectedTags((prevSelectedTags) => [...prevSelectedTags, newTag]);
@@ -60,7 +73,8 @@ const UploadProjectForm = () => {
     });
   };
 
-  const handleLinkChange = () => {
+  const handleLinkChange = (event) => {
+    event.preventDefault();
     // Check if the new link is not empty
     if (newLink.trim() !== "") {
       setAddedLinks((prevAddedLinks) => [...prevAddedLinks, newLink]);
@@ -78,17 +92,36 @@ const UploadProjectForm = () => {
     });
   };
 
+  const handleYoutubeLinkChange = (event) => {
+    event.preventDefault();
+    // Check if the new link is not empty
+    if (newYoutubeLink.trim() !== "") {
+      setAddedYoutubeLinks((prevAddedYoutubeLinks) => [
+        ...prevAddedYoutubeLinks,
+        newYoutubeLink,
+      ]);
+    }
+
+    // Clear the newTag input field
+    setNewYoutubeLink("");
+  };
+
+  const handleRemoveYoutubeLink = (index) => {
+    setAddedYoutubeLinks((prevAddedYoutubeLinks) => {
+      const updatedLinks = [...prevAddedYoutubeLinks];
+      updatedLinks.splice(index, 1);
+      return updatedLinks;
+    });
+  };
+
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
 
     // Check if it's a video file
-    if (event.target.name === "video") {
-      setVideoFile(files[0]);
-    } else {
-      // Filter out non-image files
-      const imageFiles = files.filter((file) => file.type.includes("image"));
-      setImageFiles((prevImageFiles) => [...prevImageFiles, ...imageFiles]);
-    }
+
+    // Filter out non-image files
+    const imageFiles = files.filter((file) => file.type.includes("image"));
+    setImageFiles((prevImageFiles) => [...prevImageFiles, ...imageFiles]);
   };
 
   const handleDeleteImage = (index) => {
@@ -99,11 +132,21 @@ const UploadProjectForm = () => {
     });
   };
 
- 
-  
+  const handlePdfFileChange = (event) => {
+    const file = event.target.files[0]; // Get the first selected file
+
+    // Check if it's a PDF file
+    if (file.type === "application/pdf") {
+      setPdfFile(file);
+      setPdfFileSelected(true);
+    } else {
+      // Display an error message or perform any other action for non-PDF files
+      console.log("Please select a PDF file.");
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
 
     setLoading(true);
     // Form submission logic
@@ -115,8 +158,9 @@ const UploadProjectForm = () => {
       cluster,
       tags: selectedTags,
       imageFiles,
-      videoFile,
-      uid: user.uid
+      youtubeLinks: addedYoutubeLinks,
+      pdfFile: pdfFile,
+      uid: user.uid,
     };
 
     // Call the uploadProject function and pass the project object
@@ -126,22 +170,23 @@ const UploadProjectForm = () => {
       // Additional logic after successful upload
     } catch (error) {
       console.error("Error uploading project:", error);
+      setUploadStatus("error");
       // Additional error handling
     }
 
-
     setLoading(false);
-
 
     console.log("title => ", title);
     console.log("description => ", description);
     console.log("links (optional) =>", addedLinks);
     console.log("cluster =>", cluster);
     console.log("tags =>", selectedTags);
-    console.log("video file =>", videoFile);
+    console.log("video links =>", addedYoutubeLinks);
     console.log("image files =>", imageFiles);
+    console.log("pdf file =>", pdfFile);
 
     // Reset the form fields
+    setPdfFile("");
     setTitle("");
     setDescription("");
     setSelectedTags([]);
@@ -149,8 +194,10 @@ const UploadProjectForm = () => {
     setNewTag("");
     setNewLink("");
     setImageFiles([]);
-    clearVideoField(); // Clear the video field
+    setAddedYoutubeLinks([]);
     clearImageFields(); // Clear the image fields
+
+    fileInputRef.current.value = "";
   };
 
   useEffect(() => {
@@ -166,13 +213,25 @@ const UploadProjectForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
+      className="w-2/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
     >
-      <h1 className="text-center text-white text-2xl">Upload Project</h1>
+      <h1 className="text-center text-white text-2xl">Upload Project </h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
-      <div className="flex flex-col gap-2 items-start w-full">
-        <label className="text-white" htmlFor="title">
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-center" htmlFor="title">
           Title:
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setTitleTooltipVisible(true)}
+            onMouseLeave={() => setTitleTooltipVisible(false)}
+          >
+            i
+          </span>
+          {titleTooltipVisible && (
+            <div className="tooltip-right bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
+              Enter the project title
+            </div>
+          )}
         </label>
         <input
           placeholder="Write your project title here..."
@@ -185,9 +244,22 @@ const UploadProjectForm = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-2 items-start w-full">
-        <label className="text-white" htmlFor="description">
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-center" htmlFor="description">
           Description:
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setDescriptionTooltipVisible(true)}
+            onMouseLeave={() => setDescriptionTooltipVisible(false)}
+          >
+            i
+          </span>
+          {descriptionTooltipVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
+              Enter the description of your project, try to stay within a length
+              of max 500 characters.
+            </div>
+          )}
         </label>
         <textarea
           placeholder="Write a description about your project..."
@@ -198,9 +270,21 @@ const UploadProjectForm = () => {
           required
         />
       </div>
-      <div className="flex flex-col gap-2 items-start  w-full">
-        <label className="text-white" htmlFor="links">
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-center" htmlFor="links">
           Links (optional):
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setLinksTooltipVisible(true)}
+            onMouseLeave={() => setLinksTooltipVisible(false)}
+          >
+            i
+          </span>
+          {linksTooltipVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
+             Used for links to github repository, website link,...etc.
+            </div>
+          )}
         </label>
         <div className="flex w-full">
           <input
@@ -211,7 +295,7 @@ const UploadProjectForm = () => {
             className=" border-gray-300   flex-grow rounded-sm bg-gray-700  py-2 text-white pl-3"
           />
           <button
-            type="button"
+            type="submit"
             onClick={handleLinkChange}
             className="bg-purple-600 text-white px-3 rounded-sm ml-1"
           >
@@ -280,7 +364,7 @@ const UploadProjectForm = () => {
             className=" border-gray-300  ml-1 flex-grow rounded-r-sm bg-gray-700 text-white pl-3"
           />
           <button
-            type="button"
+            type="submit"
             onClick={handleTagChange}
             className="bg-purple-600 text-white px-3 rounded-sm ml-1"
           >
@@ -307,18 +391,64 @@ const UploadProjectForm = () => {
         </div>
       </div>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
+
+      <div className="flex flex-col gap-2 items-start  w-full">
+        <label className="text-white" htmlFor="links">
+          Youtube links (optional):
+        </label>
+        <div className="flex w-full">
+          <input
+            placeholder="url..."
+            type="text"
+            value={newYoutubeLink}
+            onChange={(event) => setNewYoutubeLink(event.target.value)}
+            className=" border-gray-300   flex-grow rounded-sm bg-gray-700  py-2 text-white pl-3"
+          />
+          <button
+            type="submit"
+            onClick={handleYoutubeLinkChange}
+            className="bg-purple-600 text-white px-3 rounded-sm ml-1"
+          >
+            Add Link
+          </button>
+        </div>
+        {/* Render the selected links */}
+        <div className="flex flex-wrap gap-2 rounded-md">
+          {addedYoutubeLinks.map((link, index) => (
+            <span
+              key={index}
+              className="bg-white text-gray-600 px-3 py-1 rounded-xl"
+            >
+              {link}
+              <button
+                type="button"
+                onClick={() => handleRemoveYoutubeLink(index)}
+                className="ml-2 text-red-500"
+              >
+                X
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
       <div className="flex flex-col gap-2 items-start w-full ">
-        <label className="text-white" htmlFor="video">
-          Video:
+        <label className="text-white" htmlFor="pdfFile">
+          PDF File (optional):
         </label>
         <input
           type="file"
-          id="video"
-          name="video"
-          onChange={handleFileChange}
-          accept="video/*"
-          className=" border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
+          id="pdfFile"
+          name="pdfFile"
+          onChange={handlePdfFileChange}
+          accept=".pdf"
+          className="border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
+          ref={fileInputRef}
         />
+        {pdfFileSelected ? (
+          <span className="text-gray-400">{pdfFile.name}</span>
+        ) : (
+          <span className="text-gray-400">No file chosen</span>
+        )}
       </div>
 
       <div className="flex flex-col gap-2 items-start w-full ">
@@ -364,7 +494,6 @@ const UploadProjectForm = () => {
         })}
       </div>
 
-      
       {loading && <div className="text-white">Loading...</div>}
       {uploadStatus === "success" && (
         <p className="text-green-500">Upload successful!</p>
@@ -373,7 +502,6 @@ const UploadProjectForm = () => {
       {uploadStatus === "error" && (
         <p className="text-red-500">Upload failed. Please try again.</p>
       )}
-
 
       <button
         type="submit"
