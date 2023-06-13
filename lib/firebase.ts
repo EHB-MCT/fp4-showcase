@@ -81,7 +81,7 @@ export async function getAllTags(){
 // <-----UPLOAD A PROJECT------>
 
 export async function uploadProject(data){
-  const {imageFiles, pdfFile,...restData} = data;
+  const {imageFiles, pdfFile, previewImage,...restData} = data;
 
 
   const imageUrls = await Promise.all(
@@ -99,15 +99,30 @@ export async function uploadProject(data){
   );
 
    // Upload the PDF file to Firebase Storage
-   const pdfUrl = await new Promise((resolve, reject) => {
-    const storageRef = ref(storage, `pdfs/${pdfFile.name}`);
-    const uploadTask = uploadBytes(storageRef, pdfFile);
+   let pdfUrl = null;
+   if (pdfFile) {
+     // Upload the PDF file to Firebase Storage
+     pdfUrl = await new Promise((resolve, reject) => {
+       const storageRef = ref(storage, `pdfs/${pdfFile.name}`);
+       const uploadTask = uploadBytes(storageRef, pdfFile);
+ 
+       uploadTask
+         .then((snapshot) => getDownloadURL(snapshot.ref))
+         .then((downloadUrl) => resolve(downloadUrl))
+         .catch((error) => reject(error));
+     });
+   }
 
-    uploadTask
-      .then((snapshot) => getDownloadURL(snapshot.ref))
-      .then((downloadUrl) => resolve(downloadUrl))
-      .catch((error) => reject(error));
-  });
+     // Upload the Preview image file to Firebase Storage
+     const previewImageUrl = await new Promise((resolve, reject) => {
+      const storageRef = ref(storage, `images/${previewImage.name}`);
+      const uploadTask = uploadBytes(storageRef, previewImage);
+  
+      uploadTask
+        .then((snapshot) => getDownloadURL(snapshot.ref))
+        .then((downloadUrl) => resolve(downloadUrl))
+        .catch((error) => reject(error));
+    });
 
 
 
@@ -120,6 +135,7 @@ export async function uploadProject(data){
   const updatedData = {
     ...restData,
     likeCount: 0,
+    previewImageUrl: previewImageUrl,
     imageUrls: [...imageUrls], 
     pdfUrl: pdfUrl,
     createdAt: timestamp,

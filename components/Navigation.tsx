@@ -6,7 +6,7 @@ import { UserContext } from "../lib/context";
 const Navigation: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { user } = useContext(UserContext);
-
+  console.log(user)
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -99,7 +99,7 @@ const Navigation: React.FC = () => {
               onClick={closeMenu}
               className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >
-              {user ? user?.email : "Login"}
+              {user ? user?.username : "Login"}
             </a>
           </Link>
         </div>
