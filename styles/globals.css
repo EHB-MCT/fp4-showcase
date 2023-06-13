@@ -54,6 +54,9 @@
   --h3-font-size: 20px;
   --p-font-size: 18px;
 
+  /* Line height */
+  --p-line-height: 1.8;
+
   --mobile-h1-font-size: 25px;
   --mobile-p-font-size: 16px;
 
@@ -92,6 +95,8 @@ h3 {
 p {
   font-family: var(--p-font-family);
   font-size: var(--p-font-size) !important;
+  line-height: var(--p-line-height);
+  margin: 0 !important;
 }
 
 a {
@@ -101,4 +106,10 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.customGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }

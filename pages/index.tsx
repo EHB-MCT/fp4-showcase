@@ -16,6 +16,7 @@ export default function Home() {
   const [tags, setTags] = useState([...tagsData]); // Separate state variable for tags
   const [clusters, setClusters] = useState([...clustersData]); // Separate state variable for clusters
   const [projects, setProjects] = useState([]);
+  const [trendingProjects, setTrendingProjects] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +28,14 @@ export default function Home() {
         console.log(dataL);
 
         setProjects(dataL);
+        let testData = [...dataL];
+
+        testData = testData
+          .sort((a, b) => b.likeCount - a.likeCount)
+          .slice(0, 3);
+
+        setTrendingProjects(testData);
+        console.log(testData);
       } catch (e) {
         console.error(e);
       }
@@ -94,13 +103,10 @@ export default function Home() {
               <img src="/images/trending-title-decoration.svg" />
             </div>
           </div>
-          <div className={styles.customGrid}>
-            {projects
-              .sort((a, b) => b.likeCount - a.likeCount)
-              .slice(0, 3)
-              .map((project) => (
-                <Card key={project.id} project={project} />
-              ))}
+          <div className="customGrid">
+            {trendingProjects.map((project) => (
+              <Card key={project.id} project={project} />
+            ))}
           </div>
         </div>
         <div>
@@ -176,7 +182,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className={styles.customGrid}>
+        <div className="customGrid">
           {projects.map((project) => (
             <Card key={project.id} project={project} />
           ))}

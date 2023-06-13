@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext,useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import tagsData from "../data/tags.json";
 import { firestore, uploadProject } from "../lib/firebase";
 import { UserContext } from "../lib/context";
@@ -7,8 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const UploadProjectForm = () => {
-  const [pdfFile, setPdfFile] = useState(null);
+  // retrieving the user properties
   const { user } = useContext(UserContext);
+
+  // saving properties values usestates
+  const [pdfFile, setPdfFile] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [newLink, setNewLink] = useState("");
@@ -19,25 +22,33 @@ const UploadProjectForm = () => {
   const [projectBelongsTo, setProjectBelongsTo] = useState("");
   const [newTag, setNewTag] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
-  const [youtubeLinkError, setYoutubeLinkError] = useState(null);
+
+  // error usestates
+  const [youtubeLinkError, setYoutubeLinkError] = useState(false);
 
   const [newYoutubeLink, setNewYoutubeLink] = useState("");
   const [pdfFileSelected, setPdfFileSelected] = useState(false);
-
+  const [imageSelected, setImageSelected] = useState(false);
 
   // tooltips usestates
   const [titleTooltipVisible, setTitleTooltipVisible] = useState(false);
-  const [descriptionTooltipVisible, setDescriptionTooltipVisible] = useState(false);
+  const [descriptionTooltipVisible, setDescriptionTooltipVisible] =
+    useState(false);
+  const [belongsToTooltipVisible, setBelongsToTooltipVisible] = useState(false);
   const [linksTooltipVisible, setLinksTooltipVisible] = useState(false);
-
+  const [linksYoutubeLinkVisible, setLinksYoutubeLinkVisible] = useState(false);
+  const [pdfFileVisible, setPdfFileVisible] = useState(false);
+  const [categoryTooltipVisible, setCategoryTooltipVisible] = useState(false);
+  const [tagsTooltipVisible, setTagsTooltipVisible] = useState(false);
+  const [imagesTooltipVisible, setImagesTooltipVisible] = useState(false);
 
   // for the error messages
   const [uploadStatus, setUploadStatus] = useState(null);
   // for the spinner loader animation
   const [loading, setLoading] = useState(false);
 
-
   const fileInputRef = useRef(null);
+  const imageInputRef = useRef(null);
 
   const clearImageFields = () => {
     setImageFiles([]);
@@ -47,7 +58,6 @@ const UploadProjectForm = () => {
     const selectedProjectBelongsTo = event.target.value;
     setProjectBelongsTo(selectedProjectBelongsTo);
   };
-
 
   const handleCategorySelect = (event) => {
     const selectedCategory = event.target.value;
@@ -107,14 +117,16 @@ const UploadProjectForm = () => {
 
   const handleYoutubeLinkChange = (event) => {
     event.preventDefault();
- // Check if the new link is not empty and is a valid YouTube link
-    if (newYoutubeLink.trim() !== "" && isValidYoutubeLink(newYoutubeLink) ) {
+    // Check if the new link is not empty and is a valid YouTube link
+    if (newYoutubeLink.trim() !== "" && isValidYoutubeLink(newYoutubeLink)) {
+      setYoutubeLinkError(false);
       setAddedYoutubeLinks((prevAddedYoutubeLinks) => [
         ...prevAddedYoutubeLinks,
+
         newYoutubeLink,
       ]);
-    }else {
-      // desplay an error message if the youtube link is invalid. 
+    } else {
+      // desplay an error message if the youtube link is invalid.
       setYoutubeLinkError(true);
     }
 
@@ -130,12 +142,11 @@ const UploadProjectForm = () => {
     });
   };
 
-  
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files);
-  
+
     // Check if it's a video file
-  
+
     // Filter out non-image files
     const imageFiles = files.filter((file) => file.type.includes("image"));
     setImageFiles((prevImageFiles) => [...prevImageFiles, ...imageFiles]);
@@ -152,19 +163,22 @@ const UploadProjectForm = () => {
   const handlePdfFileChange = (event) => {
     const file = event.target.files[0]; // Get the first selected file
 
-    // Check if it's a PDF file
-    if (file.type === "application/pdf") {
-      setPdfFile(file);
-      setPdfFileSelected(true);
+    // Check if a file was selected
+    if (file) {
+      // Check if it's a PDF file
+      if (file.type === "application/pdf") {
+        setPdfFile(file);
+        setPdfFileSelected(true);
+      } else {
+        // Display an error message or perform any other action for non-PDF files
+        alert("Please select a PDF file.");
+      }
     } else {
-      // Display an error message or perform any other action for non-PDF files
-      console.log("Please select a PDF file.");
+      // Handle the case when the file selection is canceled
+      setPdfFile(null);
+      setPdfFileSelected(false);
     }
   };
-
-
-
- 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -190,6 +204,7 @@ const UploadProjectForm = () => {
       await uploadProject(project);
       console.log("Project uploaded successfully");
       // Additional logic after successful upload
+      setUploadStatus("success");
     } catch (error) {
       console.error("Error uploading project:", error);
       setUploadStatus("error");
@@ -221,6 +236,7 @@ const UploadProjectForm = () => {
     clearImageFields(); // Clear the image fields
 
     fileInputRef.current.value = "";
+    imageInputRef.current.value = "";
   };
 
   useEffect(() => {
@@ -233,6 +249,14 @@ const UploadProjectForm = () => {
     return () => clearTimeout(timer);
   }, [uploadStatus]);
 
+  useEffect(() => {
+    // Check if the imageFiles array is empty
+    if (imageFiles.length === 0) {
+      // If empty, set the value of the image input field to "no file chosen"
+      imageInputRef.current.value = "";
+    }
+  }, [imageFiles]);
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -241,7 +265,7 @@ const UploadProjectForm = () => {
       <h1 className="text-center text-white text-2xl">Upload Project </h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
-        <label className="text-white flex items-center" htmlFor="title">
+        <label className="text-white flex items-top" htmlFor="title">
           Title:
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
@@ -268,7 +292,7 @@ const UploadProjectForm = () => {
       </div>
 
       <div className="flex flex-col gap-2 items-start w-full relative">
-        <label className="text-white flex items-center" htmlFor="description">
+        <label className="text-white flex items-top" htmlFor="description">
           Description:
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
@@ -279,8 +303,7 @@ const UploadProjectForm = () => {
           </span>
           {descriptionTooltipVisible && (
             <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
-              Enter the description of your project, try to stay within a length
-              of max 500 characters.
+              Enter the description of your project
             </div>
           )}
         </label>
@@ -295,9 +318,21 @@ const UploadProjectForm = () => {
       </div>
 
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
-      <div className="flex flex-col gap-2 items-start w-full">
-        <label className="text-white" htmlFor="cluster">
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-top" htmlFor="cluster">
           Belongs to:
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setBelongsToTooltipVisible(true)}
+            onMouseLeave={() => setBelongsToTooltipVisible(false)}
+          >
+            i
+          </span>
+          {belongsToTooltipVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
+              Select if this project belong to a course from a specific year or if it is a finalwork
+            </div>
+          )}
         </label>
         <select
           placeholder="select"
@@ -306,7 +341,6 @@ const UploadProjectForm = () => {
           onChange={handleProjectBelongsToSelect}
           className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
         >
-          
           <option value="1">1st year</option>
           <option value="2">2nd year</option>
           <option value="3">3rd year</option>
@@ -314,29 +348,53 @@ const UploadProjectForm = () => {
         </select>
       </div>
       {projectBelongsTo !== "1" ? (
-        <div className="flex flex-col gap-2 items-start w-full">
-        <label className="text-white" htmlFor="category">
-          Category:
-        </label>
-        <select
-        placeholder="category select"
-          id="category"
-          value={category}
-          onChange={handleCategorySelect}
-          className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
-        >
-       
-          <option value="Motion">Motion</option>
-          <option value="Web & App">Web & App</option>
-          <option value="Emerging Technology">Emerging Technology</option>
-          <option value="Extended Reality">Extended Reality</option>
-        </select>
-      </div>
+        <div className="flex flex-col gap-2 items-start w-full relative">
+          <label className="text-white flex items-top" htmlFor="category">
+            Category:
+            <span
+              className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+              onMouseEnter={() => setCategoryTooltipVisible(true)}
+              onMouseLeave={() => setCategoryTooltipVisible(false)}
+            >
+              i
+            </span>
+            {categoryTooltipVisible && (
+              <div className="tooltip-right bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
+                To which category does this group belong
+              </div>
+            )}
+          </label>
+          <select
+            placeholder="category select"
+            id="category"
+            value={category}
+            onChange={handleCategorySelect}
+            className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
+          >
+            <option value="Motion">Motion</option>
+            <option value="Web & App">Web & App</option>
+            <option value="Emerging Technology">Emerging Technology</option>
+            <option value="Extended Reality">Extended Reality</option>
+          </select>
+        </div>
       ) : null}
-      
-      <div className="flex flex-col gap-2 items-start w-full">
-        <label className="text-white" htmlFor="tags">
+
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-top" htmlFor="tags">
           Tags:
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setTagsTooltipVisible(true)}
+            onMouseLeave={() => setTagsTooltipVisible(false)}
+          >
+            i
+          </span>
+          {tagsTooltipVisible && (
+            <div className="tooltip-right bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
+              Which technologies were used to create this project,...search in
+              the already existing list or add your own tags
+            </div>
+          )}
         </label>
         <div className="flex w-full">
           <select
@@ -399,7 +457,7 @@ const UploadProjectForm = () => {
           </span>
           {linksTooltipVisible && (
             <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
-             Used for links to github repository, website link,...etc.
+              Used for links to github repository, website link,...etc
             </div>
           )}
         </label>
@@ -438,9 +496,22 @@ const UploadProjectForm = () => {
           ))}
         </div>
       </div>
-      <div className="flex flex-col gap-2 items-start  w-full">
-        <label className="text-white" htmlFor="links">
+      <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-center" htmlFor="links">
           Youtube links (optional):
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setLinksYoutubeLinkVisible(true)}
+            onMouseLeave={() => setLinksYoutubeLinkVisible(false)}
+          >
+            i
+          </span>
+          {linksYoutubeLinkVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-s">
+              Only youtube urls are allowed
+            </div>
+          )}
         </label>
         <div className="flex w-full">
           <input
@@ -457,12 +528,13 @@ const UploadProjectForm = () => {
           >
             Add Link
           </button>
-          {youtubeLinkError && <p className="text-red-500">{youtubeLinkError}</p>}
-          
+          <br></br>
         </div>
-        
+        {youtubeLinkError == true && (
+          <p className="text-red-500">This is not a valid youtube link</p>
+        )}
         {/* Render the selected links */}
-        <div className="flex flex-wrap gap-2 rounded-md">
+        <div className="flex flex-col gap-2 rounded-md">
           {addedYoutubeLinks.map((link, index) => (
             <span
               key={index}
@@ -480,9 +552,23 @@ const UploadProjectForm = () => {
           ))}
         </div>
       </div>
-      <div className="flex flex-col gap-2 items-start w-full ">
-        <label className="text-white" htmlFor="pdfFile">
+      <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
+      <div className="flex flex-col gap-2 items-start w-full relative ">
+        <label className="text-white flex items-top" htmlFor="pdfFile">
           PDF File (optional):
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setPdfFileVisible(true)}
+            onMouseLeave={() => setPdfFileVisible(false)}
+          >
+            i
+          </span>
+          {pdfFileVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-s">
+              Only pdf files are allowed, if possible compress the pdf file to
+              make the size smaller
+            </div>
+          )}
         </label>
         <input
           type="file"
@@ -495,16 +581,27 @@ const UploadProjectForm = () => {
         />
         {pdfFileSelected ? (
           <span className="text-gray-400">{pdfFile.name}</span>
-        ) : (
-          <span className="text-gray-400">No file chosen</span>
-        )}
+        ) : null}
       </div>
-
-      <div className="flex flex-col gap-2 items-start w-full ">
-        <label className="text-white" htmlFor="images">
+      <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-top" htmlFor="images">
           Images:
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setImagesTooltipVisible(true)}
+            onMouseLeave={() => setImagesTooltipVisible(false)}
+          >
+            i
+          </span>
+          {imagesTooltipVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-s">
+              You are able to add as much images files as you want
+            </div>
+          )}
         </label>
         <input
+          ref={imageInputRef}
           type="file"
           id="images"
           name="images"
