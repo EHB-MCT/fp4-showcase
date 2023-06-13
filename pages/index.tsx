@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Card from "../components/ProjectCard";
 import TrendingProjectsSlider from "../components/TrendingProjectsSlider";
 import clustersData from "../data/clusters.json";
-import data from "../data/projects.json";
 import tagsData from "../data/tags.json";
 import styles from "../styles/Home.module.css";
 
@@ -89,11 +88,20 @@ export default function Home() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className={styles.homeTrendingContainer}>
-          <h1>This is a title</h1>
-          <h2>Trending projects</h2>
-          <h3>This is a h3</h3>
-          <p>This is a p</p>
-          <TrendingProjectsSlider projects={data} />
+          <div className={styles.trendingTitleContainer}>
+            <h1>Trending</h1>
+            <div className={styles.trendingTitleSubDiv}>
+              <img src="/images/trending-title-decoration.svg" />
+            </div>
+          </div>
+          <div className={styles.customGrid}>
+            {projects
+              .sort((a, b) => b.likeCount - a.likeCount)
+              .slice(0, 3)
+              .map((project) => (
+                <Card key={project.id} project={project} />
+              ))}
+          </div>
         </div>
         <div>
           <img src="/images/home-banner.jpg" alt="Home Banner" />
