@@ -1,0 +1,17 @@
+.projectCardContainer {
+  position: relative;
+  height: 660px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.projectCardContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Black with 30% opacity */
+}

@@ -104,3 +104,16 @@
   cursor: pointer;
   margin-left: 8px;
 }
+
+.trendingTitleContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.trendingTitleSubDiv {
+  width: 60%;
+}
+
+.trendingTitleSubDiv img {
+  width: 100%;
+}
