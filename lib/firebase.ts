@@ -81,7 +81,7 @@ export async function getAllTags(){
 // <-----UPLOAD A PROJECT------>
 
 export async function uploadProject(data){
-  const {imageFiles, videoFile,...restData} = data;
+  const {imageFiles, pdfFile,...restData} = data;
 
 
   const imageUrls = await Promise.all(
@@ -98,26 +98,20 @@ export async function uploadProject(data){
     })
   );
 
+   // Upload the PDF file to Firebase Storage
+   const pdfUrl = await new Promise((resolve, reject) => {
+    const storageRef = ref(storage, `pdfs/${pdfFile.name}`);
+    const uploadTask = uploadBytes(storageRef, pdfFile);
+
+    uploadTask
+      .then((snapshot) => getDownloadURL(snapshot.ref))
+      .then((downloadUrl) => resolve(downloadUrl))
+      .catch((error) => reject(error));
+  });
 
 
-  // Convert video file to download URL
-  /*const videoUrl = await new Promise((resolve, reject) => {
-    const storageRef = ref(storage, `videos/${videoFile.name}`);
-    const uploadTask = uploadBytes(storageRef, videoFile);
-    uploadTask.on(
-      STATE_CHANGED,
-      null,
-      reject,
-      async () => {
-        try {
-          const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadUrl);
-        } catch (error) {
-          reject(error);
-        }
-      }
-    );
-  });*/
+
+ 
 
    // Add the createdAt and updatedAt fields to the data object
    const timestamp = serverTimestamp();
@@ -127,6 +121,7 @@ export async function uploadProject(data){
     ...restData,
     likeCount: 0,
     imageUrls: [...imageUrls], 
+    pdfUrl: pdfUrl,
     createdAt: timestamp,
     updatedAt: timestamp
   };
