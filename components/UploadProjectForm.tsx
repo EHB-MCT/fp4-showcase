@@ -14,9 +14,9 @@ const UploadProjectForm = () => {
   const [newLink, setNewLink] = useState("");
   const [addedLinks, setAddedLinks] = useState([]);
   const [addedYoutubeLinks, setAddedYoutubeLinks] = useState([]);
-  const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [cluster, setCluster] = useState("");
+  const [category, setCategory] = useState("");
+  const [projectBelongsTo, setProjectBelongsTo] = useState("");
   const [newTag, setNewTag] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
   const [newYoutubeLink, setNewYoutubeLink] = useState("");
@@ -41,9 +41,15 @@ const UploadProjectForm = () => {
     setImageFiles([]);
   };
 
-  const handleClusterSelect = (event) => {
-    const selectedCluster = event.target.value;
-    setCluster(selectedCluster);
+  const handleProjectBelongsToSelect = (event) => {
+    const selectedProjectBelongsTo = event.target.value;
+    setProjectBelongsTo(selectedProjectBelongsTo);
+  };
+
+
+  const handleCategorySelect = (event) => {
+    const selectedCategory = event.target.value;
+    setCategory(selectedCategory);
   };
   const handleTagChange = (event) => {
     event.preventDefault();
@@ -92,14 +98,22 @@ const UploadProjectForm = () => {
     });
   };
 
+  const isValidYoutubeLink = (link) => {
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+/;
+    return youtubeRegex.test(link);
+  };
+
   const handleYoutubeLinkChange = (event) => {
     event.preventDefault();
-    // Check if the new link is not empty
-    if (newYoutubeLink.trim() !== "") {
+ // Check if the new link is not empty and is a valid YouTube link
+    if (newYoutubeLink.trim() !== "" && isValidYoutubeLink(newYoutubeLink) ) {
       setAddedYoutubeLinks((prevAddedYoutubeLinks) => [
         ...prevAddedYoutubeLinks,
         newYoutubeLink,
       ]);
+    }else {
+      // desplay an error message if the youtube link is invalid. 
+      console.error("Invalid Youtube Link")
     }
 
     // Clear the newTag input field
@@ -145,6 +159,10 @@ const UploadProjectForm = () => {
     }
   };
 
+
+
+ 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -155,10 +173,11 @@ const UploadProjectForm = () => {
       title,
       description,
       links: addedLinks,
-      cluster,
+      category: category,
       tags: selectedTags,
       imageFiles,
       youtubeLinks: addedYoutubeLinks,
+      projectBelongsTo: projectBelongsTo,
       pdfFile: pdfFile,
       uid: user.uid,
     };
@@ -179,9 +198,10 @@ const UploadProjectForm = () => {
     console.log("title => ", title);
     console.log("description => ", description);
     console.log("links (optional) =>", addedLinks);
-    console.log("cluster =>", cluster);
+    console.log("cluster =>", category);
     console.log("tags =>", selectedTags);
     console.log("video links =>", addedYoutubeLinks);
+    console.log("project belongs to => ", projectBelongsTo);
     console.log("image files =>", imageFiles);
     console.log("pdf file =>", pdfFile);
 
@@ -270,74 +290,47 @@ const UploadProjectForm = () => {
           required
         />
       </div>
-      <div className="flex flex-col gap-2 items-start w-full relative">
-        <label className="text-white flex items-center" htmlFor="links">
-          Links (optional):
-          <span
-            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
-            onMouseEnter={() => setLinksTooltipVisible(true)}
-            onMouseLeave={() => setLinksTooltipVisible(false)}
-          >
-            i
-          </span>
-          {linksTooltipVisible && (
-            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
-             Used for links to github repository, website link,...etc.
-            </div>
-          )}
-        </label>
-        <div className="flex w-full">
-          <input
-            placeholder="url..."
-            type="text"
-            value={newLink}
-            onChange={(event) => setNewLink(event.target.value)}
-            className=" border-gray-300   flex-grow rounded-sm bg-gray-700  py-2 text-white pl-3"
-          />
-          <button
-            type="submit"
-            onClick={handleLinkChange}
-            className="bg-purple-600 text-white px-3 rounded-sm ml-1"
-          >
-            Add Link
-          </button>
-        </div>
-        {/* Render the selected tags */}
-        <div className="flex flex-wrap gap-2 rounded-md">
-          {addedLinks.map((link, index) => (
-            <span
-              key={index}
-              className="bg-white text-gray-600 px-3 py-1 rounded-xl"
-            >
-              {link}
-              <button
-                type="button"
-                onClick={() => handleRemoveLink(index)}
-                className="ml-2 text-red-500"
-              >
-                X
-              </button>
-            </span>
-          ))}
-        </div>
-      </div>
+
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="cluster">
-          Cluster:
+          Belongs to:
         </label>
         <select
-          id="cluster"
-          value={cluster}
-          onChange={handleClusterSelect}
+          placeholder="select"
+          id="projectBelongsTo"
+          value={projectBelongsTo}
+          onChange={handleProjectBelongsToSelect}
           className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
         >
-          <option value="">Select Cluster</option>
-          <option value="Motion">Motion</option>
-          <option value="Web">Web</option>
-          <option value="3D">3D</option>
+          
+          <option value="1">1st year</option>
+          <option value="2">2nd year</option>
+          <option value="3">3rd year</option>
+          <option value="finalwork">finalwork</option>
         </select>
       </div>
+      {projectBelongsTo !== "1" ? (
+        <div className="flex flex-col gap-2 items-start w-full">
+        <label className="text-white" htmlFor="category">
+          Category:
+        </label>
+        <select
+        placeholder="category select"
+          id="category"
+          value={category}
+          onChange={handleCategorySelect}
+          className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
+        >
+       
+          <option value="Motion">Motion</option>
+          <option value="Web & App">Web & App</option>
+          <option value="Emerging Technology">Emerging Technology</option>
+          <option value="Extended Reality">Extended Reality</option>
+        </select>
+      </div>
+      ) : null}
+      
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="tags">
           Tags:
@@ -391,7 +384,57 @@ const UploadProjectForm = () => {
         </div>
       </div>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
-
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-center" htmlFor="links">
+          Links (optional):
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setLinksTooltipVisible(true)}
+            onMouseLeave={() => setLinksTooltipVisible(false)}
+          >
+            i
+          </span>
+          {linksTooltipVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
+             Used for links to github repository, website link,...etc.
+            </div>
+          )}
+        </label>
+        <div className="flex w-full">
+          <input
+            placeholder="url..."
+            type="text"
+            value={newLink}
+            onChange={(event) => setNewLink(event.target.value)}
+            className=" border-gray-300   flex-grow rounded-sm bg-gray-700  py-2 text-white pl-3"
+          />
+          <button
+            type="submit"
+            onClick={handleLinkChange}
+            className="bg-purple-600 text-white px-3 rounded-sm ml-1"
+          >
+            Add Link
+          </button>
+        </div>
+        {/* Render the selected tags */}
+        <div className="flex flex-wrap gap-2 rounded-md">
+          {addedLinks.map((link, index) => (
+            <span
+              key={index}
+              className="bg-white text-gray-600 px-3 py-1 rounded-xl"
+            >
+              {link}
+              <button
+                type="button"
+                onClick={() => handleRemoveLink(index)}
+                className="ml-2 text-red-500"
+              >
+                X
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
       <div className="flex flex-col gap-2 items-start  w-full">
         <label className="text-white" htmlFor="links">
           Youtube links (optional):
