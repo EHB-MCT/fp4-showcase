@@ -1,0 +1,39 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="854.274"
+  height="20.415"
+  viewBox="0 0 854.274 20.415"
+>
+  <defs>
+    <clipPath id="clip-path">
+      <rect
+        id="Rectangle_470"
+        data-name="Rectangle 470"
+        width="854.274"
+        height="20.415"
+        transform="translate(0 0)"
+        fill="none"
+      />
+    </clipPath>
+  </defs>
+  <g id="Group_493" data-name="Group 493" transform="translate(0 0)">
+    <g id="Group_492" data-name="Group 492" clip-path="url(#clip-path)">
+      <line
+        id="Line_31"
+        data-name="Line 31"
+        x2="854.274"
+        transform="translate(0 0.5)"
+        fill="none"
+        stroke="#fff"
+        stroke-miterlimit="10"
+        stroke-width="1"
+      />
+      <path
+        id="Path_908"
+        data-name="Path 908"
+        d="M395.225,20.415H834.364C842.14,12.64,846.5,8.28,854.274.5v0H375.315v0l19.91,19.91"
+        fill="#fff"
+      />
+    </g>
+  </g>
+</svg>
