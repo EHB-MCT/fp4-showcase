@@ -65,14 +65,13 @@ const UploadAwardForm = () => {
     event.preventDefault();
 
     setLoading(true);
-
+    const getCurrentYear = new Date().getFullYear();
     const project = {
       title,
       description,
-      cluster,
-      year,
       cardImage,
       bannerImage,
+      currentYear: getCurrentYear,
     };
 
     try {
@@ -104,6 +103,8 @@ const UploadAwardForm = () => {
     }
     return () => clearTimeout(timer);
   }, [uploadStatus]);
+
+
 
   return (
     <form
@@ -141,41 +142,9 @@ const UploadAwardForm = () => {
         />
       </div>
 
-      <div className="flex flex-col gap-2 items-start w-full">
-        <label className="text-white" htmlFor="cluster">
-          Cluster:
-        </label>
-        <select
-          id="cluster"
-          value={cluster}
-          onChange={handleClusterSelect}
-          className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
-        >
-          <option value="">Select Cluster</option>
-          <option value="Motion">Motion</option>
-          <option value="Web & App">Web & App</option>
-          <option value="3D">3D</option>
-        </select>
-      </div>
+   
 
-      <div className="flex flex-col gap-2 items-start w-full">
-        <label className="text-white" htmlFor="year">
-          Year of Award:
-        </label>
-        <select
-          id="year"
-          value={year}
-          onChange={handleYearSelect}
-          className="border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
-        >
-          <option value="">Select Year</option>
-          <option value="2021">2021</option>
-          <option value="2022">2022</option>
-          <option value="2023">2023</option>
-          <option value="2023">2024</option>
-          {/* Add more options for other years */}
-        </select>
-      </div>
+
 
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
