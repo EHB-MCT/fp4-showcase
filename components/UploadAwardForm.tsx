@@ -29,7 +29,7 @@ const UploadAwardForm = () => {
     setCluster(selectedCluster);
   };
 
-  const handleCardImageChange = (event) => {
+  const handleCardImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files);
     const imageFiles = files.filter((file) => file.type.includes("image"));
 
@@ -41,7 +41,7 @@ const UploadAwardForm = () => {
     setCardImagePreview(imagePreviews[0]);
   };
 
-  const handleBannerImageChange = (event) => {
+  const handleBannerImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files);
     const imageFiles = files.filter((file) => file.type.includes("image"));
 

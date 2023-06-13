@@ -19,6 +19,8 @@ const UploadProjectForm = () => {
   const [projectBelongsTo, setProjectBelongsTo] = useState("");
   const [newTag, setNewTag] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
+  const [youtubeLinkError, setYoutubeLinkError] = useState(null);
+
   const [newYoutubeLink, setNewYoutubeLink] = useState("");
   const [pdfFileSelected, setPdfFileSelected] = useState(false);
 
@@ -113,7 +115,7 @@ const UploadProjectForm = () => {
       ]);
     }else {
       // desplay an error message if the youtube link is invalid. 
-      console.error("Invalid Youtube Link")
+      setYoutubeLinkError(true);
     }
 
     // Clear the newTag input field
@@ -128,11 +130,12 @@ const UploadProjectForm = () => {
     });
   };
 
-  const handleFileChange = (event) => {
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files);
-
+  
     // Check if it's a video file
-
+  
     // Filter out non-image files
     const imageFiles = files.filter((file) => file.type.includes("image"));
     setImageFiles((prevImageFiles) => [...prevImageFiles, ...imageFiles]);
@@ -454,7 +457,10 @@ const UploadProjectForm = () => {
           >
             Add Link
           </button>
+          {youtubeLinkError && <p className="text-red-500">{youtubeLinkError}</p>}
+          
         </div>
+        
         {/* Render the selected links */}
         <div className="flex flex-wrap gap-2 rounded-md">
           {addedYoutubeLinks.map((link, index) => (
