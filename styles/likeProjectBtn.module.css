@@ -1,0 +1,19 @@
+.likeBtnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.likeBtnContainer svg,
+.likeBtnContainer p {
+  position: absolute;
+}
+
+.likeBtnContainer p {
+  color: var(--main-bg-purple-color);
+  font-family: var(--h3-font-family);
+}

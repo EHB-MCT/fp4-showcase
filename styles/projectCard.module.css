@@ -1,17 +1,94 @@
+.projectCardWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
 .projectCardContainer {
   position: relative;
-  height: 660px;
+  height: 600px;
   overflow: hidden;
   background-size: cover;
   background-position: center;
 }
 
-.projectCardContainer::before {
-  content: "";
+.overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* Black with 30% opacity */
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Adjust the z-index to ensure the overlay is positioned below the contents within .projectCardContainer */
+.projectCardContainer > * {
+  position: relative;
+  z-index: 1;
+}
+
+.projectCardInformationContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.projectCardInformationContainer p {
+  margin: 0;
+}
+
+.projectCardInformationCategoryContainer {
+  width: 100%;
+  display: flex;
+}
+
+.projectCardInformationCategoryContainer p {
+  padding: 0 10px;
+  font-family: var(--h2-font-family);
+  border: solid 1px #ffffff;
+}
+
+.projectCardInformationSubContainer {
+  width: calc((100% - 40px));
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.projectCardInformationTitleContainer {
+  width: 70%;
+}
+
+.moreInfoBtn {
+  border: solid 1px var(--main-lightblue-color);
+  color: var(--main-lightblue-color);
+  padding: 0 10px;
+}
+
+.projectCardInformationLikeContainer {
+  text-align: right;
+  width: 50px;
+}
+
+.projectCardInformationName {
+  color: var(--main-lightblue-color);
+}
+
+.projectCardInformationLikeSubContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.projectCategoriesContainer {
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+.projectCategoriesContainer p {
+  color: var(--main-bg-purple-color);
+  font-family: var(--h3-font-family);
 }
