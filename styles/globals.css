@@ -113,3 +113,23 @@ a {
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
+input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+
+}
+input[type=text]{
+  height: 30px;
+  margin-top: 8px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #151533 inset !important;
+  background-color: transparent !important;
+  height: 30px;
+  margin-top: 8px;
+}
