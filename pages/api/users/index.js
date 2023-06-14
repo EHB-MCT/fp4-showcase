@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const querySnapshot = await getDocs(collection(firestore, "users"));
     querySnapshot.forEach((doc) => {
       const data = {
-        id: doc.id,
+        object_id: doc.id,
         ...doc.data(),
       };
       list.push(data);

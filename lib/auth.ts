@@ -22,9 +22,12 @@ export async function registerUser(email, password) {
         role = "docent";
       }
 
+      const username = email.replace(/@.*$/, "").replace(".", " ");
+
       // Add a new document in collection "users"
       let collRef = collection(firestore, "users");
       let result = await addDoc(collRef, {
+        username: username,
         email: userCredential.user.email,
         uid: userCredential.user.uid,
         role,
