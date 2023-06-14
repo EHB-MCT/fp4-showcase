@@ -3,7 +3,9 @@ import tagsData from "../data/tags.json";
 import { firestore, uploadProject, uploadAward } from "../lib/firebase";
 import { UserContext } from "../lib/context";
 
+
 const UploadAwardForm = () => {
+
   const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -18,6 +20,8 @@ const UploadAwardForm = () => {
   const [uploadStatus, setUploadStatus] = useState(null);
   // for the spinner loader animation
   const [loading, setLoading] = useState(false);
+
+
 
   const handleYearSelect = (event) => {
     const selectedYear = event.target.value;
@@ -111,6 +115,7 @@ const UploadAwardForm = () => {
       onSubmit={handleSubmit}
       className="w-9/10 md:w-1/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
     >
+   
       <h1 className="text-center text-white text-2xl">Upload Award</h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">

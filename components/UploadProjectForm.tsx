@@ -7,6 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const UploadProjectForm = () => {
+  const [previewImage, setPreviewImage] = useState(null);
+  const previewImageInputRef = useRef(null);
+  const [previewImageTooltipVisible, setPreviewImageTooltipVisible] =
+    useState(false);
+
   // retrieving the user properties
   const { user } = useContext(UserContext);
 
@@ -25,6 +30,7 @@ const UploadProjectForm = () => {
 
   // error usestates
   const [youtubeLinkError, setYoutubeLinkError] = useState(false);
+  const [linkError, setLinkError] = useState(false);
 
   const [newYoutubeLink, setNewYoutubeLink] = useState("");
   const [pdfFileSelected, setPdfFileSelected] = useState(false);
@@ -48,7 +54,24 @@ const UploadProjectForm = () => {
   const [loading, setLoading] = useState(false);
 
   const fileInputRef = useRef(null);
-  const imageInputRef = useRef(null);
+  const imagesInputRef = useRef(null);
+
+  const handlePreviewImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.includes("image")) {
+      setPreviewImage(file);
+    } else {
+      setPreviewImage(null);
+    }
+  };
+
+  const handleRemovePreviewImage = () => {
+    setPreviewImage(null);
+    // Clear the input field
+    if (previewImageInputRef.current) {
+      previewImageInputRef.current.value = "";
+    }
+  };
 
   const clearImageFields = () => {
     setImageFiles([]);
@@ -57,6 +80,9 @@ const UploadProjectForm = () => {
   const handleProjectBelongsToSelect = (event) => {
     const selectedProjectBelongsTo = event.target.value;
     setProjectBelongsTo(selectedProjectBelongsTo);
+    if (projectBelongsTo !== "1"){
+      setCategory("");
+    }
   };
 
   const handleCategorySelect = (event) => {
@@ -95,7 +121,16 @@ const UploadProjectForm = () => {
     event.preventDefault();
     // Check if the new link is not empty
     if (newLink.trim() !== "") {
-      setAddedLinks((prevAddedLinks) => [...prevAddedLinks, newLink]);
+      // Regular expression pattern for URL validation
+      const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
+      // Check if the new link matches the URL pattern
+      if (urlPattern.test(newLink)) {
+        setLinkError(false);
+        setAddedLinks((prevAddedLinks) => [...prevAddedLinks, newLink]);
+      } else {
+        // Handle invalid URL
+        setLinkError(true);
+      }
     }
 
     // Clear the newTag input field
@@ -192,6 +227,7 @@ const UploadProjectForm = () => {
       links: addedLinks,
       category: category,
       tags: selectedTags,
+      previewImage: previewImage,
       imageFiles,
       youtubeLinks: addedYoutubeLinks,
       projectBelongsTo: projectBelongsTo,
@@ -224,19 +260,25 @@ const UploadProjectForm = () => {
     console.log("pdf file =>", pdfFile);
 
     // Reset the form fields
-    setPdfFile("");
+    setPreviewImage(null);
+    setPdfFile(null);
     setTitle("");
     setDescription("");
     setSelectedTags([]);
     setAddedLinks([]);
     setNewTag("");
+    setProjectBelongsTo("");
+    setCategory("");
     setNewLink("");
     setImageFiles([]);
     setAddedYoutubeLinks([]);
     clearImageFields(); // Clear the image fields
 
+    // Access the name property of pdfFile only if it is not null
+    const pdfFileName = pdfFile ? pdfFile.name : "";
     fileInputRef.current.value = "";
-    imageInputRef.current.value = "";
+    imagesInputRef.current.value = "";
+    previewImageInputRef.current.value = "";
   };
 
   useEffect(() => {
@@ -253,20 +295,20 @@ const UploadProjectForm = () => {
     // Check if the imageFiles array is empty
     if (imageFiles.length === 0) {
       // If empty, set the value of the image input field to "no file chosen"
-      imageInputRef.current.value = "";
+      imagesInputRef.current.value = "";
     }
   }, [imageFiles]);
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-2/2 flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
+      className="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-3xl 2xl:max-w-3xl mx-auto flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
     >
       <h1 className="text-center text-white text-2xl">Upload Project </h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-top" htmlFor="title">
-          Title:
+          Title: <span className="font-thin ml-3 text-pink-500">*</span>
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
             onMouseEnter={() => setTitleTooltipVisible(true)}
@@ -293,7 +335,7 @@ const UploadProjectForm = () => {
 
       <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-top" htmlFor="description">
-          Description:
+          Description: <span className="font-thin ml-3 text-pink-500">*</span>
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
             onMouseEnter={() => setDescriptionTooltipVisible(true)}
@@ -321,6 +363,7 @@ const UploadProjectForm = () => {
       <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-top" htmlFor="cluster">
           Belongs to:
+          <span className="font-thin ml-3 text-pink-500">*</span>
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
             onMouseEnter={() => setBelongsToTooltipVisible(true)}
@@ -330,27 +373,33 @@ const UploadProjectForm = () => {
           </span>
           {belongsToTooltipVisible && (
             <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-sm">
-              Select if this project belong to a course from a specific year or if it is a finalwork
+              Select if this project belong to a course from a specific year or
+              if it is a finalwork
             </div>
           )}
         </label>
         <select
+          required
           placeholder="select"
           id="projectBelongsTo"
           value={projectBelongsTo}
           onChange={handleProjectBelongsToSelect}
           className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
         >
+          <option value="" disabled hidden>
+            Choose
+          </option>
           <option value="1">1st year</option>
           <option value="2">2nd year</option>
           <option value="3">3rd year</option>
           <option value="finalwork">finalwork</option>
         </select>
       </div>
-      {projectBelongsTo !== "1" ? (
+      {projectBelongsTo !== "" && projectBelongsTo !== "1" ? (
         <div className="flex flex-col gap-2 items-start w-full relative">
           <label className="text-white flex items-top" htmlFor="category">
             Category:
+            <span className="font-thin ml-3 text-pink-500">*</span>
             <span
               className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
               onMouseEnter={() => setCategoryTooltipVisible(true)}
@@ -365,12 +414,16 @@ const UploadProjectForm = () => {
             )}
           </label>
           <select
+            required
             placeholder="category select"
             id="category"
             value={category}
             onChange={handleCategorySelect}
             className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
           >
+            <option value="" disabled hidden>
+              Choose
+            </option>
             <option value="Motion">Motion</option>
             <option value="Web & App">Web & App</option>
             <option value="Emerging Technology">Emerging Technology</option>
@@ -447,7 +500,7 @@ const UploadProjectForm = () => {
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-center" htmlFor="links">
-          Links (optional):
+          Links:
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
             onMouseEnter={() => setLinksTooltipVisible(true)}
@@ -463,7 +516,7 @@ const UploadProjectForm = () => {
         </label>
         <div className="flex w-full">
           <input
-            placeholder="url..."
+            placeholder="e.g. website link, github link"
             type="text"
             value={newLink}
             onChange={(event) => setNewLink(event.target.value)}
@@ -477,6 +530,9 @@ const UploadProjectForm = () => {
             Add Link
           </button>
         </div>
+        {linkError == true && (
+          <p className="text-red-500">This is not a valid link</p>
+        )}
         {/* Render the selected tags */}
         <div className="flex flex-wrap gap-2 rounded-md">
           {addedLinks.map((link, index) => (
@@ -499,7 +555,7 @@ const UploadProjectForm = () => {
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-center" htmlFor="links">
-          Youtube links (optional):
+          Youtube links:
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
             onMouseEnter={() => setLinksYoutubeLinkVisible(true)}
@@ -509,7 +565,8 @@ const UploadProjectForm = () => {
           </span>
           {linksYoutubeLinkVisible && (
             <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-s">
-              Only youtube urls are allowed
+              Only youtube urls are allowed. It is possible to add multiple
+              youtube videos
             </div>
           )}
         </label>
@@ -528,7 +585,6 @@ const UploadProjectForm = () => {
           >
             Add Link
           </button>
-          <br></br>
         </div>
         {youtubeLinkError == true && (
           <p className="text-red-500">This is not a valid youtube link</p>
@@ -555,7 +611,7 @@ const UploadProjectForm = () => {
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative ">
         <label className="text-white flex items-top" htmlFor="pdfFile">
-          PDF File (optional):
+          PDF File:
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
             onMouseEnter={() => setPdfFileVisible(true)}
@@ -580,13 +636,65 @@ const UploadProjectForm = () => {
           ref={fileInputRef}
         />
         {pdfFileSelected ? (
-          <span className="text-gray-400">{pdfFile.name}</span>
+          <span className="text-gray-400">{pdfFile ? pdfFile.name : ""}</span>
         ) : null}
       </div>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-top" htmlFor="previewImage">
+          Project preview image:{" "}
+          <span className="font-thin ml-3 text-pink-500">*</span>
+          <span />
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setPreviewImageTooltipVisible(true)}
+            onMouseLeave={() => setPreviewImageTooltipVisible(false)}
+          >
+            i
+          </span>
+          {previewImageTooltipVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-s">
+              This is the first image that the visitor will see from your
+              project. This image will be used on the card to preview your
+              project.
+            </div>
+          )}
+        </label>
+        <input
+          required
+          ref={previewImageInputRef}
+          type="file"
+          id="previewImage"
+          name="previewImage"
+          onChange={handlePreviewImageChange}
+          accept="image/*"
+          className="border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
+        />
+      </div>
+
+      {previewImage && (
+        <div className="grid grid-cols-2 gap-3 w-full">
+          <div className="relative h-40 overflow-hidden bg-gray-400 bg-opacity-10 rounded-lg">
+            <img
+              src={URL.createObjectURL(previewImage)}
+              alt="Project Preview Image"
+              className="absolute top-0 left-0 h-full w-full object-contain pt-1"
+            />
+            <button
+              type="button"
+              onClick={handleRemovePreviewImage}
+              className="absolute top-0 right-2 text-red-500 text-3xl p-1 cursor-pointer ml-2"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      )}
+
+      <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
+      <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-top" htmlFor="images">
-          Images:
+          Other images:
           <span
             className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
             onMouseEnter={() => setImagesTooltipVisible(true)}
@@ -601,7 +709,7 @@ const UploadProjectForm = () => {
           )}
         </label>
         <input
-          ref={imageInputRef}
+          ref={imagesInputRef}
           type="file"
           id="images"
           name="images"
