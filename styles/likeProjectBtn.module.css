@@ -16,4 +16,9 @@
 .likeBtnContainer p {
   color: var(--main-bg-purple-color);
   font-family: var(--h3-font-family);
+  font-size: 15px !important;
+}
+
+.likeBtnContainer svg {
+  scale: 0.85;
 }

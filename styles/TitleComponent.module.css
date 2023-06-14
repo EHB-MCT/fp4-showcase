@@ -1,0 +1,12 @@
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleSubDiv {
+  width: 60%;
+}
+
+.titleSubDiv img {
+  width: 100%;
+}

@@ -113,6 +113,16 @@ a {
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.containerWidth {
+  width: 75%;
+}
 input {
   border: none;
   outline: none;
