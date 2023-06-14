@@ -100,8 +100,8 @@ export default function Profile() {
                     </div>
                 </div>
             </div>
-            <div className={style.content_wrapper}>
-                <div className={style.content}>
+            <div className={`${style.content_wrapper} `}>
+                <div className={`${style.content} containerWidth`}>
                     <div className={style.about_me}>
                         <h1>About me</h1>
                         <p>Tell us something more about yourself...</p>

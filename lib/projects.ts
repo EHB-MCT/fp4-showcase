@@ -70,3 +70,25 @@ export async function getProjectFromUserByType(uid, type) {
         return [];
     }
 }
+
+export async function getAllProjects() {
+    try {
+        // Get projects
+        const projectsRef = collection(firestore, 'projects');
+        const q = query(projectsRef);
+
+        const projectsSnap = await getDocs(q);
+
+        let list = [];
+        if (!projectsSnap.empty) {
+            projectsSnap.forEach((doc) => {
+                list.push(doc.data());
+            });
+        }
+
+        return list;
+    } catch (e) {
+        console.error('Error getting projects', e);
+        return [];
+    }
+}
