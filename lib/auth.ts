@@ -22,7 +22,7 @@ export async function registerUser(email, password) {
         role = "docent";
       }
 
-      const username = email.replace(/@.*$/, '').replace('.', ' ');
+      const username = email.replace(/@.*$/, "").replace(".", " ");
 
       // Add a new document in collection "users"
       let collRef = collection(firestore, "users");
