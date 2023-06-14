@@ -1,31 +1,20 @@
-import React from "react";
+import React,{useState} from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-interface Project {
-    id: number;
-    description: string;
-    title: string;
-    links: string[];
-    cluster: string;
-    tags: string[];
-    videoFile: string;
-    imageFiles: string[];
-    likeCount: number;
-    username: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }
-  
-  interface CardProps {
-    project: Project;
-  }
-  
-  const AwardCard: React.FC<CardProps> = ({ project }) => {
-    return (
-      <div>
-        <h2>{project.title}</h2>
-        <p>{project.description}</p>
-      </div>
-    );
+const AwardCard = ({award}) => {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/awards/${award.id}`);
   };
-  
-export default AwardCard;
+
+  return (
+    <div className="bg-slate-500 w-full h-full"  onClick={handleCardClick}>
+        <h2>{award.title}</h2>
+        <p>{award.description}</p>
+    </div>
+  )
+}
+
+export default AwardCard

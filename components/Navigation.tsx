@@ -1,110 +1,211 @@
 import Link from "next/link";
-import React, { useState } from "react";
-import { useContext } from "react";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect, useState } from "react";
+import { logoutUser } from "../lib/auth";
 import { UserContext } from "../lib/context";
+import style from "../styles/Navigation.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCaretDown,
+  faUser,
+  faAddressCard,
+  faPlus,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navigation: React.FC = () => {
-  const [isMenuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
+  const currentRoute = router.pathname;
   const { user } = useContext(UserContext);
+  const [userObject, setUserObject] = useState();
+  const [username, setUsername] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const toggleMenu = () => {
-    setMenuOpen(!isMenuOpen);
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/api/users/${user.uid}`);
+        const data = await res.json();
+        setUserObject(data);
+        setUsername(data.username);
+      } catch (e) {
+        console.error("Error fetching user object: ", e);
+      }
+    };
+    fetchData();
+  }, [user]);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
   };
 
-  function closeMenu() {
-    setMenuOpen(!isMenuOpen);
-  }
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
 
-  return (
-    <nav className="bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link href="/">
+  const renderLoggedInState = () => {
+    if (username && isLoggedIn) {
+      return (
+        <div className="dropdown">
+          <div className={style.dropdown_toggle} onClick={toggleDropdown}>
+            <FontAwesomeIcon
+              icon={faUser}
+              color="#ffffff"
+              style={{ width: 20, height: 20 }}
+            />
+            {username}
+            {isOpen && (
+              <FontAwesomeIcon
+                icon={faCaretDown}
+                rotation={180}
+                color="#ffffff"
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+            {!isOpen && (
+              <FontAwesomeIcon
+                icon={faCaretDown}
+                color="#ffffff"
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </div>
+          {isOpen && (
+            <div className={style.dropdown_wrapper}>
+              <Link href={`/profile/${user.uid}`}>
+                <a onClick={closeDropdown}>
+                  <FontAwesomeIcon
+                    icon={faAddressCard}
+                    color="#ffffff"
+                    style={{ width: 20, height: 20 }}
+                  />
+                  View Profile
+                </a>
+              </Link>
+              <Link href="/projects/upload">
                 <a
-                  onClick={closeMenu}
-                  className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  className={
+                    currentRoute === "/register" ? `${style.active}` : ""
+                  }
+                  onClick={closeDropdown}
                 >
-                  FinalShow - Showcase
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    color="#ffffff"
+                    style={{ width: 20, height: 20 }}
+                  />
+                  Add Project
+                </a>
+              </Link>
+              <Link href="/register">
+                <a
+                  className={
+                    currentRoute === "/register" ? `${style.active}` : ""
+                  }
+                  onClick={() => {
+                    closeDropdown();
+                    logoutUser();
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faArrowRightFromBracket}
+                    flip={"horizontal"}
+                    color="#ffffff"
+                    style={{ width: 20, height: 20 }}
+                  />
+                  Sign out
                 </a>
               </Link>
             </div>
-          </div>
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <button
-                onClick={toggleMenu}
-                type="button"
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                aria-controls="mobile-menu"
-                aria-expanded={isMenuOpen ? "true" : "false"}
-              >
-                <span className="sr-only">Open main menu</span>
-                <svg
-                  className={`${isMenuOpen ? "hidden" : "block"} h-6 w-6`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-                <svg
-                  className={`${isMenuOpen ? "block" : "hidden"} h-6 w-6`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
+          )}
         </div>
-      </div>
-      <div className={`${isMenuOpen ? "block" : "hidden"}`} id="mobile-menu">
-        <div className="px-2 pt-2 pb-3 space-y-1">
+      );
+    } else {
+      return (
+        <div className={style.register}>
+          <Link href="/register">
+            <a
+              className={currentRoute === "/register" ? `${style.active}` : ``}
+            >
+              Log in
+            </a>
+          </Link>
+          {/* <span className={style.divider}>/</span>
+          <Link href="/register">
+            <a
+              className={currentRoute === "/register" ? `${style.active}` : ""}
+            >
+              Sign up
+            </a>
+          </Link> */}
+        </div>
+      );
+    }
+  };
+
+  return (
+    <>
+      <div
+        className={`${style.navigation} max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}
+      >
+        <Link href="/">
+          <svg
+            onClick={closeDropdown}
+            className={style.logo}
+            xmlns="http://www.w3.org/2000/svg"
+            width="111.443"
+            height="61.413"
+            viewBox="0 0 111.443 61.413"
+          >
+            <path
+              id="Path_1253"
+              data-name="Path 1253"
+              d="M65,0V.009l-.009,0L39.808,45.071,14.163,30.687,46.442,12.616V0L.208,25.895,0,26.011V35.4L46.033,61.179l.407.234,24.9-45.24L97.281,30.72,65.21,48.675,65,48.792V61.408l46.234-25.895.208-.116V26.011L76.653,6.525l.012-.021L67.8,1.569Z"
+              transform="translate(0)"
+              fill="#fff"
+              opacity="0.998"
+            />
+          </svg>
+        </Link>
+        <div className={style.links}>
+          <div className={style.cut}></div>
+          <Link href="/">
+            <a
+              onClick={closeDropdown}
+              className={currentRoute === "/" ? `${style.active}` : ""}
+            >
+              Home
+            </a>
+          </Link>
           <Link href="/awards">
             <a
-              onClick={closeMenu}
-              className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              onClick={closeDropdown}
+              className={currentRoute === "/awards" ? `${style.active}` : ""}
             >
               Awards
             </a>
           </Link>
-          <Link href="/projects">
+          <Link href="/about">
             <a
-              onClick={closeMenu}
-              className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              onClick={closeDropdown}
+              className={currentRoute === "/about" ? `${style.active}` : ""}
             >
-              Projects
+              About
             </a>
           </Link>
-          <Link href={user ? `/profile/${user.uid}` : `/register`}>
-            <a
-              onClick={closeMenu}
-              className="text-gray-300 text-center hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-            >
-              {user ? user?.email : "Login"}
-            </a>
-          </Link>
+          {renderLoggedInState()}
         </div>
       </div>
-    </nav>
+    </>
   );
 };
 

@@ -11,76 +11,164 @@ import BannerComponent from "../components/BannerComponent";
 import TitleComponent from "../components/TitleComponent";
 
 export default function Home() {
-  const [toggleState, setToggleState] = useState(false);
-  const [selectedTag, setSelectedTag] = useState("");
-  const [selectedCluster, setSelectedCluster] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedClusters, setSelectedClusters] = useState([]);
-  const [tags, setTags] = useState([...tagsData]); // Separate state variable for tags
-  const [clusters, setClusters] = useState([...clustersData]); // Separate state variable for clusters
-  const [projects, setProjects] = useState([]);
-  const [trendingProjects, setTrendingProjects] = useState([]);
+    const [toggleState, setToggleState] = useState(false);
+    const [selectedTag, setSelectedTag] = useState('');
+    const [selectedCluster, setSelectedCluster] = useState('');
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedClusters, setSelectedClusters] = useState([]);
+    const [tags, setTags] = useState([...tagsData]); // Separate state variable for tags
+    const [clusters, setClusters] = useState([...clustersData]); // Separate state variable for clusters
+    const [projects, setProjects] = useState([]);
+    const [trendingProjects, setTrendingProjects] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log("before fetch");
-      try {
-        const data = await fetch("/api/projects");
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await fetch('/api/projects');
 
-        const dataL = await data.json();
-        console.log(dataL);
+                const dataL = await data.json();
 
-        setProjects(dataL);
-        let testData = [...dataL];
+                setProjects(dataL);
+                let testData = [...dataL];
 
-        testData = testData
-          .sort((a, b) => b.likeCount - a.likeCount)
-          .slice(0, 3);
+                testData = testData.sort((a, b) => b.likeCount - a.likeCount).slice(0, 3);
 
-        setTrendingProjects(testData);
-        console.log(testData);
-      } catch (e) {
-        console.error(e);
-      }
+                setTrendingProjects(testData);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const handleToggle = () => {
+        setToggleState(!toggleState);
     };
-    fetchData();
-  }, []);
 
-  const handleToggle = () => {
-    setToggleState(!toggleState);
-  };
+    const handleTagChange = (event) => {
+        const tag = event.target.value;
 
-  const handleTagChange = (event) => {
-    const tag = event.target.value;
+        if (!selectedTags.includes(tag)) {
+            setSelectedTags([...selectedTags, tag]);
+            const updatedTags = tags.filter((t) => t !== tag);
+            setTags(updatedTags);
+        }
+    };
 
-    if (!selectedTags.includes(tag)) {
-      setSelectedTags([...selectedTags, tag]);
-      const updatedTags = tags.filter((t) => t !== tag);
-      setTags(updatedTags);
-    }
-  };
+    const handleClusterChange = (event) => {
+        const cluster = event.target.value;
 
-  const handleClusterChange = (event) => {
-    const cluster = event.target.value;
+        if (!selectedClusters.includes(cluster)) {
+            setSelectedClusters([...selectedClusters, cluster]);
+            const updatedClusters = clusters.filter((c) => c !== cluster);
+            setClusters(updatedClusters);
+        }
+    };
 
-    if (!selectedClusters.includes(cluster)) {
-      setSelectedClusters([...selectedClusters, cluster]);
-      const updatedClusters = clusters.filter((c) => c !== cluster);
-      setClusters(updatedClusters);
-    }
-  };
+    const removeSelectedTag = (tag) => {
+        const updatedTags = selectedTags.filter((selectedTag) => selectedTag !== tag);
+        setSelectedTags(updatedTags);
+        setTags([...tags, tag]); // Add the removed tag back to the select options
+    };
 
-  const removeSelectedTag = (tag) => {
-    const updatedTags = selectedTags.filter(
-      (selectedTag) => selectedTag !== tag
-    );
-    setSelectedTags(updatedTags);
-    setTags([...tags, tag]); // Add the removed tag back to the select options
-  };
+    const removeSelectedCluster = (cluster) => {
+        const updatedClusters = selectedClusters.filter((selectedCluster) => selectedCluster !== cluster);
+        setSelectedClusters(updatedClusters);
+        setClusters([...clusters, cluster]); // Add the removed cluster back to the select options
+    };
 
-  const removeSelectedCluster = (cluster) => {
-    const updatedClusters = selectedClusters.filter(
-      (selectedCluster) => selectedCluster !== cluster
+    return (
+        <>
+            <Head>
+                <title>Final Show - Showcase</title>
+                <meta name="description" content="Generated by create next app" />
+                <link rel="icon" href="/favicon.ico" />
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+            </Head>
+
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className={styles.homeTrendingContainer}>
+                    <div className={styles.trendingTitleContainer}>
+                        <h1>Trending</h1>
+                        <div className={styles.trendingTitleSubDiv}>
+                            <img src="/images/trending-title-decoration.svg" alt="decoration" />
+                        </div>
+                    </div>
+                    <div className="customGrid">
+                        {trendingProjects.map((project) => (
+                            <Card key={project.id} project={project} />
+                        ))}
+                    </div>
+                </div>
+                <div>
+                    <img src="/images/home-banner.jpg" alt="Home Banner" />
+                </div>
+                <div className={styles.homeAllProjectsContainer}>
+                    <h2>All projects</h2>
+                    <div className={styles.filterContainer}>
+                        <div>
+                            <form>
+                                <input type="text" placeholder="Project naam" />
+                                <button type="submit" className={styles.searchButton}>
+                                    <span className="material-icons">search</span>
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <select value={selectedTag} onChange={handleTagChange}>
+                                {selectedTag === '' && <option value="">Tags</option>}
+                                {tags.map((tag, index) => (
+                                    <option key={index} value={tag}>
+                                        {tag}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <select value={selectedCluster} onChange={handleClusterChange}>
+                                {selectedCluster === '' && <option value="">Clusters</option>}
+                                {clusters.map((cluster, index) => (
+                                    <option key={index} value={cluster}>
+                                        {cluster}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className={styles.filterToggleContainer}>
+                            <p>Finalwork</p>
+
+                            <span onClick={handleToggle} className={`material-icons toggle ${toggleState ? 'on' : ''} ${styles.toggle}`}>
+                                {toggleState ? 'toggle_on' : 'toggle_off'}
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.selectedTagsContainer}>
+                        {selectedTags.map((tag, index) => (
+                            <div key={index} className={styles.selectedTag}>
+                                {tag}
+                                <span className={styles.removeButton} onClick={() => removeSelectedTag(tag)}>
+                                    X
+                                </span>
+                            </div>
+                        ))}
+
+                        {selectedClusters.map((cluster, index) => (
+                            <div key={index} className={styles.selectedCluster}>
+                                {cluster}
+                                <span className={styles.removeButton} onClick={() => removeSelectedCluster(cluster)}>
+                                    X
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="customGrid">
+                    {projects.map((project) => (
+                        <Card key={project.id} project={project} />
+                    ))}
+                </div>
+            </main>
+        </>
     );
     setSelectedClusters(updatedClusters);
     setClusters([...clusters, cluster]); // Add the removed cluster back to the select options
