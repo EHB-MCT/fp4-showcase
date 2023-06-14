@@ -57,22 +57,37 @@ const Navigation: React.FC = () => {
       return (
         <div className="dropdown">
           <div className={style.dropdown_toggle} onClick={toggleDropdown}>
-            <FontAwesomeIcon icon={faUser} color="#ffffff" />
+            <FontAwesomeIcon
+              icon={faUser}
+              color="#ffffff"
+              style={{ width: 20, height: 20 }}
+            />
             {username}
             {isOpen && (
               <FontAwesomeIcon
                 icon={faCaretDown}
                 rotation={180}
                 color="#ffffff"
+                style={{ width: 20, height: 20 }}
               />
             )}
-            {!isOpen && <FontAwesomeIcon icon={faCaretDown} color="#ffffff" />}
+            {!isOpen && (
+              <FontAwesomeIcon
+                icon={faCaretDown}
+                color="#ffffff"
+                style={{ width: 20, height: 20 }}
+              />
+            )}
           </div>
           {isOpen && (
             <div className={style.dropdown_wrapper}>
               <Link href={`/profile/${user.uid}`}>
                 <a onClick={closeDropdown}>
-                  <FontAwesomeIcon icon={faAddressCard} color="#ffffff" />
+                  <FontAwesomeIcon
+                    icon={faAddressCard}
+                    color="#ffffff"
+                    style={{ width: 20, height: 20 }}
+                  />
                   View Profile
                 </a>
               </Link>
@@ -83,7 +98,11 @@ const Navigation: React.FC = () => {
                   }
                   onClick={closeDropdown}
                 >
-                  <FontAwesomeIcon icon={faPlus} color="#ffffff" />
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    color="#ffffff"
+                    style={{ width: 20, height: 20 }}
+                  />
                   Add Project
                 </a>
               </Link>
@@ -101,7 +120,8 @@ const Navigation: React.FC = () => {
                     icon={faArrowRightFromBracket}
                     flip={"horizontal"}
                     color="#ffffff"
-                  />{" "}
+                    style={{ width: 20, height: 20 }}
+                  />
                   Sign out
                 </a>
               </Link>
