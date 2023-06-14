@@ -6,6 +6,9 @@ import TrendingProjectsSlider from "../components/TrendingProjectsSlider";
 import clustersData from "../data/clusters.json";
 import tagsData from "../data/tags.json";
 import styles from "../styles/Home.module.css";
+import DottedLine from "../components/DottedLine";
+import BannerComponent from "../components/BannerComponent";
+import TitleComponent from "../components/TitleComponent";
 
 export default function Home() {
   const [toggleState, setToggleState] = useState(false);
@@ -94,26 +97,19 @@ export default function Home() {
           rel="stylesheet"
         />
       </Head>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={styles.homeTrendingContainer}>
-          <div className={styles.trendingTitleContainer}>
-            <h1>Trending</h1>
-            <div className={styles.trendingTitleSubDiv}>
-              <img src="/images/trending-title-decoration.svg" />
-            </div>
-          </div>
+      <main>
+        <div className={`${styles.homeTrendingContainer} containerWidth`}>
+          <TitleComponent title="Trending" />
           <div className="customGrid">
             {trendingProjects.map((project) => (
               <Card key={project.id} project={project} />
             ))}
           </div>
         </div>
-        <div>
-          <img src="/images/home-banner.jpg" alt="Home Banner" />
-        </div>
-        <div className={styles.homeAllProjectsContainer}>
-          <h2>All projects</h2>
+        <BannerComponent image="/images/home-banner.jpg" title="Final Show" />
+        <div className={`${styles.homeAllProjectsContainer} containerWidth`}>
+          <TitleComponent title="All projects" />
+
           <div className={styles.filterContainer}>
             <div>
               <form>
@@ -182,7 +178,9 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <div className="customGrid">
+        <div
+          className={`${styles.homeAllProjectsSubContainer} customGrid containerWidth`}
+        >
           {projects.map((project) => (
             <Card key={project.id} project={project} />
           ))}

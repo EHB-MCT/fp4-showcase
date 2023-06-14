@@ -29,9 +29,11 @@ const ProjectCard = ({ project }) => {
           </div>
         </div>
       </div>
-      <div className={styles.projectCategoriesContainer}>
-        <p>{project.tags.join(" / ")}</p>
-      </div>
+      {project.tags[0] && (
+        <div className={styles.projectCategoriesContainer}>
+          <p>{project.tags.join(" / ")}</p>
+        </div>
+      )}
     </div>
   );
 };

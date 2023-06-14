@@ -1,0 +1,14 @@
+.bannerContainer {
+  background-color: var(--main-pink-color);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+}
+
+.bannerContainer > div {
+  display: flex;
+  flex-direction: column;
+  row-gap: 50px;
+}
