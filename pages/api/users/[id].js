@@ -14,6 +14,16 @@ export default async function handler(req, res) {
             res.status(404).json({ message: 'User not found' });
             return;
           }
+          
+          // Assign full name based on first.last.name@email.com
+          const atIndex = querySnapshot.docs[0].email.indexOf('@');
+          querySnapshot.docs[0].username = querySnapshot.docs[0].email.substring(0, atIndex).replace(/\./g, ' ');
+
+          // capitalize full name
+          querySnapshot.docs[0].username = querySnapshot.docs[0].username
+              .split(' ')
+              .map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+              .join(' ');
     
           const docSnapshot = querySnapshot.docs[0];
           const data = {
@@ -26,4 +36,7 @@ export default async function handler(req, res) {
           res.status(500).json({ message: e.message });
         }
       }
+    } else {
+        res.status(400).json({ message: 'Invalid request method.' });
+    }
 }
