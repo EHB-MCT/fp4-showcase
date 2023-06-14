@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   border: 3px solid var(--main-purple-color);
+  border-right: none;
   box-shadow: 0 0 14px 0px var(--main-purple-color);
   height: 75px;
 }
@@ -34,15 +35,15 @@
 
 .links a,
 .dropdown_toggle {
-  /* margin: 0rem 2.5rem; */
   font-size: var(--h3-font-size);
-  /* text-decoration: none; */
   color: #ffffff;
   cursor: pointer;
   padding: 0rem 2.5rem;
   height: 75px;
   display: flex;
   align-items: center;
+  justify-content: left;
+  gap: 1rem;
 }
 
 .register {

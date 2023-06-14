@@ -4,6 +4,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { logoutUser } from "../lib/auth";
 import { UserContext } from "../lib/context";
 import style from "../styles/Navigation.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCaretDown,
+  faUser,
+  faAddressCard,
+  faPlus,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navigation: React.FC = () => {
   const router = useRouter();
@@ -12,6 +20,15 @@ const Navigation: React.FC = () => {
   const [userObject, setUserObject] = useState();
   const [username, setUsername] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,25 +48,42 @@ const Navigation: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
   const renderLoggedInState = () => {
-    if (username) {
+    if (username && isLoggedIn) {
       return (
         <div className="dropdown">
           <div className={style.dropdown_toggle} onClick={toggleDropdown}>
+            <FontAwesomeIcon icon={faUser} color="#ffffff" />
             {username}
+            {isOpen && (
+              <FontAwesomeIcon
+                icon={faCaretDown}
+                rotation={180}
+                color="#ffffff"
+              />
+            )}
+            {!isOpen && <FontAwesomeIcon icon={faCaretDown} color="#ffffff" />}
           </div>
           {isOpen && (
             <div className={style.dropdown_wrapper}>
               <Link href={`/profile/${user.uid}`}>
-                <a onClick={toggleDropdown}>View Profile</a>
+                <a onClick={closeDropdown}>
+                  <FontAwesomeIcon icon={faAddressCard} color="#ffffff" />
+                  View Profile
+                </a>
               </Link>
               <Link href="/projects/upload">
                 <a
                   className={
                     currentRoute === "/register" ? `${style.active}` : ""
                   }
-                  onClick={toggleDropdown}
+                  onClick={closeDropdown}
                 >
+                  <FontAwesomeIcon icon={faPlus} color="#ffffff" />
                   Add Project
                 </a>
               </Link>
@@ -59,10 +93,15 @@ const Navigation: React.FC = () => {
                     currentRoute === "/register" ? `${style.active}` : ""
                   }
                   onClick={() => {
+                    closeDropdown();
                     logoutUser();
-                    toggleDropdown();
                   }}
                 >
+                  <FontAwesomeIcon
+                    icon={faArrowRightFromBracket}
+                    flip={"horizontal"}
+                    color="#ffffff"
+                  />{" "}
                   Sign out
                 </a>
               </Link>
@@ -80,14 +119,14 @@ const Navigation: React.FC = () => {
               Log in
             </a>
           </Link>
-          <span className={style.divider}>/</span>
+          {/* <span className={style.divider}>/</span>
           <Link href="/register">
             <a
               className={currentRoute === "/register" ? `${style.active}` : ""}
             >
               Sign up
             </a>
-          </Link>
+          </Link> */}
         </div>
       );
     }
@@ -100,6 +139,7 @@ const Navigation: React.FC = () => {
       >
         <Link href="/">
           <svg
+            onClick={closeDropdown}
             className={style.logo}
             xmlns="http://www.w3.org/2000/svg"
             width="111.443"
@@ -119,17 +159,26 @@ const Navigation: React.FC = () => {
         <div className={style.links}>
           <div className={style.cut}></div>
           <Link href="/">
-            <a className={currentRoute === "/" ? `${style.active}` : ""}>
+            <a
+              onClick={closeDropdown}
+              className={currentRoute === "/" ? `${style.active}` : ""}
+            >
               Home
             </a>
           </Link>
           <Link href="/awards">
-            <a className={currentRoute === "/awards" ? `${style.active}` : ""}>
+            <a
+              onClick={closeDropdown}
+              className={currentRoute === "/awards" ? `${style.active}` : ""}
+            >
               Awards
             </a>
           </Link>
           <Link href="/about">
-            <a className={currentRoute === "/about" ? `${style.active}` : ""}>
+            <a
+              onClick={closeDropdown}
+              className={currentRoute === "/about" ? `${style.active}` : ""}
+            >
               About
             </a>
           </Link>
