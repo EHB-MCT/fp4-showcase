@@ -5,6 +5,7 @@ import { UserContext } from "../lib/context";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import ButtonPink from "./ButtonPink";
 
 const UploadProjectForm = () => {
   const [previewImage, setPreviewImage] = useState(null);
@@ -302,9 +303,11 @@ const UploadProjectForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-3xl 2xl:max-w-3xl mx-auto flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5"
+
+      className="w-2/2 flex flex-col gap-4 items-cente p-5 rounded-xl mb-5 mt-5 border-2 border-purple-500"
+
     >
-      <h1 className="text-center text-white text-2xl">Upload Project </h1>
+      <h1>Upload Project </h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-top" htmlFor="title">
@@ -322,15 +325,32 @@ const UploadProjectForm = () => {
             </div>
           )}
         </label>
-        <input
+
+        <div style={{ position: 'relative' }}>
+  <svg width="570" height="50">
+    <path
+      id="Path_1213"
+      data-name="Path 1213"
+      d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+      transform="translate(-1061 -5889.645)"
+      fill="#202033"
+      stroke="#fff"
+      strokeWidth="2"
+      opacity="0.66"
+    />
+  </svg>
+      <input
           placeholder="Write your project title here..."
           type="text"
           id="title"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
-          className=" border-gray-800 p-2 w-full rounded-sm bg-gray-700 text-white"
+          style={{ position: 'absolute', top: '1px' }}
+          className="border-none p-2 w-full rounded-sm bg-transparent text-white"
           required
         />
+    </div>
+
       </div>
 
       <div className="flex flex-col gap-2 items-start w-full relative">
@@ -349,16 +369,21 @@ const UploadProjectForm = () => {
             </div>
           )}
         </label>
-        <textarea
+        <div style={{ position: 'relative' }}>
+  <svg width="570" height="115">
+  <path id="Path_1266" data-name="Path 1266" d="M1618.957,6012.24v-83.484l-18.074-28.486L1062,5900.263v81.768l18.916,30.211Z" transform="translate(-1061 -5899.263)" fill="#202033" stroke="#fff" stroke-width="2" opacity="0.66"/>
+  </svg>
+<textarea
           placeholder="Write a description about your project..."
           id="description"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
-          className=" border-gray-300 p-2 w-90 h-40 resize-none w-full rounded-sm bg-gray-700 text-white "
+          style={{ position: 'absolute', top: '1px', width: '98%', height: '110px', borderRadius: '30px' }}
+          className="border-none p-2 w-full rounded-sm bg-transparent text-white"
           required
         />
+    </div>
       </div>
-
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-top" htmlFor="cluster">
@@ -378,22 +403,36 @@ const UploadProjectForm = () => {
             </div>
           )}
         </label>
-        <select
-          required
-          placeholder="select"
-          id="projectBelongsTo"
-          value={projectBelongsTo}
-          onChange={handleProjectBelongsToSelect}
-          className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
-        >
-          <option value="" disabled hidden>
-            Choose
-          </option>
-          <option value="1">1st year</option>
-          <option value="2">2nd year</option>
-          <option value="3">3rd year</option>
-          <option value="finalwork">finalwork</option>
-        </select>
+
+
+
+        <div style={{ position: 'relative', width:'97%' }}>
+  <svg width="570" height="50" style={{ position: 'absolute', top: '0', left: '0', zIndex: '-1' }}>
+    <path
+      id="Path_1267"
+      data-name="Path 1267"
+      d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+      transform="translate(-1061 -5889.645)"
+      fill="#202033"
+      stroke="#fff"
+      strokeWidth="2"
+      opacity="0.66"
+    />
+  </svg>
+  <select
+    placeholder="select"
+    id="projectBelongsTo"
+    value={projectBelongsTo}
+    onChange={handleProjectBelongsToSelect}
+    style={{ width: '100%', zIndex: '2' }}
+    className="border-none p-2 w-full rounded-sm bg-transparent text-white"
+  >
+    <option value="1">1st year</option>
+    <option value="2">2nd year</option>
+    <option value="3">3rd year</option>
+    <option value="finalwork">finalwork</option>
+  </select>
+</div>
       </div>
       {projectBelongsTo !== "" && projectBelongsTo !== "1" ? (
         <div className="flex flex-col gap-2 items-start w-full relative">
@@ -413,13 +452,26 @@ const UploadProjectForm = () => {
               </div>
             )}
           </label>
-          <select
-            required
+
+          <div style={{ position: 'relative', width:'97%' }}>
+  <svg width="570" height="50" style={{ position: 'absolute', top: '0', left: '0', zIndex: '-1' }}>
+    <path
+      id="Path_1267"
+      data-name="Path 1267"
+      d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+      transform="translate(-1061 -5889.645)"
+      fill="#202033"
+      stroke="#fff"
+      strokeWidth="2"
+      opacity="0.66"
+    />
+  </svg>
+  <select
             placeholder="category select"
             id="category"
             value={category}
             onChange={handleCategorySelect}
-            className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white"
           >
             <option value="" disabled hidden>
               Choose
@@ -429,6 +481,7 @@ const UploadProjectForm = () => {
             <option value="Emerging Technology">Emerging Technology</option>
             <option value="Extended Reality">Extended Reality</option>
           </select>
+</div>
         </div>
       ) : null}
 
@@ -450,11 +503,19 @@ const UploadProjectForm = () => {
           )}
         </label>
         <div className="flex w-full">
-          <select
+        <div style={{ position: 'relative', width: '23%'}}>
+  <svg width="125" height="50" style={{ position: 'absolute', top: '0', left: '0', zIndex: '-1' }}>
+  <g id="Path_1279" data-name="Path 1279" transform="translate(124.136 42.749) rotate(180)" fill="none">
+    <path d="M0,.232,107.213,0l16.923,12.58V42.749H0Z" stroke="none"/>
+    <path d="M 106.5530700683594 2.001434326171875 L 2 2.228050231933594 L 2 40.74853897094727 L 122.1357421875 40.74853897094727 L 122.1357421875 13.58554840087891 L 106.5530700683594 2.001434326171875 M 107.2130889892578 -3.814697265625e-06 L 124.1357421875 12.58024978637695 L 124.1357421875 42.74853897094727 L 0 42.74853897094727 L 0 0.2323760986328125 L 107.2130889892578 -3.814697265625e-06 Z" stroke="none" fill="#fff"/>
+  </g>
+ </svg>
+  <select
             id="tags"
             value={newTag}
             onChange={handleTagSelect}
-            className="border-gray-300 p-2  rounded-l-sm bg-gray-700 text-white"
+            style={{width: '83%'}}
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white"
           >
             <option value="">Select a tag</option>
             {tagsData.map((tag) => (
@@ -463,20 +524,39 @@ const UploadProjectForm = () => {
               </option>
             ))}
           </select>
-          <input
+</div>
+
+
+        <div style={{ position: 'relative' }}>
+  <svg width="332" height="50">  
+  <path id="Path_1280" data-name="Path 1280" d="M1387.318,5930.639v-41.872l-107.349,1.128H1062v29.346l11.842,11.4Z" transform="translate(-1061 -5887.757)" fill="#202033" stroke="#fff" stroke-width="2" opacity="0.66"/>
+  </svg>
+  <input
             placeholder="Add a non existing tag..."
             type="text"
             value={newTag}
+            style={{position: 'absolute',top: '1px'}}
             onChange={(event) => setNewTag(event.target.value)}
-            className=" border-gray-300  ml-1 flex-grow rounded-r-sm bg-gray-700 text-white pl-3"
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white"
           />
-          <button
+    </div>
+
+
+<div style={{ position: 'relative' }}>
+  <svg width="100" height="50" style={{ position: 'absolute', top: '0', left: '0', zIndex: '0',  pointerEvents: 'none' }}>
+  <g id="Path_1279" data-name="Path 1279" transform="translate(0 1.724)" fill="none">
+    <path d="M0-1.724H77.614L93.364,13.253V41.9H0Z" stroke="none"/>
+    <path d="M 1.999992370605469 0.2755851745605469 L 1.999992370605469 39.90145111083984 L 91.363525390625 39.90145111083984 L 91.363525390625 14.11148071289062 L 76.81528472900391 0.2755851745605469 L 1.999992370605469 0.2755851745605469 M -7.62939453125e-06 -1.724414825439453 L 77.61447143554688 -1.724414825439453 L 93.363525390625 13.25349235534668 L 93.363525390625 41.90145111083984 L -7.62939453125e-06 41.90145111083984 L -7.62939453125e-06 -1.724414825439453 Z" stroke="none" fill="#fff"/>
+  </g>
+  </svg>
+  <button
             type="submit"
             onClick={handleTagChange}
-            className="bg-purple-600 text-white px-3 rounded-sm ml-1"
+            className=" text-white px-2 rounded-sm ml-1 mt-2"
           >
             Add Tag
           </button>
+</div>
         </div>
         {/* Render the selected tags */}
         <div className="flex flex-wrap gap-2 rounded-md">
@@ -515,20 +595,35 @@ const UploadProjectForm = () => {
           )}
         </label>
         <div className="flex w-full">
-          <input
-            placeholder="e.g. website link, github link"
+        <div style={{ position: 'relative' }}>
+  <svg width="470" height="50">  
+  <path id="Path_1280" data-name="Path 1280" d="M1524.318,5931.394v-42.626l-152.557,1.148H1062v29.876l16.828,11.6Z" transform="translate(-1061 -5887.761)" fill="#202033" stroke="#fff" stroke-width="2" opacity="0.66"/>
+  </svg>
+  <input
+            placeholder="url..."
+
             type="text"
             value={newLink}
             onChange={(event) => setNewLink(event.target.value)}
-            className=" border-gray-300   flex-grow rounded-sm bg-gray-700  py-2 text-white pl-3"
+            style={{position: 'absolute',top: '1px'}}
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white"
           />
-          <button
+    </div>
+<div style={{ position: 'relative' }}>
+  <svg width="100" height="50" style={{ position: 'absolute', top: '0', left: '0', zIndex: '0',  pointerEvents: 'none' }}>
+  <g id="Path_1279" data-name="Path 1279" transform="translate(0 1.724)" fill="none">
+    <path d="M0-1.724H77.614L93.364,13.253V41.9H0Z" stroke="none"/>
+    <path d="M 1.999992370605469 0.2755851745605469 L 1.999992370605469 39.90145111083984 L 91.363525390625 39.90145111083984 L 91.363525390625 14.11148071289062 L 76.81528472900391 0.2755851745605469 L 1.999992370605469 0.2755851745605469 M -7.62939453125e-06 -1.724414825439453 L 77.61447143554688 -1.724414825439453 L 93.363525390625 13.25349235534668 L 93.363525390625 41.90145111083984 L -7.62939453125e-06 41.90145111083984 L -7.62939453125e-06 -1.724414825439453 Z" stroke="none" fill="#fff"/>
+  </g>
+  </svg>
+  <button
             type="submit"
             onClick={handleLinkChange}
-            className="bg-purple-600 text-white px-3 rounded-sm ml-1"
+            className=" text-white px-2 rounded-sm ml-1 mt-2"
           >
             Add Link
           </button>
+</div>
         </div>
         {linkError == true && (
           <p className="text-red-500">This is not a valid link</p>
@@ -571,20 +666,38 @@ const UploadProjectForm = () => {
           )}
         </label>
         <div className="flex w-full">
-          <input
+        <div style={{ position: 'relative' }}>
+  <svg width="470" height="50">  
+  <path id="Path_1280" data-name="Path 1280" d="M1524.318,5931.394v-42.626l-152.557,1.148H1062v29.876l16.828,11.6Z" transform="translate(-1061 -5887.761)" fill="#202033" stroke="#fff" stroke-width="2" opacity="0.66"/>
+  </svg>
+                    <input
             placeholder="url..."
             type="text"
             value={newYoutubeLink}
+            style={{position: 'absolute',top: '1px'}}
             onChange={(event) => setNewYoutubeLink(event.target.value)}
-            className=" border-gray-300   flex-grow rounded-sm bg-gray-700  py-2 text-white pl-3"
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white"
           />
-          <button
+    </div>
+    <div style={{ position: 'relative' }}>
+  <svg width="100" height="50" style={{ position: 'absolute', top: '0', left: '0', zIndex: '0',  pointerEvents: 'none' }}>
+  <g id="Path_1279" data-name="Path 1279" transform="translate(0 1.724)" fill="none">
+    <path d="M0-1.724H77.614L93.364,13.253V41.9H0Z" stroke="none"/>
+    <path d="M 1.999992370605469 0.2755851745605469 L 1.999992370605469 39.90145111083984 L 91.363525390625 39.90145111083984 L 91.363525390625 14.11148071289062 L 76.81528472900391 0.2755851745605469 L 1.999992370605469 0.2755851745605469 M -7.62939453125e-06 -1.724414825439453 L 77.61447143554688 -1.724414825439453 L 93.363525390625 13.25349235534668 L 93.363525390625 41.90145111083984 L -7.62939453125e-06 41.90145111083984 L -7.62939453125e-06 -1.724414825439453 Z" stroke="none" fill="#fff"/>
+  </g>
+  </svg>
+  <button
             type="submit"
             onClick={handleYoutubeLinkChange}
-            className="bg-purple-600 text-white px-3 rounded-sm ml-1"
+            className=" text-white px-2 rounded-sm ml-1 mt-2"
           >
             Add Link
           </button>
+</div>
+
+
+          <br></br>
+
         </div>
         {youtubeLinkError == true && (
           <p className="text-red-500">This is not a valid youtube link</p>
@@ -626,18 +739,34 @@ const UploadProjectForm = () => {
             </div>
           )}
         </label>
-        <input
+        <div style={{ position: 'relative' }}>
+        <svg width="570" height="50">
+    <path
+      id="Path_1213"
+      data-name="Path 1213"
+      d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+      transform="translate(-1061 -5889.645)"
+      fill="#202033"
+      stroke="#fff"
+      strokeWidth="2"
+      opacity="0.66"
+    />
+  </svg>
+  <input
           type="file"
           id="pdfFile"
           name="pdfFile"
           onChange={handlePdfFileChange}
           accept=".pdf"
-          className="border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
+          style={{position:'absolute', top:'1px'}}
+          className="border-none p-2 w-full rounded-sm bg-transparent text-white ml-5"
           ref={fileInputRef}
         />
         {pdfFileSelected ? (
           <span className="text-gray-400">{pdfFile ? pdfFile.name : ""}</span>
         ) : null}
+    </div>
+
       </div>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
@@ -708,17 +837,32 @@ const UploadProjectForm = () => {
             </div>
           )}
         </label>
-        <input
-          ref={imagesInputRef}
+
+        <div style={{ position: 'relative' }}>
+        <svg width="570" height="50">
+    <path
+      id="Path_1213"
+      data-name="Path 1213"
+      d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+      transform="translate(-1061 -5889.645)"
+      fill="#202033"
+      stroke="#fff"
+      strokeWidth="2"
+      opacity="0.66"
+    />
+  </svg>
+  <input
+          ref={imageInputRef}
           type="file"
           id="images"
           name="images"
           onChange={handleFileChange}
           accept="image/*"
-          className="border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
+          style={{position:'absolute', top:'1px'}}
+          className="border-none p-2 w-full rounded-sm bg-transparent text-white ml-5"
         />
+    </div>
       </div>
-
       <div className="grid grid-cols-2 gap-3 w-full">
         {/* Render the uploaded images */}
         {imageFiles.map((file, index) => {
@@ -757,12 +901,13 @@ const UploadProjectForm = () => {
         <p className="text-red-500">Upload failed. Please try again.</p>
       )}
 
-      <button
+{  /*    <button
         type="submit"
         className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 w-full"
       >
         Submit
-      </button>
+      </button> */}
+      <ButtonPink title="Submit" color='white' />
     </form>
   );
 };

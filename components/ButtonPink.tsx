@@ -12,7 +12,7 @@ const ButtonPink = ({ title, color }) => {
   };
 
   return (
-    <button
+    <button type='submit'
       style={{
         background: 'none',
         border: 'none',
