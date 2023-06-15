@@ -238,11 +238,11 @@ export default function Award() {
           hasParticipated && (
             <div className="bg-black  p-2 w-fit mt-3 opacity-50">
               <p className="font-light ml-2">
-                You are participating with project "
+                You are participating with project
                 <span className="text-fuchsia-600">
-                  {projects.find((project) => project.awardId === id)?.title}
+                  "{projects.find((project) => project.awardId === id)?.title}"
                 </span>
-                ". You can still change your submission or withdraw your
+                . You can still change your submission or withdraw your
                 submission.
               </p>
             </div>
