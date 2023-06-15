@@ -44,6 +44,38 @@ export default function Award() {
   // participated
   const [hasParticipated, setHasParticipated] = useState(false);
 
+  const isDeving = false;
+
+  function renderParticipateActions() {
+    return (
+      <>
+        {userData &&
+        userData.role === "student" &&
+        currentDate < specificDate &&
+        !hasParticipated ? (
+          <ButtonPink
+            title="Participate"
+            color="white"
+            onClick={handleParticipateButtonClick}
+          />
+        ) : userData && userData.role === "docent" ? null : (
+          <div className="space-x-4">
+            <ButtonPink
+              title="Change"
+              color="white"
+              onClick={handleParticipateButtonClick}
+            />
+            <ButtonPink
+              title="Withdraw"
+              color="white"
+              onClick={handleWithdraweButtonClick}
+            />
+          </div>
+        )}
+      </>
+    );
+  }
+
   useEffect(() => {
     const fetchAward = async () => {
       try {
@@ -177,7 +209,7 @@ export default function Award() {
     setIsWithdrawModalOpen(false);
   };
   const currentDate = new Date();
-  const specificDate = new Date("2023-06-19");
+  const specificDate = new Date("2023-06-14");
   const docentVoteDate = new Date("2023-06-20");
 
   const handleProjectSelect = (project_id) => {
@@ -207,29 +239,7 @@ export default function Award() {
         <div>
           <div className={styles.awardProjects}>
             <h1>Projects</h1>
-            {userData &&
-            userData.role === "student" &&
-            currentDate < specificDate &&
-            !hasParticipated ? (
-              <ButtonPink
-                title="Participate"
-                color="white"
-                onClick={handleParticipateButtonClick}
-              />
-            ) : userData && userData.role === "docent" ? null : (
-              <div className="space-x-4">
-                <ButtonPink
-                  title="Change"
-                  color="white"
-                  onClick={handleParticipateButtonClick}
-                />
-                <ButtonPink
-                  title="Withdraw"
-                  color="white"
-                  onClick={handleWithdraweButtonClick}
-                />
-              </div>
-            )}
+            {isDeving ? renderParticipateActions() : ""}
           </div>
         </div>
         {userData &&
