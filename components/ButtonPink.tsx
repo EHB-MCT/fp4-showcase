@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 
-const ButtonPink = ({ title, color }) => {
+
+const ButtonPink = ({ title, color, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -12,7 +20,7 @@ const ButtonPink = ({ title, color }) => {
   };
 
   return (
-    <button
+    <button type='submit'
       style={{
         background: 'none',
         border: 'none',
@@ -21,6 +29,7 @@ const ButtonPink = ({ title, color }) => {
         overflow: 'hidden',
         color:'white'
       }}
+      onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

@@ -1,113 +1,14 @@
 .homeTrendingContainer {
-  margin: 85px 0 50px 0;
+  margin: 100px 0 120px 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  row-gap: 50px;
 }
 
 .homeAllProjectsContainer {
   margin: 100px 0 50px 0;
 }
 
-.filterContainer {
-  display: grid;
-  grid-template-columns: 50% 1fr 1fr 1fr;
-  grid-gap: 10px;
-  margin-top: 50px;
-}
-
-.filterContainer > div {
-  background-color: #374151;
-  padding: 0 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.filterContainer > div select {
-  width: 100%;
-  background-color: #374151;
-  color: white;
-}
-
-.filterContainer > div form {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.filterContainer > div form button {
-  color: white;
-}
-
-.filterContainer > div form input {
-  color: white;
-  background-color: #374151;
-  border: none;
-}
-
-.filterContainer > div form input[type="text"]::placeholder {
-  color: white;
-}
-
-.filterContainer > div form input[type="text"] {
-  width: 80%;
-}
-
-.toggle {
-  position: relative;
-  cursor: pointer;
-  color: white;
-  font-size: 50px;
-}
-
-.filterToggleContainer p {
-  margin: 0;
-  color: white;
-}
-
-.searchButton {
-  display: flex;
-  align-items: center;
-}
-
-.selectedTagsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-.selectedTag,
-.selectedCluster {
-  display: flex;
-  align-items: center;
-  background-color: #eeeeee;
-  border-radius: 4px;
-  padding: 4px 8px;
-  margin: 4px;
-  color: #374151;
-}
-
-.selectedCluster {
-  background-color: #cecece;
-}
-
-.removeButton {
-  color: red;
-  cursor: pointer;
-  margin-left: 8px;
-}
-
-.trendingTitleContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.trendingTitleSubDiv {
-  width: 60%;
-}
-
-.trendingTitleSubDiv img {
-  width: 100%;
+.homeAllProjectsSubContainer {
+  margin-bottom: 100px;
 }

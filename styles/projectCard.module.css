@@ -1,25 +1,25 @@
 .projectCardWrapper {
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
+  /* row-gap: 8px; */
 }
 
 .projectCardContainer {
   position: relative;
-  height: 600px;
+  height: 500px;
   overflow: hidden;
   background-size: cover;
   background-position: center;
 }
 
-.overlay {
+/* .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-}
+} */
 
 /* Adjust the z-index to ensure the overlay is positioned below the contents within .projectCardContainer */
 .projectCardContainer > * {
@@ -33,7 +33,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 .projectCardInformationContainer p {
@@ -41,40 +41,49 @@
 }
 
 .projectCardInformationCategoryContainer {
-  width: 100%;
-  display: flex;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: linear-gradient(135deg, transparent 7px, #ff1493 0) top left,
+    linear-gradient(-45deg, transparent 7px, #ff1493 0) top right;
+  background-size: 50% 100%;
+
+  background-repeat: no-repeat;
 }
 
 .projectCardInformationCategoryContainer p {
-  padding: 0 10px;
+  padding: 2px 10px;
   font-family: var(--h2-font-family);
-  border: solid 1px #ffffff;
+  /* border: solid 2px #ffffff; */
+  /* color: var(--main-lightblue-color); */
+  /* background-color: #000000; */
+  /* background-color: rgba(0, 0, 0, 0.5); */
 }
 
 .projectCardInformationSubContainer {
-  width: calc((100% - 40px));
+  width: calc(100%);
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
+  padding: 5px 20px;
   display: flex;
   justify-content: space-between;
-}
-.projectCardInformationTitleContainer {
-  width: 70%;
+  background-color: rgba(0, 0, 0, 0.9);
+  /* background-color: #000000; */
 }
 
-.moreInfoBtn {
-  border: solid 1px var(--main-lightblue-color);
-  color: var(--main-lightblue-color);
-  padding: 0 10px;
+.projectCardInformationTitleContainer {
+  width: 80%;
 }
 
 .projectCardInformationLikeContainer {
   text-align: right;
-  width: 50px;
+  width: 40px;
 }
 
 .projectCardInformationName {
-  color: var(--main-lightblue-color);
+  /* color: var(--main-lightblue-color); */
+  color: var(--main-pink-color);
+  margin-bottom: -5px !important;
 }
 
 .projectCardInformationLikeSubContainer {
@@ -84,11 +93,18 @@
 }
 
 .projectCategoriesContainer {
-  background-color: #ffffff;
-  padding: 20px;
+  padding: 5px 20px;
+  /* background: linear-gradient(
+    -45deg,
+    transparent 20px,
+    var(--main-lightblue-color) 0
+  ); */
+  background: linear-gradient(-45deg, transparent 20px, #000000 0);
+  background-repeat: no-repeat;
 }
 
 .projectCategoriesContainer p {
-  color: var(--main-bg-purple-color);
-  font-family: var(--h3-font-family);
+  /* color: var(--main-bg-purple-color); */
+  color: #ffffff;
+  font-family: var(--p-font-family);
 }
