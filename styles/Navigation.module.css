@@ -100,3 +100,120 @@
   height: 75px;
   margin: 0;
 }
+.dropdown_wrapper {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  border: 3px solid var(--main-purple-color);
+}
+
+.dropdown_wrapper a {
+  background-color: var(--main-bg-purple-color);
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 3.75rem;
+  border-bottom: 3px solid var(--main-purple-color);
+}
+
+.dropdown_wrapper a:last-child {
+  border-bottom: none;
+}
+
+.dropdown_wrapper a:hover {
+  background-color: var(--main-purple-color);
+}
+.mobile_menu_toggle {
+  display: none;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+  .mobile_menu_toggle {
+    display: block;
+    cursor: pointer;
+  }
+
+  .hamburger_icon {
+    width: 20px;
+    height: 2px;
+    background-color: #ffffff;
+    margin-bottom: 4px;
+  }
+  .links {
+    display: none;
+  }
+  /* Mobile Menu */
+  .mobile_menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .mobile_menu_links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12%;
+    border: 1px solid var(--main-purple-color);
+  }
+
+  .mobile_menu_links a {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #000000;
+    text-decoration: none;
+  }
+  .mobile_menu_toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .hamburger_icon {
+    width: 20px;
+    height: 2px;
+    margin-bottom: 4px;
+  }
+
+  .hamburger_icon span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+  }
+
+  .hamburger_icon span:not(:last-child) {
+    margin-bottom: 4px;
+  }
+
+  .line {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  .hamburger_icon:hover .line {
+    background-color: white;
+  }
+  .mobile_menu_open .line:first-child {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .mobile_menu_open .line:last-child {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+  .dropdown_wrapper {
+    border: 1px solid var(--main-purple-color);
+  }
+}
