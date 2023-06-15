@@ -1,3 +1,4 @@
+
 import { and, collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { firestore } from '../lib/firebase';
 
@@ -7,13 +8,7 @@ export async function getProjectsByUserID(uid) {
         const userRef = collection(firestore, 'users');
         const q = query(userRef, where('uid', '==', uid));
 
-        const userSnap = await getDocs(q);
-
-        if (!userSnap.empty) {
-            userSnap.forEach((doc) => {
-                console.log(doc.id, '=>', doc.data());
-            });
-        }
+        const userSnap = await getDocs(q)
 
         // Get projects
         const projectsRef = collection(firestore, 'projects');
@@ -73,28 +68,6 @@ export async function getProjectFromUserByType(uid, type) {
     }
 }
 
-export async function getAllProjects() {
-    try {
-        // Get projects
-        const projectsRef = collection(firestore, 'projects');
-        const q = query(projectsRef);
-
-        const projectsSnap = await getDocs(q);
-
-        let list = [];
-        if (!projectsSnap.empty) {
-            projectsSnap.forEach((doc) => {
-                list.push(doc.data());
-            });
-        }
-
-        return list;
-    } catch (e) {
-        console.error('Error getting projects', e);
-        return [];
-    }
-}
-
 export async function getProjectById(project_id) {
     try {
         const docRef = doc(firestore, 'projects', project_id);
@@ -110,4 +83,34 @@ export async function getProjectById(project_id) {
         console.error('Error getting project', e);
         return null;
     }
+
 }
+
+export async function getAllProject(){
+  let list = [];
+  const querySnapshot = await getDocs(collection(firestore, 'projects'));
+  querySnapshot.forEach((doc) => {
+
+    if (doc.data()) {
+        const data = {
+            project_id: doc.id,
+            ...doc.data()
+        }
+        list.push(data);
+    }
+    
+ 
+});
+return list;
+}
+
+export async function updateProjectInFirebase(project) {
+    const projectId = project.id; // Update with the correct ID field from your project object
+  
+    try {
+      const projectRef = doc(firestore, 'projects', projectId);
+      await updateDoc(projectRef, project);
+    } catch (error) {
+      throw new Error('Error updating project in Firebase:', error);
+    }
+  }
