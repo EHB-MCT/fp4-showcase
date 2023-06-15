@@ -1,219 +1,219 @@
 .navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 30px;
-  position: relative;
-  z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    position: relative;
+    z-index: 100;
 }
 
 .navigation_wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .logo {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .links {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border: 3px solid var(--main-purple-color);
-  border-right: none;
-  box-shadow: 0 0 14px 0px var(--main-purple-color);
-  height: 75px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 3px solid var(--main-purple-color);
+    border-right: none;
+    box-shadow: 0 0 14px 0px var(--main-purple-color);
+    height: 75px;
 }
 
 .cut {
-  position: absolute;
-  background: var(--main-bg-purple-color);
-  top: -16px;
-  left: -16px;
-  width: 30px;
-  height: 30px;
-  transform: rotate(-45deg);
-  border-bottom: 3px solid var(--main-purple-color);
-  box-shadow: inset 0 -14px 14px -14px var(--main-purple-color);
+    position: absolute;
+    background: var(--main-bg-purple-color);
+    top: -16px;
+    left: -16px;
+    width: 30px;
+    height: 30px;
+    transform: rotate(-45deg);
+    border-bottom: 3px solid var(--main-purple-color);
+    box-shadow: inset 0 -14px 14px -14px var(--main-purple-color);
 }
 
 .links a,
 .dropdown_toggle {
-  font-size: var(--h3-font-size);
-  color: #ffffff;
-  cursor: pointer;
-  padding: 0rem 2.5rem;
-  height: 75px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-width: 10rem;
+    font-size: var(--h3-font-size);
+    color: #ffffff;
+    cursor: pointer;
+    padding: 0rem 2.5rem;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    /* min-width: 10rem; */
 }
 
 .register {
-  background-color: var(--main-purple-color);
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 2rem;
-  gap: 1rem;
+    background-color: var(--main-purple-color);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 2rem;
+    gap: 1rem;
 }
 
 .divider {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 .register a {
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .links a:hover {
-  background-color: var(--main-purple-color);
+    background-color: var(--main-purple-color);
 }
 
 .active {
-  color: red;
-  text-decoration: underline;
-  text-underline-offset: 0.5rem;
-  text-decoration-color: var(--main-purple-color);
-  text-decoration-thickness: 2px;
+    color: red;
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+    text-decoration-color: var(--main-purple-color);
+    text-decoration-thickness: 2px;
 }
 
 .links a:not(.active) {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .dropdown_toggle {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 4rem;
-  background-color: var(--main-purple-color);
-  height: 75px;
-  margin: 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 4rem;
+    background-color: var(--main-purple-color);
+    height: 75px;
+    margin: 0;
 }
 .dropdown_wrapper {
-  position: absolute;
-  text-align: center;
-  width: 100%;
-  border: 3px solid var(--main-purple-color);
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    border: 3px solid var(--main-purple-color);
 }
 
 .dropdown_wrapper a {
-  background-color: var(--main-bg-purple-color);
-  width: 100%;
-  margin: 0;
-  padding: 0.75rem 3.75rem;
-  border-bottom: 3px solid var(--main-purple-color);
+    background-color: var(--main-bg-purple-color);
+    width: 100%;
+    margin: 0;
+    padding: 0.75rem 3.75rem;
+    border-bottom: 3px solid var(--main-purple-color);
 }
 
 .dropdown_wrapper a:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .dropdown_wrapper a:hover {
-  background-color: var(--main-purple-color);
+    background-color: var(--main-purple-color);
 }
 .mobile_menu_toggle {
-  display: none;
+    display: none;
 }
 
 /* Media query for mobile devices */
 @media (max-width: 767px) {
-  .mobile_menu_toggle {
-    display: block;
-    cursor: pointer;
-  }
+    .mobile_menu_toggle {
+        display: block;
+        cursor: pointer;
+    }
 
-  .hamburger_icon {
-    width: 20px;
-    height: 2px;
-    background-color: #ffffff;
-    margin-bottom: 4px;
-  }
-  .links {
-    display: none;
-  }
-  /* Mobile Menu */
-  .mobile_menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
+    .hamburger_icon {
+        width: 20px;
+        height: 2px;
+        background-color: #ffffff;
+        margin-bottom: 4px;
+    }
+    .links {
+        display: none;
+    }
+    /* Mobile Menu */
+    .mobile_menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
 
-  .mobile_menu_links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12%;
-    border: 1px solid var(--main-purple-color);
-  }
+    .mobile_menu_links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12%;
+        border: 1px solid var(--main-purple-color);
+    }
 
-  .mobile_menu_links a {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    color: #000000;
-    text-decoration: none;
-  }
-  .mobile_menu_toggle {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
+    .mobile_menu_links a {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        color: #000000;
+        text-decoration: none;
+    }
+    .mobile_menu_toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
 
-  .hamburger_icon {
-    width: 20px;
-    height: 2px;
-    margin-bottom: 4px;
-  }
+    .hamburger_icon {
+        width: 20px;
+        height: 2px;
+        margin-bottom: 4px;
+    }
 
-  .hamburger_icon span {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-  }
+    .hamburger_icon span {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+    }
 
-  .hamburger_icon span:not(:last-child) {
-    margin-bottom: 4px;
-  }
+    .hamburger_icon span:not(:last-child) {
+        margin-bottom: 4px;
+    }
 
-  .line {
-    width: 100%;
-    height: 3px;
-    background-color: white;
-    transition: background-color 0.3s ease;
-  }
+    .line {
+        width: 100%;
+        height: 3px;
+        background-color: white;
+        transition: background-color 0.3s ease;
+    }
 
-  .hamburger_icon:hover .line {
-    background-color: white;
-  }
-  .mobile_menu_open .line:first-child {
-    transform: translateY(7px) rotate(45deg);
-  }
+    .hamburger_icon:hover .line {
+        background-color: white;
+    }
+    .mobile_menu_open .line:first-child {
+        transform: translateY(7px) rotate(45deg);
+    }
 
-  .mobile_menu_open .line:last-child {
-    transform: translateY(-7px) rotate(-45deg);
-  }
-  .dropdown_wrapper {
-    border: 1px solid var(--main-purple-color);
-  }
+    .mobile_menu_open .line:last-child {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+    .dropdown_wrapper {
+        border: 1px solid var(--main-purple-color);
+    }
 }
