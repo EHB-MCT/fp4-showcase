@@ -386,6 +386,57 @@ const UploadProjectForm = () => {
       </div>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-top" htmlFor="previewImage">
+          Project preview image:{" "}
+          <span className="font-thin ml-3 text-pink-500">*</span>
+          <span className="font-thin ml-3 text-gray-500">(preferably square)</span>
+          <span />
+          <span
+            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
+            onMouseEnter={() => setPreviewImageTooltipVisible(true)}
+            onMouseLeave={() => setPreviewImageTooltipVisible(false)}
+          >
+            i
+          </span>
+          {previewImageTooltipVisible && (
+            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-s">
+              This image will be used on the card to preview your
+              project. Please upload an image that is preferably square. (e.g. 400x400, 600x600, 1000x1000)
+            </div>
+          )}
+        </label>
+        <input
+          required
+          ref={previewImageInputRef}
+          type="file"
+          id="previewImage"
+          name="previewImage"
+          onChange={handlePreviewImageChange}
+          accept="image/*"
+          className="border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
+        />
+      </div>
+
+      {previewImage && (
+        <div className="grid grid-cols-2 gap-3 w-full">
+          <div className="relative h-40 overflow-hidden bg-gray-400 bg-opacity-10 rounded-lg">
+            <img
+              src={URL.createObjectURL(previewImage)}
+              alt="Project Preview Image"
+              className="absolute top-0 left-0 h-full w-full object-contain pt-1"
+            />
+            <button
+              type="button"
+              onClick={handleRemovePreviewImage}
+              className="absolute top-0 right-2 text-red-500 text-3xl p-1 cursor-pointer ml-2"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      )}
+        <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
+      <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-top" htmlFor="cluster">
           Belongs to:
           <span className="font-thin ml-3 text-pink-500">*</span>
@@ -768,57 +819,8 @@ const UploadProjectForm = () => {
     </div>
 
       </div>
-      <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
-      <div className="flex flex-col gap-2 items-start w-full relative">
-        <label className="text-white flex items-top" htmlFor="previewImage">
-          Project preview image:{" "}
-          <span className="font-thin ml-3 text-pink-500">*</span>
-          <span />
-          <span
-            className="info-icon ml-1 cursor-pointer bg-gray-800 w-5 text-center rounded-sm  absolute right-0"
-            onMouseEnter={() => setPreviewImageTooltipVisible(true)}
-            onMouseLeave={() => setPreviewImageTooltipVisible(false)}
-          >
-            i
-          </span>
-          {previewImageTooltipVisible && (
-            <div className="tooltip-right o bg-gray-800  absolute right-6 text-white px-2 py-0 rounded-s">
-              This is the first image that the visitor will see from your
-              project. This image will be used on the card to preview your
-              project.
-            </div>
-          )}
-        </label>
-        <input
-          required
-          ref={previewImageInputRef}
-          type="file"
-          id="previewImage"
-          name="previewImage"
-          onChange={handlePreviewImageChange}
-          accept="image/*"
-          className="border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
-        />
-      </div>
-
-      {previewImage && (
-        <div className="grid grid-cols-2 gap-3 w-full">
-          <div className="relative h-40 overflow-hidden bg-gray-400 bg-opacity-10 rounded-lg">
-            <img
-              src={URL.createObjectURL(previewImage)}
-              alt="Project Preview Image"
-              className="absolute top-0 left-0 h-full w-full object-contain pt-1"
-            />
-            <button
-              type="button"
-              onClick={handleRemovePreviewImage}
-              className="absolute top-0 right-2 text-red-500 text-3xl p-1 cursor-pointer ml-2"
-            >
-              X
-            </button>
-          </div>
-        </div>
-      )}
+     
+     
 
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full relative">
