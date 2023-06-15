@@ -1,0 +1,27 @@
+.dropdown_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown_wrapper {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  border: 3px solid var(--main-purple-color);
+}
+
+.dropdown_wrapper a {
+  background-color: var(--main-bg-purple-color);
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 3.75rem;
+  border-bottom: 3px solid var(--main-purple-color);
+}
+
+.dropdown_wrapper a:last-child {
+  border-bottom: none;
+}
+
+.dropdown_wrapper a:hover {
+  background-color: var(--main-purple-color);
+}
