@@ -71,6 +71,17 @@ const Navigation: React.FC = () => {
       closeDropdown: handleSignOut,
       viewableFor: "all",
     },
+    {
+      title: "Sign Out",
+      href: `/`,
+      icon: {
+        name: faArrowRightFromBracket,
+        color: "#ffffff",
+        style: { width: 20, height: 20 },
+      },
+      closeDropdown: handleSignOut,
+      viewableFor: "all",
+    },
   ];
 
   useEffect(() => {
