@@ -1,4 +1,3 @@
-
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -11,6 +10,7 @@ import DottedLine from "../components/DottedLine";
 import BannerComponent from "../components/BannerComponent";
 import TitleComponent from "../components/TitleComponent";
 import FilterComponent from "../components/FilterComponent";
+import { getAllProjects } from "../lib/projects";
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -37,12 +37,10 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetch("/api/projects");
+        const data = await getAllProjects();
 
-        const dataL = await data.json();
-
-        setProjects(dataL);
-        let testData = [...dataL];
+        setProjects(data);
+        let testData = [...data];
 
         testData = testData
           .sort((a, b) => b.likeCount - a.likeCount)
@@ -101,3 +99,4 @@ export default function Home() {
       </main>
     </>
   );
+}
