@@ -23,6 +23,66 @@ const Navigation: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsOpen(false);
+  };
+
+  const handleSignOut = () => {
+    logoutUser();
+    closeDropdown();
+  };
+
+  const navDropDownItems = [
+    {
+      title: "View Profile",
+      href: user ? `/profile/${user.uid}` : `/`,
+      icon: {
+        name: faAddressCard,
+        color: "#ffffff",
+        style: { width: 20, height: 20 },
+      },
+      closeDropdown: closeDropdown,
+      viewableFor: "student",
+    },
+    {
+      title: "Add Project",
+      href: `/projects/upload`,
+      icon: {
+        name: faPlus,
+        color: "#ffffff",
+        style: { width: 20, height: 20 },
+      },
+      closeDropdown: closeDropdown,
+      viewableFor: "student",
+    },
+    {
+      title: "Sign Out",
+      href: `/`,
+      icon: {
+        name: faArrowRightFromBracket,
+        color: "#ffffff",
+        style: { width: 20, height: 20 },
+      },
+      closeDropdown: handleSignOut,
+      viewableFor: "all",
+    },
+    {
+      title: "Sign Out",
+      href: `/`,
+      icon: {
+        name: faArrowRightFromBracket,
+        color: "#ffffff",
+        style: { width: 20, height: 20 },
+      },
+      closeDropdown: handleSignOut,
+      viewableFor: "all",
+    },
+  ];
+
   useEffect(() => {
     if (user) {
       setIsLoggedIn(true);
