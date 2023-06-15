@@ -240,7 +240,9 @@ export default function Award() {
               <p className="font-light ml-2">
                 You are participating with project
                 <span className="text-fuchsia-600">
-                  "{projects.find((project) => project.awardId === id)?.title}"
+                  &#34;
+                  {projects.find((project) => project.awardId === id)?.title}
+                  &#34;
                 </span>
                 . You can still change your submission or withdraw your
                 submission.
