@@ -23,7 +23,7 @@ import { firestore } from "../../lib/firebase";
 import {
   updateProjectInFirebase,
   getProjectsByUserID,
-  getAllProject,
+  getAllProjects,
 } from "../../lib/projects";
 import WithdrawParticipationModal from "../../components/modals/WithdrawParticipationModal";
 
@@ -86,7 +86,7 @@ export default function Award() {
 
     const fetchAllProjects = async () => {
       try {
-        const projects = await getAllProject();
+        const projects = await getAllProjects();
         setProjects(projects);
         console.log(projects);
       } catch (error) {
@@ -137,7 +137,7 @@ export default function Award() {
           await updateDoc(projectRef, { awardId: null });
         }
         // The request was successful, update the projects by fetching them again
-        const updatedProjects = await getAllProject();
+        const updatedProjects = await getAllProjects();
         setProjects(updatedProjects);
 
         // The request was successful, do something
@@ -163,7 +163,7 @@ export default function Award() {
       await updateDoc(projectRef, { awardId: null });
     }
     // The request was successful, update the projects by fetching them again
-    const updatedProjects = await getAllProject();
+    const updatedProjects = await getAllProjects();
     setProjects(updatedProjects);
     setIsWithdrawModalOpen(false);
     console.log("confirm withdraw success");

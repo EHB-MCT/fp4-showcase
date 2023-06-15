@@ -127,12 +127,12 @@ input {
   border: none;
   outline: none;
   background-color: transparent;
-
 }
-input[type=text]{
+
+/*input[type="text"] {
   height: 30px;
   margin-top: 8px;
-}
+}*/
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
