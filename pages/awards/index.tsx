@@ -36,11 +36,12 @@ export default function Awards() {
 
     fetchAwardData();
     fetchUserData();
-  },  [user && user.uid]);
+  },  [user ]);
 
   useEffect(() => {
     console.log(userData); // Check the updated value of userData
   }, [userData]);
+
 
 
   return (
