@@ -26,15 +26,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     margin-top: 3rem;
     gap: 3rem;
+    width: 100%;
 }
 
 .banner_footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 80rem;
+    width: 75%;
 }
 
 .section_other_projects .projects {
@@ -47,7 +49,7 @@
 .banner_header {
     display: flex;
     flex-direction: row;
-    width: 80rem;
+    width: 75%;
     margin-top: 3rem;
 }
 

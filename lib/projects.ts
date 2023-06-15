@@ -26,6 +26,7 @@ export async function getProjectsByUserID(uid) {
             projectsSnap.forEach((doc) => {
                 const data = {
                     user: userSnap.docs[0].data(),
+                    project_id: doc.id,
                     ...doc.data(),
                 };
                 list.push(data);
@@ -58,6 +59,7 @@ export async function getProjectFromUserByType(uid, type) {
             projectsSnap.forEach((doc) => {
                 const data = {
                     user: userSnap.docs[0].data(),
+                    project_id: doc.id,
                     ...doc.data(),
                 };
                 list.push(data);
@@ -90,5 +92,22 @@ export async function getAllProjects() {
     } catch (e) {
         console.error('Error getting projects', e);
         return [];
+    }
+}
+
+export async function getProjectById(project_id) {
+    try {
+        const docRef = doc(firestore, 'projects', project_id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            return docSnap.data();
+        } else {
+            console.log('No such document!');
+            return null;
+        }
+    } catch (e) {
+        console.error('Error getting project', e);
+        return null;
     }
 }

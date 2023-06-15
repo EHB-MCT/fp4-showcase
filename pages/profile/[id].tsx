@@ -16,8 +16,9 @@ export default function Profile() {
     const { user } = useContext(UserContext);
     const [isPersonalProfile, setIsPersonalProfile] = useState(false);
     const [projects, setProjects] = useState([]);
-    const [finalwork, setFinalwork] = useState();
+    const [finalwork, setFinalwork] = useState(null);
     const [userObject, setUserObject] = useState(null);
+    const [hasFinalWork, setHasFinalWork] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -62,13 +63,11 @@ export default function Profile() {
                     backgroundPosition: 'center',
                 }}
             >
-                <div>
-                    <div className={style.banner_header}>
-                        <img src={pfp} height={50} width={50} alt="Pfp" className="mr-5" />
-                        <div>
-                            <h1>{userObject && userObject.username}</h1>
-                            <span>Multimedia & Creative Technologie - Jaar 2</span>
-                        </div>
+                <div className={style.banner_header}>
+                    <img src={pfp} height={50} width={50} alt="Pfp" className="mr-5" />
+                    <div>
+                        <h1>{userObject && userObject.username}</h1>
+                        <span>Multimedia & Creative Technologie - Jaar 2</span>
                     </div>
                 </div>
                 <div className={style.banner_footer}>
@@ -113,15 +112,12 @@ export default function Profile() {
                                 <FontAwesomeIcon icon={faPlus} width={30} height={30} />
                             </a>
                         </h1>
-                        {projects.length > 0 ? (
-                            projects.map((project, index) => {
-                                if (project.projectBelongsTo == 'finalwork') {
-                                    return <Card project={project} key={index} />;
-                                }
-                                return null; // Return null if the project belongs to 'finalwork'
-                            })
+                        {finalwork && finalwork != undefined ? (
+                            <a href={`/projects/${finalwork.project_id}`} key={finalwork.id}>
+                                <Card project={finalwork} />
+                            </a>
                         ) : (
-                            <p>Oops... You have no final work yet!</p>
+                            <p>No final work yet... Upload your project first!</p>
                         )}
                     </div>
 
@@ -136,7 +132,11 @@ export default function Profile() {
                             {projects.length > 0 ? (
                                 projects.map((project, index) => {
                                     if (project.projectBelongsTo !== 'finalwork') {
-                                        return <Card project={project} key={index} />;
+                                        return (
+                                            <a href={`/projects/${project.project_id}`} key={index}>
+                                                <Card project={project} />
+                                            </a>
+                                        );
                                     }
                                     return null; // Return null if the project belongs to 'finalwork'
                                 })
