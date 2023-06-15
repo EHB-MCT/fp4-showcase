@@ -199,7 +199,7 @@ export default function Award() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header>
           <AwardBanner award={award} />
         </header>
@@ -310,8 +310,8 @@ export default function Award() {
                         alt="Project Preview"
                       />
                       <div className="flex flex-col">
-                      <h3 className="text-white">{project.title}</h3>
-                      <p className="text-slate-500">{project.category}</p>
+                        <h3 className="text-white">{project.title}</h3>
+                        <p className="text-slate-500">{project.category}</p>
                       </div>
                     </div>
                   </div>
@@ -326,7 +326,7 @@ export default function Award() {
             </div>
           </div>
         )}
-      </main>
+      </div>
     </>
   );
 }
