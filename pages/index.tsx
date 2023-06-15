@@ -9,17 +9,29 @@ import styles from "../styles/Home.module.css";
 import DottedLine from "../components/DottedLine";
 import BannerComponent from "../components/BannerComponent";
 import TitleComponent from "../components/TitleComponent";
+import FilterComponent from "../components/FilterComponent";
 
 export default function Home() {
-  const [toggleState, setToggleState] = useState(false);
-  const [selectedTag, setSelectedTag] = useState("");
-  const [selectedCluster, setSelectedCluster] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedClusters, setSelectedClusters] = useState([]);
-  const [tags, setTags] = useState([...tagsData]); // Separate state variable for tags
-  const [clusters, setClusters] = useState([...clustersData]); // Separate state variable for clusters
   const [projects, setProjects] = useState([]);
   const [trendingProjects, setTrendingProjects] = useState([]);
+  const [showFinalWorkProjects, setShowFinalWorkProjects] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProjects, setFilteredProjects] = useState([]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    // Perform search logic here
+    // You can filter the projects data based on the search query
+    // For example:
+    const filteredProjects = projects.filter((project) =>
+      project.title.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredProjects(filteredProjects);
+  };
+
+  const handleToggle = () => {
+    setShowFinalWorkProjects(!showFinalWorkProjects);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,46 +54,6 @@ export default function Home() {
     };
     fetchData();
   }, []);
-
-  const handleToggle = () => {
-    setToggleState(!toggleState);
-  };
-
-  const handleTagChange = (event) => {
-    const tag = event.target.value;
-
-    if (!selectedTags.includes(tag)) {
-      setSelectedTags([...selectedTags, tag]);
-      const updatedTags = tags.filter((t) => t !== tag);
-      setTags(updatedTags);
-    }
-  };
-
-  const handleClusterChange = (event) => {
-    const cluster = event.target.value;
-
-    if (!selectedClusters.includes(cluster)) {
-      setSelectedClusters([...selectedClusters, cluster]);
-      const updatedClusters = clusters.filter((c) => c !== cluster);
-      setClusters(updatedClusters);
-    }
-  };
-
-  const removeSelectedTag = (tag) => {
-    const updatedTags = selectedTags.filter(
-      (selectedTag) => selectedTag !== tag
-    );
-    setSelectedTags(updatedTags);
-    setTags([...tags, tag]); // Add the removed tag back to the select options
-  };
-
-  const removeSelectedCluster = (cluster) => {
-    const updatedClusters = selectedClusters.filter(
-      (selectedCluster) => selectedCluster !== cluster
-    );
-    setSelectedClusters(updatedClusters);
-    setClusters([...clusters, cluster]); // Add the removed cluster back to the select options
-  };
 
   return (
     <>
@@ -106,81 +78,24 @@ export default function Home() {
         <BannerComponent image="/images/home-banner.jpg" title="Final Show" />
         <div className={`${styles.homeAllProjectsContainer} containerWidth`}>
           <TitleComponent title="All projects" />
-
-          <div className={styles.filterContainer}>
-            <div>
-              <form>
-                <input type="text" placeholder="Project naam" />
-                <button type="submit" className={styles.searchButton}>
-                  <span className="material-icons">search</span>
-                </button>
-              </form>
-            </div>
-            <div>
-              <select value={selectedTag} onChange={handleTagChange}>
-                {selectedTag === "" && <option value="">Tags</option>}
-                {tags.map((tag, index) => (
-                  <option key={index} value={tag}>
-                    {tag}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <select value={selectedCluster} onChange={handleClusterChange}>
-                {selectedCluster === "" && <option value="">Clusters</option>}
-                {clusters.map((cluster, index) => (
-                  <option key={index} value={cluster}>
-                    {cluster}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.filterToggleContainer}>
-              <p>Finalwork</p>
-
-              <span
-                onClick={handleToggle}
-                className={`material-icons toggle ${toggleState ? "on" : ""} ${
-                  styles.toggle
-                }`}
-              >
-                {toggleState ? "toggle_on" : "toggle_off"}
-              </span>
-            </div>
-          </div>
-          <div className={styles.selectedTagsContainer}>
-            {selectedTags.map((tag, index) => (
-              <div key={index} className={styles.selectedTag}>
-                {tag}
-                <span
-                  className={styles.removeButton}
-                  onClick={() => removeSelectedTag(tag)}
-                >
-                  X
-                </span>
-              </div>
-            ))}
-
-            {selectedClusters.map((cluster, index) => (
-              <div key={index} className={styles.selectedCluster}>
-                {cluster}
-                <span
-                  className={styles.removeButton}
-                  onClick={() => removeSelectedCluster(cluster)}
-                >
-                  X
-                </span>
-              </div>
-            ))}
-          </div>
+          <FilterComponent
+            showFinalWorkProjects={showFinalWorkProjects}
+            setShowFinalWorkProjects={setShowFinalWorkProjects}
+            onSearch={handleSearch}
+          />
         </div>
         <div
           className={`${styles.homeAllProjectsSubContainer} customGrid containerWidth`}
         >
-          {projects.map((project) => (
-            <Card key={project.id} project={project} />
-          ))}
+          {(searchQuery ? filteredProjects : projects)
+            .filter(
+              (project) =>
+                !showFinalWorkProjects ||
+                project.projectBelongsTo === "finalwork"
+            )
+            .map((project) => (
+              <Card key={project.id} project={project} />
+            ))}
         </div>
       </main>
     </>

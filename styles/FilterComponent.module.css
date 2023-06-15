@@ -1,0 +1,125 @@
+.filterContainer {
+  display: grid;
+  grid-template-columns: 50% 1fr 1fr 1fr;
+  grid-gap: 10px;
+  margin-top: 50px;
+}
+
+.filterContainer > div {
+  /* background-color: var(--main-purple-color); */
+  /* padding: 0 15px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterContainer > div select {
+  width: 100%;
+  background-color: var(--main-purple-color);
+  font-family: var(--p-font-family);
+  color: white;
+}
+
+.filterContainer > div form {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterContainer > div form button {
+  color: white;
+}
+
+.filterContainer > div form input {
+  color: white;
+  background-color: var(--main-purple-color);
+  font-family: var(--p-font-family);
+  border: none;
+  margin-top: 0;
+}
+
+.filterContainer > div form input[type="text"]::placeholder {
+  color: white;
+}
+
+.filterContainer > div form input[type="text"] {
+  width: 80%;
+}
+
+.toggle {
+  position: relative;
+  cursor: pointer;
+  color: white;
+  font-size: 50px;
+}
+
+.filterToggleContainer {
+  background: linear-gradient(
+      -45deg,
+      transparent 10px,
+      var(--main-purple-color) 0
+    )
+    top left;
+  background-repeat: no-repeat;
+  padding: 0 15px;
+}
+
+.filterToggleContainer p {
+  margin: 0;
+  color: white;
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+}
+
+.selectedTagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.selectedTag,
+.selectedCluster {
+  display: flex;
+  align-items: center;
+  background-color: var(--main-bg-purple-color);
+  border-radius: 4px;
+  padding: 5px 15px;
+  margin: 4px;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+}
+
+.clearBtn {
+  border: 2px solid red;
+}
+
+.removeButton {
+  color: red;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.filterSearchContainer {
+  background: linear-gradient(
+      135deg,
+      transparent 10px,
+      var(--main-purple-color) 0
+    )
+    top left;
+  background-repeat: no-repeat;
+  padding: 0 15px;
+}
+
+.filterTagsContainer,
+.filterCategoriesContainer {
+  background-color: var(--main-purple-color);
+}
+
+.filterTagsContainer {
+  width: 100%;
+}
