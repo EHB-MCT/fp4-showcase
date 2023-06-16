@@ -84,24 +84,21 @@ export async function getVotesOnAwardFromDocent(award_id, docent_id) {
     const voteSnap = await getDocs(q);
 
     // display ranking order as key value pair
-    const ranking = voteSnap.docs[0].data().order;
-
-    const rankingOrder = [];
-    for (const key in ranking) {
-      const pair = { key: key, value: ranking[key] };
-      rankingOrder.push(pair);
-    }
     if (!voteSnap.empty) {
-      const voteDoc = voteSnap.docs[0];
-      const vote = {
-        vote_id: voteDoc.id,
-        order: rankingOrder,
-        ...voteDoc.data(),
-      };
+      const ranking = voteSnap.docs[0].data().order;
+      const rankingOrder = [];
+      for (const key in ranking) {
+        const pair = { key: key, value: ranking[key] };
+        rankingOrder.push(pair);
 
-      console.log("Logged votes from votes.ts", vote);
-
-      return vote;
+        const voteDoc = voteSnap.docs[0];
+        const vote = {
+          vote_id: voteDoc.id,
+          order: rankingOrder,
+          ...voteDoc.data(),
+        };
+        return vote;
+      }
     } else {
       return null;
     }
