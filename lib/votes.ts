@@ -72,3 +72,23 @@ export async function getVotesOnAwardFromDocent(award_id, docent_id) {
         return null;
     }
 }
+
+export async function getTop3OnAwardFromDocent(ranking) {
+    try {
+        // Get Projects out of ranking order
+        const projectsList = [];
+        for (const rank of ranking) {
+            const projectDoc = await getDoc(doc(collection(firestore, 'projects'), rank.projectId));
+            const project = {
+                project_id: projectDoc.id,
+                ...projectDoc.data(),
+            };
+            projectsList.push(project);
+        }
+
+        return projectsList;
+    } catch (e) {
+        console.error('Error getting votes', e);
+        return null;
+    }
+}
