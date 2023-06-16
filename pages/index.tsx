@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Card from "../components/ProjectCard";
 import TrendingProjectsSlider from "../components/TrendingProjectsSlider";
@@ -18,34 +17,50 @@ export default function Home() {
   const [showFinalWorkProjects, setShowFinalWorkProjects] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedClusters, setSelectedClusters] = useState([]);
+  const [tags, setTags] = useState([...tagsData]);
+  const [clusters, setClusters] = useState([...clustersData]);
+  const [showClearButton, setShowClearButton] = useState(false);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
-    // Perform search logic here
-    // You can filter the projects data based on the search query
-    // For example:
     const filteredProjects = projects.filter((project) =>
       project.title.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredProjects(filteredProjects);
   };
 
+  const handleClearFilter = () => {
+    setSelectedTags([]);
+    setSelectedClusters([]);
+    setTags([...tagsData]);
+    setClusters([...clustersData]);
+    setShowClearButton(false);
+  };
+
   const handleToggle = () => {
     setShowFinalWorkProjects(!showFinalWorkProjects);
+  };
+
+  const handleSelectedTagsChange = (tags) => {
+    setSelectedTags(tags);
+  };
+
+  const handleSelectedClustersChange = (clusters) => {
+    setSelectedClusters(clusters);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getAllProjects();
-
         setProjects(data);
-        let testData = [...data];
 
+        let testData = [...data];
         testData = testData
           .sort((a, b) => b.likeCount - a.likeCount)
           .slice(0, 3);
-
         setTrendingProjects(testData);
       } catch (e) {
         console.error(e);
@@ -81,16 +96,27 @@ export default function Home() {
             showFinalWorkProjects={showFinalWorkProjects}
             setShowFinalWorkProjects={setShowFinalWorkProjects}
             onSearch={handleSearch}
+            onSelectedTagsChange={handleSelectedTagsChange}
+            onSelectedClustersChange={handleSelectedClustersChange}
+            onClearFilter={handleClearFilter}
           />
         </div>
         <div
-          className={`${styles.homeAllProjectsSubContainer} customGrid containerWidth`}
+          className={`${styles.homeAllProjectsSubContainer} customGrid containerWidth mb-10`}
         >
           {(searchQuery ? filteredProjects : projects)
             .filter(
               (project) =>
                 !showFinalWorkProjects ||
                 project.projectBelongsTo === "finalwork"
+            )
+            .filter((project) =>
+              selectedTags.every((tag) => project.tags.includes(tag))
+            )
+            .filter((project) =>
+              selectedClusters.every((cluster) =>
+                project.category.includes(cluster)
+              )
             )
             .map((project) => (
               <Card key={project.id} project={project} />

@@ -110,8 +110,9 @@ a {
 
 .customGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  justify-content: space-between;
+  grid-template-columns: repeat(3, calc(33% - 0.25rem));
+  gap: 0.5rem;
 }
 
 main {

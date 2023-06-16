@@ -108,17 +108,11 @@ export default function Profile() {
                     <div className={style.section_final_work}>
                         <h1 className={style.title}>
                             Final Work
-                            <a href="../projects/upload">
+                            <a href="../projects/upload" className={style.a_wrapper}>
                                 <FontAwesomeIcon icon={faPlus} width={30} height={30} />
                             </a>
                         </h1>
-                        {finalwork && finalwork != undefined ? (
-                            <a href={`/projects/${finalwork.project_id}`} key={finalwork.id}>
-                                <Card project={finalwork} />
-                            </a>
-                        ) : (
-                            <p>No final work yet... Upload your project first!</p>
-                        )}
+                        {finalwork && finalwork != undefined ? <Card project={finalwork} /> : <p>No final work yet... Upload your project first!</p>}
                     </div>
 
                     <div className={style.section_other_projects}>
@@ -132,11 +126,7 @@ export default function Profile() {
                             {projects.length > 0 ? (
                                 projects.map((project, index) => {
                                     if (project.projectBelongsTo !== 'finalwork') {
-                                        return (
-                                            <a href={`/projects/${project.project_id}`} key={index}>
-                                                <Card project={project} />
-                                            </a>
-                                        );
+                                        return <Card project={project} key={`project-${index}`} />;
                                     }
                                     return null; // Return null if the project belongs to 'finalwork'
                                 })
