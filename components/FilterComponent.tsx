@@ -11,6 +11,9 @@ const FilterComponent = ({
   showFinalWorkProjects,
   setShowFinalWorkProjects,
   onSearch,
+  onSelectedTagsChange,
+  onSelectedClustersChange,
+  onClearFilter,
 }) => {
   const [toggleState, setToggleState] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -25,7 +28,11 @@ const FilterComponent = ({
     setSelectedTags([...selectedTags, tag]);
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
+    console.log(selectedTags);
     setShowClearButton(true);
+
+    // Invoke the callback function and pass the updated selected tags
+    onSelectedTagsChange([...selectedTags, tag]);
   };
 
   const handleToggle = () => {
@@ -38,6 +45,9 @@ const FilterComponent = ({
       const updatedClusters = clusters.filter((c) => c !== cluster);
       setClusters(updatedClusters);
       setShowClearButton(true);
+
+      // Invoke the callback function and pass the updated selected clusters
+      onSelectedClustersChange([...selectedClusters, cluster]);
     }
   };
 
@@ -47,6 +57,8 @@ const FilterComponent = ({
     setTags([...tagsData]);
     setClusters([...clustersData]);
     setShowClearButton(false);
+
+    onClearFilter((prev) => !prev);
   };
 
   const removeSelectedTag = (tag) => {
@@ -55,6 +67,7 @@ const FilterComponent = ({
     );
     setSelectedTags(updatedTags);
     setTags([...tags, tag]);
+    onSelectedTagsChange(updatedTags); // Invoke the callback function with updated tags
   };
 
   const removeSelectedCluster = (cluster) => {
@@ -63,6 +76,7 @@ const FilterComponent = ({
     );
     setSelectedClusters(updatedClusters);
     setClusters([...clusters, cluster]);
+    onSelectedClustersChange(updatedClusters); // Invoke the callback function with updated clusters
   };
 
   const handleSearchSubmit = (e) => {
