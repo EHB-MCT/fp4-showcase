@@ -26,10 +26,10 @@ const WithdrawParticipationModal = ({
             </svg>
           </button>
         </div>
-        <h2 className="text-xl mb-4">Withdraw Participation</h2>
+        <h2 className="text-xl mb-4">Remove Participation</h2>
         <p className="mb-4">
           Are you sure you do not want to participate for this award anymore?
-          This means that your project will be withdrawn from the list of
+          This means that your project will be removed from the list of
           projects for this award.
         </p>
         <div className="flex justify-end space-x-2">
@@ -43,7 +43,7 @@ const WithdrawParticipationModal = ({
             className="bg-pink-600 text-white px-4 py-2 rounded"
             onClick={handleConfirmWithdrawButtonClick}
           >
-            Yes, withdraw
+            Yes, Remove
           </button>
         </div>
       </div>

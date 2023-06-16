@@ -29,7 +29,7 @@ const Navigation: React.FC = () => {
   };
 
   const closeDropdown = () => {
-    setIsOpen(false);
+    setIsOpen(false);   
   };
 
   const handleSignOut = () => {
