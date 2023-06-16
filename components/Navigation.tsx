@@ -1,4 +1,4 @@
-import { faAddressCard, faArrowRightFromBracket, faCaretDown, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faAddressCard, faArrowRightFromBracket, faCaretDown, faCaretUp, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { logoutUser } from '../lib/auth';
 import { UserContext } from '../lib/context';
 import style from '../styles/Navigation.module.css';
+import NavigationDropdown from './NavigationDropdown';
 
 const Navigation: React.FC = () => {
     const router = useRouter();
@@ -15,6 +16,7 @@ const Navigation: React.FC = () => {
     const [username, setUsername] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -27,7 +29,6 @@ const Navigation: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if (user?.uid == undefined || user?.uid == null) return;
                 const res = await fetch(`/api/users/${user.uid}`);
                 const data = await res.json();
                 setUserObject(data);
@@ -47,6 +48,55 @@ const Navigation: React.FC = () => {
         setIsOpen(false);
     };
 
+    const handleSignOut = () => {
+        logoutUser();
+        closeDropdown();
+    };
+
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+    };
+
+    const navDropDownItems = [
+        {
+            title: 'View Profile',
+            href: user ? `/profile/${user.uid}` : `/`,
+            icon: {
+                name: faAddressCard,
+                color: '#ffffff',
+                style: { width: 20, height: 20 },
+            },
+            closeDropdown: closeDropdown,
+            viewableFor: 'student',
+        },
+        {
+            title: 'Add Project',
+            href: `/projects/upload`,
+            icon: {
+                name: faPlus,
+                color: '#ffffff',
+                style: { width: 20, height: 20 },
+            },
+            closeDropdown: closeDropdown,
+            viewableFor: 'student',
+        },
+        {
+            title: 'Sign Out',
+            href: `/`,
+            icon: {
+                name: faArrowRightFromBracket,
+                color: '#ffffff',
+                style: { width: 20, height: 20 },
+            },
+            closeDropdown: handleSignOut,
+            viewableFor: 'all',
+        },
+    ];
+
     const renderLoggedInState = () => {
         if (username && isLoggedIn) {
             return (
@@ -54,37 +104,10 @@ const Navigation: React.FC = () => {
                     <div className={style.dropdown_toggle} onClick={toggleDropdown}>
                         <FontAwesomeIcon icon={faUser} color="#ffffff" style={{ width: 20, height: 20 }} />
                         {username}
-                        {isOpen && <FontAwesomeIcon icon={faCaretDown} rotation={180} color="#ffffff" style={{ width: 20, height: 20 }} />}
+                        {isOpen && <FontAwesomeIcon icon={faCaretUp} color="#ffffff" style={{ width: 20, height: 20 }} />}
                         {!isOpen && <FontAwesomeIcon icon={faCaretDown} color="#ffffff" style={{ width: 20, height: 20 }} />}
                     </div>
-                    {isOpen && (
-                        <div className={style.dropdown_wrapper}>
-                            <Link href={`/profile/${user.uid}`}>
-                                <a onClick={closeDropdown}>
-                                    <FontAwesomeIcon icon={faAddressCard} color="#ffffff" style={{ width: 20, height: 20 }} />
-                                    View Profile
-                                </a>
-                            </Link>
-                            <Link href="/projects/upload">
-                                <a className={currentRoute === '/register' ? `${style.active}` : ''} onClick={closeDropdown}>
-                                    <FontAwesomeIcon icon={faPlus} color="#ffffff" style={{ width: 20, height: 20 }} />
-                                    Add Project
-                                </a>
-                            </Link>
-                            <Link href="/register">
-                                <a
-                                    className={currentRoute === '/register' ? `${style.active}` : ''}
-                                    onClick={() => {
-                                        closeDropdown();
-                                        logoutUser();
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faArrowRightFromBracket} flip={'horizontal'} color="#ffffff" style={{ width: 20, height: 20 }} />
-                                    Sign out
-                                </a>
-                            </Link>
-                        </div>
-                    )}
+                    {isOpen && <NavigationDropdown items={navDropDownItems} user={userObject} />}
                 </div>
             );
         } else {
@@ -94,13 +117,13 @@ const Navigation: React.FC = () => {
                         <a className={currentRoute === '/register' ? `${style.active}` : ``}>Log in</a>
                     </Link>
                     {/* <span className={style.divider}>/</span>
-          <Link href="/register">
-            <a
-              className={currentRoute === "/register" ? `${style.active}` : ""}
-            >
-              Sign up
-            </a>
-          </Link> */}
+            <Link href="/register">
+              <a
+                className={currentRoute === "/register" ? `${style.active}` : ""}
+              >
+                Sign up
+              </a>
+            </Link> */}
                 </div>
             );
         }
@@ -148,7 +171,39 @@ const Navigation: React.FC = () => {
                         </Link>
                         {renderLoggedInState()}
                     </div>
+                    <div className={style.mobile_menu_toggle} onClick={toggleMobileMenu}>
+                        <div className={style.hamburger_icon}>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
                 </div>
+                {isMobileMenuOpen && (
+                    <div className={style.mobile_menu}>
+                        <div className={style.mobile_menu_links}>
+                            <div style={{ color: 'black' }} className={style.mobile_menu_close} onClick={closeMobileMenu}>
+                                X
+                            </div>
+                            <Link href="/">
+                                <a onClick={closeMobileMenu} style={{ color: 'black', paddingBottom: '4vh' }}>
+                                    Home
+                                </a>
+                            </Link>
+                            <Link href="/awards">
+                                <a onClick={closeMobileMenu} style={{ color: 'black', paddingBottom: '4vh' }}>
+                                    Awards
+                                </a>
+                            </Link>
+                            <Link href="/about">
+                                <a onClick={closeMobileMenu} style={{ color: 'black', paddingBottom: '4vh' }}>
+                                    About
+                                </a>
+                            </Link>
+                            {renderLoggedInState()}
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );

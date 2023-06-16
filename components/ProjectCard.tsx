@@ -6,6 +6,7 @@ import styles from '../styles/projectCard.module.css';
 
 const ProjectCard = ({ project }) => {
     const [user, setUser] = useState(null);
+    console.log(project);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,21 +21,27 @@ const ProjectCard = ({ project }) => {
     else
         return (
             <div className={styles.projectCardWrapper}>
-                <div className={styles.projectCardContainer} style={{ backgroundImage: `url(${project.previewImageUrl})` }}>
-                    <div className={styles.overlay}></div>
-                    <div className={styles.projectCardInformationContainer}>
-                        <div className={styles.projectCardInformationCategoryContainer}>{project.category && <p>{project.category}</p>}</div>
-                        <div className={styles.projectCardInformationSubContainer}>
-                            <div className={styles.projectCardInformationTitleContainer}>
-                                <p className={styles.projectCardInformationName}>{user && user.username}</p>
-                                <p>{project.title}</p>
-                            </div>
-                            <div className={styles.projectCardInformationLikeContainer}>
-                                <LikeProjectBtn project={project} />
+                <a href={`/projects/${project.project_id}`} key={project.id} className={styles.a_wrapper}>
+                    <div className={styles.projectCardContainer} style={{ backgroundImage: `url(${project.previewImageUrl})` }}>
+                        <div className={styles.overlay}></div>
+                        <div className={styles.projectCardInformationContainer}>
+                            <div className={styles.projectCardInformationCategoryContainer}>{project.category && <p>{project.category}</p>}</div>
+                            <div className={styles.projectCardInformationSubContainer}>
+                                <div className={styles.projectCardInformationTitleContainer}>
+                                    <a href={`/profile/${project.uid}`} key={project.id} className={styles.a_wrapper}>
+                                        <p className={styles.projectCardInformationName}>{user && user.username}</p>
+                                    </a>
+                                    <a href={`/projects/${project.project_id}`} key={project.id} className={styles.a_wrapper}>
+                                        <p>{project.title}</p>
+                                    </a>
+                                </div>
+                                <div className={styles.projectCardInformationLikeContainer}>
+                                    <LikeProjectBtn project={project} />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 {project.tags && (
                     <div className={styles.projectCategoriesContainer}>
                         <p>{project.tags.join(' / ')}</p>
