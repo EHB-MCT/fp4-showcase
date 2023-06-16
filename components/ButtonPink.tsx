@@ -20,7 +20,12 @@ const ButtonPink = ({ title, color, onClick }) => {
   };
 
   return (
-    <button type='submit'
+
+      <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+            <button type='submit'
+                   onClick={handleClick}
+                   onMouseEnter={handleMouseEnter}
+                   onMouseLeave={handleMouseLeave}
       style={{
         background: 'none',
         border: 'none',
@@ -29,11 +34,8 @@ const ButtonPink = ({ title, color, onClick }) => {
         overflow: 'hidden',
         color:'white'
       }}
-      onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+
     >
-      <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
         {!isHovered ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -84,8 +86,9 @@ const ButtonPink = ({ title, color, onClick }) => {
         >
           {title}
         </span>
+        </button>
       </div>
-    </button>
+
   );
 };
 

@@ -4,9 +4,7 @@ import { firestore, uploadProject, uploadAward } from "../lib/firebase";
 import { UserContext } from "../lib/context";
 import ButtonPink from "./ButtonPink";
 
-
 const UploadAwardForm = () => {
-
   const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -22,8 +20,6 @@ const UploadAwardForm = () => {
   // for the spinner loader animation
   const [loading, setLoading] = useState(false);
 
-
-
   const handleYearSelect = (event) => {
     const selectedYear = event.target.value;
     setYear(selectedYear);
@@ -34,7 +30,9 @@ const UploadAwardForm = () => {
     setCluster(selectedCluster);
   };
 
-  const handleCardImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCardImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const files = Array.from(event.target.files);
     const imageFiles = files.filter((file) => file.type.includes("image"));
 
@@ -46,7 +44,9 @@ const UploadAwardForm = () => {
     setCardImagePreview(imagePreviews[0]);
   };
 
-  const handleBannerImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBannerImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const files = Array.from(event.target.files);
     const imageFiles = files.filter((file) => file.type.includes("image"));
 
@@ -109,49 +109,51 @@ const UploadAwardForm = () => {
     return () => clearTimeout(timer);
   }, [uploadStatus]);
 
-
+  const onClick = () => {
+    console.log("clicked");
+  };
 
   return (
     <form
       onSubmit={handleSubmit}
       className="w-2/2 flex flex-col gap-4 items-cente p-5 rounded-xl mb-5 mt-5 border-2 border-purple-500"
->
-
+    >
       <h1 className="text-center text-white text-2xl">Upload Award</h1>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="title">
           Title:
         </label>
-        
-        <div style={{ position: 'relative' }}>
-        <svg                 width="100%"
-                height="50"
-                viewBox="0 0 570 50"
-                preserveAspectRatio="none">
-    <path
-      id="Path_1213"
-      data-name="Path 1213"
-      d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
-      transform="translate(-1061 -5889.645)"
-      fill="#202033"
-      stroke="#fff"
-      strokeWidth="2"
-      opacity="0.66"
-    />
-  </svg>
-        <input
-          placeholder="Write the award title here..."
-          type="text"
-          id="title"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          style={{ position: 'absolute', top: '1px', width:'80%' }}
-          className="border-none p-2 w-full rounded-sm bg-transparent text-white w-90 mx-4  "
-          required
-        />
-    </div>
 
+        <div style={{ position: "relative" }}>
+          <svg
+            width="100%"
+            height="50"
+            viewBox="0 0 570 50"
+            preserveAspectRatio="none"
+          >
+            <path
+              id="Path_1213"
+              data-name="Path 1213"
+              d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+              transform="translate(-1061 -5889.645)"
+              fill="#202033"
+              stroke="#fff"
+              strokeWidth="2"
+              opacity="0.66"
+            />
+          </svg>
+          <input
+            placeholder="Write the award title here..."
+            type="text"
+            id="title"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            style={{ position: "absolute", top: "1px", width: "80%" }}
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white w-90 mx-4  "
+            required
+          />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 items-start w-full">
@@ -159,63 +161,76 @@ const UploadAwardForm = () => {
           Description:
         </label>
 
-        <div style={{ position: 'relative' }}>
-        <svg                 width="100%"
-                height="115"
-                viewBox="0 0 570 115"
-                preserveAspectRatio="none">
-  <path id="Path_1266" data-name="Path 1266" d="M1618.957,6012.24v-83.484l-18.074-28.486L1062,5900.263v81.768l18.916,30.211Z" transform="translate(-1061 -5899.263)" fill="#202033" stroke="#fff" stroke-width="2" opacity="0.66"/>
-  </svg>
-  <textarea
-          placeholder="Write a description about the award..."
-          id="description"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-          style={{ position: 'absolute', top: '1px', width: '98%', height: '110px', borderRadius: '30px' }}
-          className="border-none p-2 w-full rounded-sm bg-transparent text-white"
-          required
-        />
-    </div>
-
-       
+        <div style={{ position: "relative" }}>
+          <svg
+            width="100%"
+            height="115"
+            viewBox="0 0 570 115"
+            preserveAspectRatio="none"
+          >
+            <path
+              id="Path_1266"
+              data-name="Path 1266"
+              d="M1618.957,6012.24v-83.484l-18.074-28.486L1062,5900.263v81.768l18.916,30.211Z"
+              transform="translate(-1061 -5899.263)"
+              fill="#202033"
+              stroke="#fff"
+              stroke-width="2"
+              opacity="0.66"
+            />
+          </svg>
+          <textarea
+            placeholder="Write a description about the award..."
+            id="description"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            style={{
+              position: "absolute",
+              top: "1px",
+              width: "98%",
+              height: "110px",
+              borderRadius: "30px",
+            }}
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white"
+            required
+          />
+        </div>
       </div>
-
-   
-
-
 
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="images">
           Card Image (Thumbnail) :
         </label>
-        <div style={{ position: 'relative' }}>
-        <svg                 width="100%"
-                height="50"
-                viewBox="0 0 570 50"
-                preserveAspectRatio="none">
-    <path
-      id="Path_1213"
-      data-name="Path 1213"
-      d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
-      transform="translate(-1061 -5889.645)"
-      fill="#202033"
-      stroke="#fff"
-      strokeWidth="2"
-      opacity="0.66"
-    />
-  </svg>
-  <input
-          required
-          type="file"
-          id="images"
-          name="images"
-          onChange={handleCardImageChange}
-          accept="image/*"
-          style={{ position: 'absolute', top: '1px', width:'80%' }}
-          className="border-none p-2 w-full rounded-sm bg-transparent text-white ml-5"
-        />
-    </div>
+        <div style={{ position: "relative" }}>
+          <svg
+            width="100%"
+            height="50"
+            viewBox="0 0 570 50"
+            preserveAspectRatio="none"
+          >
+            <path
+              id="Path_1213"
+              data-name="Path 1213"
+              d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+              transform="translate(-1061 -5889.645)"
+              fill="#202033"
+              stroke="#fff"
+              strokeWidth="2"
+              opacity="0.66"
+            />
+          </svg>
+          <input
+            required
+            type="file"
+            id="images"
+            name="images"
+            onChange={handleCardImageChange}
+            accept="image/*"
+            style={{ position: "absolute", top: "1px", width: "80%" }}
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white ml-5"
+          />
+        </div>
 
         {cardImagePreview && (
           <div className="relative h-40 overflow-hidden w-2/3 bg-gray-400 bg-opacity-10 rounded-lg flex items-center justify-center">
@@ -233,33 +248,35 @@ const UploadAwardForm = () => {
           Banner Image :
         </label>
 
-                <div style={{ position: 'relative' }}>
-                <svg                 width="100%"
-                height="50"
-                viewBox="0 0 570 50"
-                preserveAspectRatio="none">
-    <path
-      id="Path_1213"
-      data-name="Path 1213"
-      d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
-      transform="translate(-1061 -5889.645)"
-      fill="#202033"
-      stroke="#fff"
-      strokeWidth="2"
-      opacity="0.66"
-    />
-  </svg>
-  <input
-          required
-          type="file"
-          id="images"
-          name="images"
-          onChange={handleBannerImageChange}
-          accept="image/*"
-          style={{ position: 'absolute', top: '1px', width:'80%' }}
-          className="border-none p-2 w-full rounded-sm bg-transparent text-white w-90 mx-4  "
-        />
-    </div>
+        <div style={{ position: "relative" }}>
+          <svg
+            width="100%"
+            height="50"
+            viewBox="0 0 570 50"
+            preserveAspectRatio="none"
+          >
+            <path
+              id="Path_1213"
+              data-name="Path 1213"
+              d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+              transform="translate(-1061 -5889.645)"
+              fill="#202033"
+              stroke="#fff"
+              strokeWidth="2"
+              opacity="0.66"
+            />
+          </svg>
+          <input
+            required
+            type="file"
+            id="images"
+            name="images"
+            onChange={handleBannerImageChange}
+            accept="image/*"
+            style={{ position: "absolute", top: "1px", width: "80%" }}
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white w-90 mx-4  "
+          />
+        </div>
         {bannerImagePreview && (
           <div className="relative h-40 overflow-hidden w-2/3 bg-gray-400 bg-opacity-10 rounded-lg flex items-center justify-center">
             <img
@@ -278,8 +295,8 @@ const UploadAwardForm = () => {
       {uploadStatus === "error" && (
         <p className="text-red-500">Upload failed. Please try again.</p>
       )}
-<ButtonPink title="Submit" color='white' />
-     {/* <button
+      <ButtonPink title="Submit" color="white" onClick={onClick} />
+      {/* <button
         type="submit"
         className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 w-full"
       >
