@@ -29,7 +29,7 @@ const Navigation: React.FC = () => {
   };
 
   const closeDropdown = () => {
-    setIsOpen(false);   
+    setIsOpen(false);
   };
 
   const handleSignOut = () => {
@@ -59,6 +59,17 @@ const Navigation: React.FC = () => {
       },
       closeDropdown: closeDropdown,
       viewableFor: "student",
+    },
+    {
+      title: "Award",
+      href: user ? `/awards/upload` : `/`,
+      icon: {
+        name: faPlus,
+        color: "#ffffff",
+        style: { width: 20, height: 20 },
+      },
+      closeDropdown: closeDropdown,
+      viewableFor: "admin",
     },
     {
       title: "Sign Out",

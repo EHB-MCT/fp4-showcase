@@ -102,7 +102,7 @@ export default function Home() {
           />
         </div>
         <div
-          className={`${styles.homeAllProjectsSubContainer} customGrid containerWidth`}
+          className={`${styles.homeAllProjectsSubContainer} customGrid containerWidth mb-10`}
         >
           {(searchQuery ? filteredProjects : projects)
             .filter(
