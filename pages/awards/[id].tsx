@@ -28,6 +28,11 @@ import {
   updateProjectInFirebase,
 } from "../../lib/projects";
 import { getVotesOnAwardFromDocent, saveVote } from "../../lib/votes";
+import { Card } from "react-bootstrap";
+
+const currentDate = new Date();
+const specificDate = new Date("2023-06-14");
+const docentVoteDate = new Date("2023-06-24");
 
 export default function Award() {
   const router = useRouter();
@@ -51,6 +56,9 @@ export default function Award() {
   // docent has voted
   const [hasVoted, setHasVoted] = useState(false);
 
+  // projects to vote on
+  const [projectsToVoteOn, setProjectsToVoteOn] = useState([]);
+
   //start voting
   const [startVotingTeacher, setStartVotingTeacher] = useState(false);
   const [nominations, setNominations] = useState([]);
@@ -65,34 +73,37 @@ export default function Award() {
     setRanking([first, second, third]);
   }, [first, second, third]);
 
+  useEffect(() => {}, [projects]);
+
   useEffect(() => {
     const fetchVotes = async () => {
       try {
         const votes = await getVotesOnAwardFromDocent(id, user.uid);
+        "Votes: ", votes;
         if (votes) {
           const docentId = user.uid;
           setHasVoted(true);
           setFirst({
             awardId: id,
-            projectId: votes.order.first,
+            projectId: votes.order[0],
             docentId,
             selectedButtonId: 1,
           });
           setSecond({
             awardId: id,
-            projectId: votes.order.second,
+            projectId: votes.order[1],
             docentId,
             selectedButtonId: 2,
           });
           setThird({
             awardId: id,
-            projectId: votes.order.third,
+            projectId: votes.order[2],
             docentId,
             selectedButtonId: 3,
           });
         }
       } catch (e) {
-        console.log(e);
+        e;
       }
     };
     fetchVotes();
@@ -137,6 +148,10 @@ export default function Award() {
       try {
         const projects = await getAllProjects();
         setProjects(projects);
+        const projectsWithAwardId = projects.filter(
+          (project) => project.awardId === id
+        );
+        setProjectsToVoteOn(projectsWithAwardId);
       } catch (error) {
         console.error("Error fetching all projects:", error);
       }
@@ -200,9 +215,6 @@ export default function Award() {
           setProjects(updatedProjects);
         } else {
           setIsChangeParticipationModalOpen(false);
-          console.log(
-            "Selected project is already participating in this award"
-          );
         }
       }
     } catch (error) {
@@ -325,17 +337,14 @@ export default function Award() {
     const vote = {
       award_id: id,
       docent_id: user.uid,
-      order: {
-        first: first?.projectId,
-        second: second?.projectId,
-        third: third?.projectId,
-      },
+      order: {},
     };
+    if (first?.projectId) vote.order[0] = first.projectId;
+    if (second?.projectId) vote.order[1] = second.projectId;
+    if (third?.projectId) vote.order[2] = third.projectId;
+
     await saveVote(vote);
   };
-  const currentDate = new Date();
-  const specificDate = new Date("2023-06-17");
-  const docentVoteDate = new Date("2023-06-24");
 
   const handleProjectSelect = (project_id) => {
     setProjectSelected(project_id);
@@ -351,6 +360,36 @@ export default function Award() {
 
     // ...
   }, [id, user, projects]);
+
+  const renderMyProjectChoices = () => {
+    console.log(projects);
+    console.log(ranking);
+
+    // filter projects by awardId from the ones in ranking
+
+    let myProjectChoices = [];
+    ranking.forEach((rank, i) => {
+      const project = projects.forEach((project) => {
+        if (rank.projectId === project.project_id) {
+          myProjectChoices.push(project);
+        }
+      });
+    });
+    if (!ranking) return;
+    console.log(myProjectChoices);
+
+    return (
+      <div className="customGrid mb-5 mt-5">
+        {myProjectChoices.map((project) => {
+          return (
+            <div>
+              <ProjectCard key={project.project_id} project={project} />
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -373,6 +412,14 @@ export default function Award() {
                 Show nominated projects
               </div>
             )}
+
+            {userData && userData.role === "docent" && hasVoted && (
+              <>
+                <h1>YOUR CHOICES</h1>
+                <div className="">{renderMyProjectChoices()}</div>
+              </>
+            )}
+
             <div className="flex gap-5">
               <h1>Projects</h1>
               {userData &&
@@ -406,9 +453,11 @@ export default function Award() {
 
               {userData &&
                 userData.role === "docent" &&
+                projectsToVoteOn.length > 0 &&
                 currentDate > specificDate &&
                 currentDate < docentVoteDate &&
-                !startVotingTeacher && (
+                !startVotingTeacher &&
+                !hasVoted && (
                   <ButtonPink
                     title="Start Voting"
                     color="white"
@@ -461,28 +510,31 @@ export default function Award() {
         <div className="customGrid mt-5 mb-5 ">
           {award &&
             projects.length > 0 &&
-            projects.map((project, index) => {
-              if (project.awardId === id) {
-                return (
-                  <>
-                    <div className="relative">
-                      <ProjectCard key={project.project_id} project={project} />
-                      {startVotingTeacher && (
-                        <TeacherVoteChoiceSelect
-                          project={project}
-                          participantsCount={3}
-                          onButtonSelect={handleButtonSelect}
-                          key={`voting-${index}`}
-                          ranking={ranking}
-                        />
-                      )}
-                    </div>
-                  </>
-                );
-              }
+            projectsToVoteOn.map((project, index) => {
+              return (
+                <>
+                  <div className="relative">
+                    <ProjectCard key={project.project_id} project={project} />
+                    {startVotingTeacher && (
+                      <TeacherVoteChoiceSelect
+                        project={project}
+                        participantsCount={3}
+                        onButtonSelect={handleButtonSelect}
+                        key={`voting-${index}`}
+                        ranking={ranking}
+                      />
+                    )}
+                  </div>
+                </>
+              );
               return null;
             })}
         </div>
+        {projectsToVoteOn.length === 0 && award && (
+          <p>
+            No projects uploaded to {award.title}... Come back at a later time.
+          </p>
+        )}
         {isWithdrawModalOpen && (
           <WithdrawParticipationModal
             handleWithdrawModalClose={handleWithdrawModalClose}
