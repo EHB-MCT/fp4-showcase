@@ -18,7 +18,7 @@ import { getAllProjects, getProjectsByUserID, updateProjectInFirebase } from '..
 import { getVotesOnAwardFromDocent, saveVote } from '../../lib/votes';
 
 const currentDate = new Date();
-const specificDate = new Date('2023-06-20');
+const specificDate = new Date('2023-06-17');
 const docentVoteDate = new Date('2023-06-24');
 
 export default function Award() {
@@ -66,6 +66,9 @@ export default function Award() {
             try {
                 const votes = await getVotesOnAwardFromDocent(id, user.uid);
                 if (votes) {
+                    console.log('has voted');
+                    console.log('UserDATA', userData);
+
                     const docentId = user.uid;
                     setHasVoted(true);
                     setFirst({
@@ -149,8 +152,6 @@ export default function Award() {
         setIsModalOpen(true);
     };
     const handleWithdraweButtonClick = () => {
-        console.log('Withdraw', projectSelected);
-
         setIsWithdrawModalOpen(true);
     };
 
@@ -192,8 +193,6 @@ export default function Award() {
     const handleConfirmParticipationButtonClick = async () => {
         try {
             const selectedProject = userProjects.find((project) => project.project_id === projectSelected);
-            console.log(projectSelected);
-            console.log(selectedProject.project_id);
 
             if (selectedProject) {
                 const participatingProject = projects.find((project) => project.awardId === id);
@@ -456,6 +455,11 @@ export default function Award() {
                                 Participate
                                 <span className="text-sm"> - select your project</span>
                             </h2>
+                            {userProjects.length === 0 && (
+                                <div>
+                                    <p>You have no projects yet.</p>
+                                </div>
+                            )}
 
                             <div className="max-h-72 overflow-y-auto overflow-x-hidden mb-4">
                                 {userProjects.map((project, index) => (
@@ -478,8 +482,8 @@ export default function Award() {
                                     </div>
                                 ))}
                             </div>
-
-                            <ButtonPink title="Confirm" color="white" onClick={handleConfirmParticipationButtonClick} />
+                            {userProjects.length === 0 && <ButtonPink title="Upload" color="white" onClick={() => router.push('/projects/upload')} />}
+                            {userProjects.length > 0 && <ButtonPink title="Confirm" color="white" onClick={handleConfirmParticipationButtonClick} />}
                         </div>
                     </div>
                 )}
