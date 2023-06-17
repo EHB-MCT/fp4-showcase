@@ -18,7 +18,7 @@ import { getAllProjects, getProjectsByUserID, updateProjectInFirebase } from '..
 import { getVotesOnAwardFromDocent, saveVote } from '../../lib/votes';
 
 const currentDate = new Date();
-const specificDate = new Date('2023-06-18');
+const specificDate = new Date('2023-06-16');
 const docentVoteDate = new Date('2023-06-24');
 
 export default function Award() {
