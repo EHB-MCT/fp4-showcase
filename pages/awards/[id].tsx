@@ -18,7 +18,7 @@ import { getAllProjects, getProjectsByUserID, updateProjectInFirebase } from '..
 import { getVotesOnAwardFromDocent, saveVote } from '../../lib/votes';
 
 const currentDate = new Date();
-const specificDate = new Date('2023-06-16');
+const specificDate = new Date('2023-06-20');
 const docentVoteDate = new Date('2023-06-24');
 
 export default function Award() {
@@ -149,6 +149,8 @@ export default function Award() {
         setIsModalOpen(true);
     };
     const handleWithdraweButtonClick = () => {
+        console.log('Withdraw', projectSelected);
+
         setIsWithdrawModalOpen(true);
     };
 
@@ -190,6 +192,8 @@ export default function Award() {
     const handleConfirmParticipationButtonClick = async () => {
         try {
             const selectedProject = userProjects.find((project) => project.project_id === projectSelected);
+            console.log(projectSelected);
+            console.log(selectedProject.project_id);
 
             if (selectedProject) {
                 const participatingProject = projects.find((project) => project.awardId === id);
@@ -252,7 +256,10 @@ export default function Award() {
         }
     };
     const handleConfirmWithdrawButtonClick = async () => {
-        const participatingProject = projects.find((project) => project.awardId === id);
+        // filter through projects to find out what project has the correct award id + user id
+
+        const participatingProject = projects.find((project) => project.awardId === id && project.uid === user.uid);
+
         if (participatingProject) {
             const projectRef = doc(firestore, 'projects', participatingProject.project_id);
             await updateDoc(projectRef, { awardId: null });
@@ -307,9 +314,6 @@ export default function Award() {
     }, [id, user, projects]);
 
     const renderMyProjectChoices = () => {
-        console.log(projects);
-        console.log(ranking);
-
         // filter projects by awardId from the ones in ranking
 
         let myProjectChoices = [];
@@ -321,7 +325,6 @@ export default function Award() {
             });
         });
         if (!ranking) return;
-        console.log(myProjectChoices);
 
         return (
             <div className="customGrid mb-5 mt-5">
@@ -415,7 +418,7 @@ export default function Award() {
                         projectsToVoteOn.map((project, index) => {
                             return (
                                 <>
-                                    <div className="relative">
+                                    <div className="relative" key={index}>
                                         <ProjectCard key={project.project_id} project={project} />
                                         {startVotingTeacher && (
                                             <TeacherVoteChoiceSelect
@@ -455,14 +458,14 @@ export default function Award() {
                             </h2>
 
                             <div className="max-h-72 overflow-y-auto overflow-x-hidden mb-4">
-                                {userProjects.map((project) => (
+                                {userProjects.map((project, index) => (
                                     <div
                                         className={`flex-shrink-0 w-full h-full bg-slate-800 rounded-sm p-1 mb-2 cursor-pointer ${
                                             project.project_id === projectSelected
                                                 ? 'border-pink-500 border-solid border-2 '
                                                 : 'border-solid border-2 border-slate-800'
                                         }`}
-                                        key={project.project_id}
+                                        key={index}
                                         onClick={() => handleProjectSelect(project.project_id)}
                                     >
                                         <div className="flex items-center">
@@ -497,14 +500,14 @@ export default function Award() {
                             </h2>
 
                             <div className="max-h-72 overflow-y-auto overflow-x-hidden mb-4">
-                                {userProjects.map((project) => (
+                                {userProjects.map((project, index) => (
                                     <div
                                         className={`flex-shrink-0 w-full h-full bg-slate-800 rounded-sm p-1 mb-2 cursor-pointer ${
                                             project.project_id === projectSelected
                                                 ? 'border-pink-500 border-solid border-2 '
                                                 : 'border-solid border-2 border-slate-800'
                                         }`}
-                                        key={project.project_id}
+                                        key={index}
                                         onClick={() => handleProjectSelect(project.project_id)}
                                     >
                                         <div className="flex items-center">
