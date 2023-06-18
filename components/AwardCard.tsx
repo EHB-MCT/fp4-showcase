@@ -11,6 +11,7 @@ const AwardCard = ({award}) => {
 
   return (
     <div className="bg-slate-500 w-full h-full"  onClick={handleCardClick}>
+      <img src={award.cardImageUrl} alt="" className="src" />
         <h2>{award.title}</h2>
         <p>{award.description}</p>
     </div>
