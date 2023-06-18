@@ -15,11 +15,11 @@ import styles from '../../styles/Awards.module.css';
 import { Card } from 'react-bootstrap';
 import WithdrawParticipationModal from '../../components/modals/WithdrawParticipationModal';
 import { getAllProjects, getProjectsByUserID, updateProjectInFirebase } from '../../lib/projects';
-import { getVotesOnAwardFromDocent, saveVote } from '../../lib/votes';
+import { getGlobalNominatedProjects, getVotesOnAwardFromDocent, saveVote } from '../../lib/votes';
 
 const currentDate = new Date();
-const specificDate = new Date('2023-06-17');
-const docentVoteDate = new Date('2023-06-24');
+const specificDate = new Date('2023-06-16');
+const docentVoteDate = new Date('2023-06-16');
 
 export default function Award() {
     const router = useRouter();
@@ -55,6 +55,9 @@ export default function Award() {
     const [third, setThird] = useState(null);
     const [ranking, setRanking] = useState([]);
 
+    // Global Nominated Projects
+    const [top3Projects, setTop3Projects] = useState(null);
+
     useEffect(() => {
         setRanking([first, second, third]);
     }, [first, second, third]);
@@ -66,9 +69,6 @@ export default function Award() {
             try {
                 const votes = await getVotesOnAwardFromDocent(id, user.uid);
                 if (votes) {
-                    console.log('has voted');
-                    console.log('UserDATA', userData);
-
                     const docentId = user.uid;
                     setHasVoted(true);
                     setFirst({
@@ -338,6 +338,16 @@ export default function Award() {
         );
     };
 
+    useEffect(() => {
+        const fetchGlobalNominatedProjects = async () => {
+            const data = await getGlobalNominatedProjects(id);
+            console.log(data);
+
+            setTop3Projects(data);
+        };
+        fetchGlobalNominatedProjects();
+    }, [id]);
+
     return (
         <>
             <Head>
@@ -356,7 +366,9 @@ export default function Award() {
                         {currentDate > docentVoteDate && (
                             <div className="">
                                 <h1>Nominated Projects</h1>
-                                Show nominated projects
+                                <div className="customGrid mt-5 mb-5 ">
+                                    {top3Projects && top3Projects.map((project, index) => <ProjectCard key={index} project={project} />)}
+                                </div>
                             </div>
                         )}
 
