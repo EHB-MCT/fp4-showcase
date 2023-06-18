@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext ,useRef} from "react";
 import tagsData from "../data/tags.json";
 import { firestore, uploadProject, uploadAward } from "../lib/firebase";
 import { UserContext } from "../lib/context";
@@ -8,28 +8,50 @@ const UploadAwardForm = () => {
   const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [cluster, setCluster] = useState("");
+  const [category, setCategory] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
-  const [year, setYear] = useState("");
+
   const [cardImage, setCardImage] = useState(null);
   const [bannerImage, setBannerImage] = useState(null);
+  const [winnerBadgeImage, setWinnerBadgeImage] = useState(null);
   const [cardImagePreview, setCardImagePreview] = useState(null);
   const [bannerImagePreview, setBannerImagePreview] = useState(null);
+  const [winnerBadgeImagePreview, setWinnerBadgeImagePreview] = useState(null);
+
   // for the error messages
   const [uploadStatus, setUploadStatus] = useState(null);
   // for the spinner loader animation
   const [loading, setLoading] = useState(false);
 
-  const handleYearSelect = (event) => {
-    const selectedYear = event.target.value;
-    setYear(selectedYear);
+
+  // file refs for each input field
+  const cardImageRef = useRef(null);
+  const bannerImageRef = useRef(null);
+  const winnerBadgeImageRef = useRef(null)
+
+
+  // does the award have a category, "yes" = true
+  const [awardBelongsToCategory, setAwardBelongsToCategory] = useState(false);
+
+ 
+
+  const handleCategorySelect = (event) => {
+
+    const selectedCategory = event.target.value;
+
+    setCategory(selectedCategory);
+
   };
 
-  const handleClusterSelect = (event) => {
-    const selectedCluster = event.target.value;
-    setCluster(selectedCluster);
-  };
 
+  const handleAwardBelongsToSelect = (event) => {
+    const value = event.target.value === 'true';
+    if (!value){
+      setCategory("");
+    }
+    setAwardBelongsToCategory(value);
+  };
+  
   const handleCardImageChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -58,6 +80,20 @@ const UploadAwardForm = () => {
     setBannerImagePreview(imagePreviews[0]);
   };
 
+  const handleWinnerBadgeImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = Array.from(event.target.files);
+    const imageFiles = files.filter((file) => file.type.includes("image"));
+
+    if (imageFiles.length > 0) {
+      setWinnerBadgeImage(imageFiles[0]);
+    }
+
+    const imagePreviews = imageFiles.map((file) => URL.createObjectURL(file));
+    setWinnerBadgeImagePreview(imagePreviews[0]);
+  };
+
   const handleDeleteImage = (index) => {
     setImageFiles((prevImageFiles) => {
       const updatedImageFiles = [...prevImageFiles];
@@ -74,8 +110,10 @@ const UploadAwardForm = () => {
     const project = {
       title,
       description,
+      category,
       cardImage,
       bannerImage,
+      winnerBadgeImage,
       currentYear: getCurrentYear,
     };
 
@@ -95,9 +133,23 @@ const UploadAwardForm = () => {
     setImageFiles([]);
     setCardImage(null);
     setBannerImage(null);
+    setWinnerBadgeImage(null);
     setCardImagePreview(null);
     setBannerImagePreview(null);
+    setWinnerBadgeImagePreview(null);
+    setAwardBelongsToCategory(false);
+    // Reset the file input field
+    cardImageRef.current.value = "";
+    bannerImageRef.current.value = "";
+    winnerBadgeImageRef.current.value = ""; 
+
   };
+
+  useEffect (( ) => {
+    console.log(awardBelongsToCategory);
+    console.log(category);
+  
+  },[category,awardBelongsToCategory,title,description])
 
   useEffect(() => {
     let timer;
@@ -122,7 +174,7 @@ const UploadAwardForm = () => {
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="title">
-          Title:
+          Title: <span className="font-thin ml-3 text-pink-500">*</span>
         </label>
 
         <div style={{ position: "relative" }}>
@@ -158,7 +210,7 @@ const UploadAwardForm = () => {
 
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="description">
-          Description:
+          Description: <span className="font-thin ml-3 text-pink-500">*</span>
         </label>
 
         <div style={{ position: "relative" }}>
@@ -196,11 +248,80 @@ const UploadAwardForm = () => {
           />
         </div>
       </div>
+      <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
+
+      <div>
+      <label className="text-white flex items-top" htmlFor="category">
+        Does the award belong to a category?:
+       
+      </label>
+
+      <div>
+        <input
+          type="radio"
+          id="yes"
+          name="awardBelongsTo"
+          value="true"
+          checked={awardBelongsToCategory === true}
+          onChange={handleAwardBelongsToSelect}
+        />
+        <label htmlFor="yes">Yes</label>
+      </div>
+
+      <div>
+        <input
+          type="radio"
+          id="no"
+          name="awardBelongsTo"
+          value="false"
+          checked={awardBelongsToCategory === false}
+          onChange={handleAwardBelongsToSelect}
+        />
+        <label htmlFor="no">No</label>
+      </div>
+    </div>
+
+      {awardBelongsToCategory !== false ? (
+        <div className="flex flex-col gap-2 items-start w-full relative">
+          <label className="text-white flex items-top" htmlFor="category">
+            Choose Category:
+            <span className="font-thin ml-3 text-pink-500">*</span>
+           
+          
+         
+          </label>
+
+          <select
+            required
+            placeholder="category select"
+            id="category"
+            value={category}
+            onChange={handleCategorySelect}
+            className=" border-gray-300 p-2 w-full rounded-l-sm bg-gray-700 text-white"
+          >
+            <option value="" disabled hidden>
+              Choose
+            </option>
+
+            <option value="Motion">Motion</option>
+
+            <option value="Web & App">Web & App</option>
+
+            <option value="Emerging Technology">Emerging Technology</option>
+
+            <option value="Extended Reality">Extended Reality</option>
+            
+            <option value="Finalwork">Finalwork</option>
+          </select>
+        </div>
+      ) : null}
+
 
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="images">
-          Card Image (Thumbnail) :
+          Card Image (Thumbnail) :{" "}
+          <span className="font-thin ml-3 text-pink-500">*</span>
         </label>
         <div style={{ position: "relative" }}>
           <svg
@@ -229,6 +350,7 @@ const UploadAwardForm = () => {
             accept="image/*"
             style={{ position: "absolute", top: "1px", width: "80%" }}
             className="border-none p-2 w-full rounded-sm bg-transparent text-white ml-5"
+            ref={cardImageRef}
           />
         </div>
 
@@ -245,7 +367,7 @@ const UploadAwardForm = () => {
       <hr className="h-px my-3 bg-gray-200 border-0 w-full" />
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="images">
-          Banner Image :
+          Banner Image : <span className="font-thin ml-3 text-pink-500">*</span>
         </label>
 
         <div style={{ position: "relative" }}>
@@ -275,6 +397,7 @@ const UploadAwardForm = () => {
             accept="image/*"
             style={{ position: "absolute", top: "1px", width: "80%" }}
             className="border-none p-2 w-full rounded-sm bg-transparent text-white w-90 mx-4  "
+            ref={bannerImageRef}
           />
         </div>
         {bannerImagePreview && (
@@ -282,6 +405,52 @@ const UploadAwardForm = () => {
             <img
               src={bannerImagePreview}
               alt="Banner Image Preview"
+              className="h-full w-full object-contain"
+            />
+          </div>
+        )}
+      </div>
+      <hr className="h-px my-3 bg-gray-200 border-0 w-full" />
+      <div className="flex flex-col gap-2 items-start w-full">
+        <label className="text-white" htmlFor="images">
+          Winner Badge Image : <span className="font-thin ml-3 text-pink-500">*</span>
+        </label>
+        <div style={{ position: "relative" }}>
+          <svg
+            width="100%"
+            height="50"
+            viewBox="0 0 570 50"
+            preserveAspectRatio="none"
+          >
+            <path
+              id="Path_1213"
+              data-name="Path 1213"
+              d="M1618.957,5931.394v-27.36l-18.019-13.388-538.938,1.6v27.544l17.982,11.6Z"
+              transform="translate(-1061 -5889.645)"
+              fill="#202033"
+              stroke="#fff"
+              strokeWidth="2"
+              opacity="0.66"
+            />
+          </svg>
+          <input
+            required
+            type="file"
+            id="images"
+            name="images"
+            onChange={handleWinnerBadgeImageChange}
+            accept="image/*"
+            style={{ position: "absolute", top: "1px", width: "80%" }}
+            className="border-none p-2 w-full rounded-sm bg-transparent text-white ml-5"
+            ref={winnerBadgeImageRef}
+          />
+        </div>
+
+        {winnerBadgeImagePreview && (
+          <div className="relative h-40 overflow-hidden w-2/3 bg-gray-400 bg-opacity-10 rounded-lg flex items-center justify-center">
+            <img
+              src={winnerBadgeImagePreview}
+              alt="Winner Badge Image Preview"
               className="h-full w-full object-contain"
             />
           </div>

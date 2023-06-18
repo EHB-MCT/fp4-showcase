@@ -169,7 +169,7 @@ export async function uploadProject(data){
 
 
 export async function uploadAward(data) {
-  const { cardImage, bannerImage, ...restData } = data;
+  const { cardImage, bannerImage,winnerBadgeImage, ...restData } = data;
 
   // Upload the card image and get its download URL
   const cardImageUrl = await uploadImageAndGetUrl(cardImage, "cardImage");
@@ -177,12 +177,16 @@ export async function uploadAward(data) {
   // Upload the banner image and get its download URL
   const bannerImageUrl = await uploadImageAndGetUrl(bannerImage, "bannerImage");
 
+  // Upload the winner badge image and get its download URL
+  const winnerBadgeImageUrl = await uploadImageAndGetUrl(winnerBadgeImage, "bannerImage");
+
+
   // Update the data with the download URLs
   const updatedData = {
     ...restData,
     cardImageUrl,
     bannerImageUrl,
-    
+    winnerBadgeImageUrl,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   };
@@ -200,6 +204,7 @@ export async function uploadAward(data) {
   }
 }
 
+// upload the image to the storage "images" and get the the download to save in the collection "awards" document for this award.
 async function uploadImageAndGetUrl(file, imageName) {
   return new Promise((resolve, reject) => {
     const storageRef = ref(storage, `images/${imageName}_${file.name}`);
