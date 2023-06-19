@@ -22,11 +22,11 @@ const BannerComponent = ({ mobileImage, desktopImage, title }) => {
             <h2>Tune in</h2>
             <p>
               Prepare to be part of the thrilling countdown during our exciting
-              livestream event, where you&apos;ll experience the perfect blend of
-              anticipation and excitement in a user-friendly digital
+              livestream event, where you&apos;ll experience the perfect blend
+              of anticipation and excitement in a user-friendly digital
               extravaganza!
             </p>
-            <ButtonPink title="join us"></ButtonPink>
+            <ButtonPink title={"join us"} onClick={() => {}}></ButtonPink>
           </div>
         </div>
       </div>
