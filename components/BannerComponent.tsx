@@ -26,7 +26,11 @@ const BannerComponent = ({ mobileImage, desktopImage, title }) => {
               of anticipation and excitement in a user-friendly digital
               extravaganza!
             </p>
-            <ButtonPink title={"join us"} onClick={() => {}}></ButtonPink>
+            <ButtonPink
+              title={"join us"}
+              color="Pink"
+              onClick={() => {}}
+            ></ButtonPink>
           </div>
         </div>
       </div>
