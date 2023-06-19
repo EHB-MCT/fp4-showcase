@@ -11,6 +11,7 @@ import TitleComponent from "../components/TitleComponent";
 import FilterComponent from "../components/FilterComponent";
 import { getAllProjects } from "../lib/projects";
 import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -51,6 +52,18 @@ export default function Home() {
 
   const handleSelectedClustersChange = (clusters) => {
     setSelectedClusters(clusters);
+  };
+  const staggerVariant = {
+    visible: {
+      opacity: 1,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+      },
+    },
+    hidden: {
+      opacity: 0,
+    },
   };
 
   useEffect(() => {
