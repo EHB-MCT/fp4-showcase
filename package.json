@@ -14,7 +14,10 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "bootstrap": "^5.3.0",
+    "class-variance-authority": "^0.6.0",
+    "clsx": "^1.2.1",
     "firebase": "^9.22.1",
+    "lucide-react": "^0.246.0",
     "next": "12.3.1",
     "nextjs-redirect": "^6.0.1",
     "react": "18.2.0",
@@ -23,7 +26,9 @@
     "react-firebase-hooks": "^5.1.1",
     "react-hot-toast": "^2.4.1",
     "react-slick": "^0.29.0",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "tailwind-merge": "^1.13.2",
+    "tailwindcss-animate": "^1.0.6"
   },
   "devDependencies": {
     "@types/node": "20.2.5",
