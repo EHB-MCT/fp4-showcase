@@ -145,3 +145,17 @@ input:-webkit-autofill:active {
   height: 30px;
   margin-top: 8px;
 }
+
+@media (max-width: 767px) {
+  .customGrid {
+    display: grid;
+    grid-template-columns: repeat(1, calc(100%));
+  }
+  .containerWidth {
+    width: 85%;
+  }
+
+  body {
+    width: 100vw;
+  }
+}

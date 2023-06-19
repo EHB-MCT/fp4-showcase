@@ -12,3 +12,34 @@
   flex-direction: column;
   row-gap: 50px;
 }
+
+.bannerImageContainerMobile {
+  width: 100%;
+  height: 800px;
+  background-size: cover;
+  background-position: center;
+  display: none;
+}
+
+.bannerImageContainerDesktop {
+  width: 100%;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .bannerImageContainerMobile {
+    display: block;
+  }
+
+  .bannerImageContainerDesktop {
+    display: none;
+  }
+
+  .bannerContainer {
+    background-color: var(--main-pink-color);
+    padding: 50px 0;
+  }
+}
