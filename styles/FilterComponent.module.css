@@ -50,8 +50,12 @@
 .toggle {
   position: relative;
   cursor: pointer;
-  color: white;
+  color: #ffffff;
   font-size: 50px;
+}
+
+.toggle.on {
+  color: var(--main-lightblue-color);
 }
 
 .filterToggleContainer {
@@ -122,6 +126,13 @@
 
 .filterTagsContainer {
   width: 100%;
+}
+
+.toggleOnOff {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5px;
 }
 
 @media (max-width: 767px) {

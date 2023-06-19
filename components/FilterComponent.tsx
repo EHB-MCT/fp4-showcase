@@ -134,15 +134,17 @@ const FilterComponent = ({
         </div>
         <div className={styles.filterToggleContainer}>
           <p>Finalwork</p>
-
-          <span
-            onClick={() => setShowFinalWorkProjects(!showFinalWorkProjects)}
-            className={`material-icons toggle ${
-              showFinalWorkProjects ? "on" : ""
-            } ${styles.toggle}`}
-          >
-            {showFinalWorkProjects ? "toggle_on" : "toggle_off"}
-          </span>
+          <div className={styles.toggleOnOff}>
+            <p>{showFinalWorkProjects ? "On" : "Off"}</p>
+            <span
+              onClick={() => setShowFinalWorkProjects(!showFinalWorkProjects)}
+              className={`material-icons toggle ${
+                showFinalWorkProjects ? styles.on : ""
+              } ${styles.toggle}`}
+            >
+              {showFinalWorkProjects ? "toggle_on" : "toggle_off"}
+            </span>
+          </div>
         </div>
       </div>
       <div className={styles.selectedTagsContainer}>

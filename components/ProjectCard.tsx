@@ -22,6 +22,7 @@ const ProjectCard = ({ project }) => {
       opacity: 0,
     },
   };
+
   useEffect(() => {
     const fetchData = async () => {
       if (project.uid == undefined || project.uid == null) return;
@@ -34,6 +35,7 @@ const ProjectCard = ({ project }) => {
   if (!project) return null;
   else
     return (
+
       <div className={`${styles.projectCardWrapper} ${styles.neonEffect}`}>
         <motion.div
           className={`${styles.projectCardWrapper} ${styles.neonEffect}`}
@@ -78,12 +80,23 @@ const ProjectCard = ({ project }) => {
               </div>
             </div>
           </div>
-          {project.tags && (
-            <div className={styles.projectCategoriesContainer}>
-              <p>{project.tags.join(" / ")}</p>
-            </div>
-          )}
+         {project.tags.slice(0, 4).map(
+              (
+                tag,
+                index // Use the slice(0, 3) method to get only the first three tags
+              ) => (
+                <div className={styles.projectCategoryContainer} key={index}>
+                  <p>{tag}</p>
+                </div>
+              )
+            )}
+            {project.tags.length > 4 && ( // Check if there are more than 3 tags
+              <div className={styles.projectCategoryContainer}>
+                <p>...</p>
+              </div>
+            )}
         </motion.div>
+
       </div>
     );
 };
