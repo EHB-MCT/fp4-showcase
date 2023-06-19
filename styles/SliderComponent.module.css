@@ -19,9 +19,9 @@
   /* transform: translateX(-${startIndex * 100}%); */
 }
 
-.sliderContainer div {
+/* .sliderContainer div {
   width: 25%;
-}
+} */
 
 .navigation {
   display: flex;
