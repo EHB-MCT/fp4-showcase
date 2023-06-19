@@ -123,3 +123,9 @@
 .filterTagsContainer {
   width: 100%;
 }
+
+@media (max-width: 767px) {
+  .filterContainer {
+    display: none;
+  }
+}

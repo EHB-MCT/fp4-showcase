@@ -89,7 +89,11 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <BannerComponent image="/images/home-banner.jpg" title="Final Show" />
+        <BannerComponent
+          mobileImage="/images/home-banner-mobile.jpg"
+          desktopImage="/images/home-banner.jpg"
+          title="Final Show"
+        />
         <div className={`${styles.homeAllProjectsContainer} containerWidth`}>
           <TitleComponent title="All projects" />
           <FilterComponent
