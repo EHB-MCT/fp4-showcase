@@ -4,12 +4,19 @@ import React from "react";
 import styles from "../styles/BannerComponent.module.css";
 import TitleComponent from "./TitleComponent";
 
-const BannerComponent = ({ image, title }) => {
+const BannerComponent = ({ mobileImage, desktopImage, title }) => {
   return (
     <div className={styles.bannerContainer}>
       <div className="containerWidth">
-        <TitleComponent title="Final Show" />
-        <img src={image} alt="Home Banner" />
+        <TitleComponent title={title} />
+        <div
+          className={styles.bannerImageContainerMobile}
+          style={{ backgroundImage: `url(${mobileImage})` }}
+        ></div>
+        <div
+          className={styles.bannerImageContainerDesktop}
+          style={{ backgroundImage: `url(${desktopImage})` }}
+        ></div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { addDoc, collection, doc } from 'firebase/firestore';
+import {sendPasswordResetEmail, confirmPasswordReset} from 'firebase/auth';
 import { auth, firestore } from '../lib/firebase';
 
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -66,4 +67,18 @@ export async function logoutUser() {
         const errorMessage = error.message;
         return error;
     }
+}
+
+
+
+export const passwordReset = async (email: string) => {
+    return await sendPasswordResetEmail(auth, email)
+}
+
+export const confirmThePasswordReset = async (
+oobCode:string, newPassword:string
+) => {
+if(!oobCode && !newPassword) return;
+
+return await confirmPasswordReset(auth, oobCode, newPassword)
 }

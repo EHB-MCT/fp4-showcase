@@ -79,15 +79,22 @@ const FilterComponent = ({
     onSelectedClustersChange(updatedClusters); // Invoke the callback function with updated clusters
   };
 
+  // const handleSearchSubmit = (e) => {
+  //   e.preventDefault();
+  //   onSearch(searchQuery);
+  //   setSearchQuery("");
+  //   setIsFormSubmitted(true);
+  // };
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    onSearch(searchQuery);
-    setSearchQuery("");
     setIsFormSubmitted(true);
   };
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    const query = e.target.value;
+    setSearchQuery(query);
+    onSearch(query); // Invoke the callback function with the search query
   };
 
   return (
