@@ -4,10 +4,24 @@ import React, { useEffect, useState } from "react";
 import LikeProjectBtn from "../components/LikeProjectBtn";
 import { getUserById } from "../lib/users";
 import styles from "../styles/projectCard.module.css";
+import { motion } from "framer-motion";
 
 const ProjectCard = ({ project }) => {
   const router = useRouter();
   const [user, setUser] = useState(null);
+
+  const staggerVariant = {
+    visible: {
+      opacity: 1,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+      },
+    },
+    hidden: {
+      opacity: 0,
+    },
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,49 +35,52 @@ const ProjectCard = ({ project }) => {
   if (!project) return null;
   else
     return (
-      <div className={styles.projectCardWrapper}>
-        <div
-          onClick={() => {
-            router.push(`/projects/${project.project_id}`);
-          }}
-          className={styles.projectCardContainer}
-          style={{ backgroundImage: `url(${project.previewImageUrl})` }}
+
+      <div className={`${styles.projectCardWrapper} ${styles.neonEffect}`}>
+        <motion.div
+          className={`${styles.projectCardWrapper} ${styles.neonEffect}`}
+          variants={staggerVariant}
+          initial="hidden"
+          animate="visible"
         >
-          <div className={styles.overlay}></div>
-          <div className={styles.projectCardInformationContainer}>
-            <div className={styles.projectCardInformationCategoryContainer}>
-              {project.category && <p>{project.category}</p>}
-            </div>
-            <div className={styles.projectCardInformationSubContainer}>
-              <div className={styles.projectCardInformationTitleContainer}>
-                <a
-                  href={`/profile/${project.uid}`}
-                  key={project.id}
-                  className={styles.a_wrapper}
-                >
-                  <p className={styles.projectCardInformationName}>
-                    {user && user.username}
-                  </p>
-                </a>
-                <a
-                  href={`/projects/${project.project_id}`}
-                  key={project.id}
-                  className={styles.a_wrapper}
-                >
-                  <p className={styles.projectCardInformationTitle}>
-                    {project.title}
-                  </p>
-                </a>
+          <div
+            onClick={() => {
+              router.push(`/projects/${project.project_id}`);
+            }}
+            className={styles.projectCardContainer}
+            style={{ backgroundImage: `url(${project.previewImageUrl})` }}
+          >
+            <div className={styles.overlay}></div>
+            <div className={styles.projectCardInformationContainer}>
+              <div className={styles.projectCardInformationCategoryContainer}>
+                {project.category && <p>{project.category}</p>}
               </div>
-              <div className={styles.projectCardInformationLikeContainer}>
-                <LikeProjectBtn project={project} />
+              <div className={styles.projectCardInformationSubContainer}>
+                <div className={styles.projectCardInformationTitleContainer}>
+                  <a
+                    href={`/profile/${project.uid}`}
+                    key={project.id}
+                    className={styles.a_wrapper}
+                  >
+                    <p className={styles.projectCardInformationName}>
+                      {user && user.username}
+                    </p>
+                  </a>
+                  <a
+                    href={`/projects/${project.project_id}`}
+                    key={project.id}
+                    className={styles.a_wrapper}
+                  >
+                    <p>{project.title}</p>
+                  </a>
+                </div>
+                <div className={styles.projectCardInformationLikeContainer}>
+                  <LikeProjectBtn project={project} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {project.tags && (
-          <div className={styles.projectCategoriesContainer}>
-            {project.tags.slice(0, 4).map(
+         {project.tags.slice(0, 4).map(
               (
                 tag,
                 index // Use the slice(0, 3) method to get only the first three tags
@@ -78,8 +95,8 @@ const ProjectCard = ({ project }) => {
                 <p>...</p>
               </div>
             )}
-          </div>
-        )}
+        </motion.div>
+
       </div>
     );
 };

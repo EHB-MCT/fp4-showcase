@@ -1,7 +1,32 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "../styles/DropdownComponent.module.css";
+import { useAnimate, stagger } from "framer-motion";
+import { motion } from "framer-motion";
 
+const staggerVariant = {
+  visible: {
+    opacity: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+  hidden: {
+    opacity: 0,
+  },
+};
+
+const staggerChildVariant = {
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+};
 const DropdownComponent = ({
   options,
   dropdownName,
@@ -37,7 +62,12 @@ const DropdownComponent = ({
         {dropdownName} <span className="material-icons">arrow_drop_down</span>
       </div>
       {isOpen && (
-        <div className={`${styles.dropdownContent} dropdown`}>
+        <motion.div
+          className={`${styles.dropdownContent} dropdown`}
+          variants={staggerVariant}
+          initial="hidden"
+          animate="visible"
+        >
           <div className={styles.dropdownSearchContainer}>
             <input
               type="text"
@@ -48,7 +78,11 @@ const DropdownComponent = ({
             <span className="material-icons">search</span>
           </div>
           {filteredOptions.map((option, index) => (
-            <div key={index} className={styles.dropdownOption}>
+            <motion.div
+              key={index}
+              className={styles.dropdownOption}
+              variants={staggerChildVariant}
+            >
               <p onClick={() => handleOptionSelect(option)}>{option}</p>
               {selectedOptions.includes(option) && (
                 <span
@@ -58,9 +92,9 @@ const DropdownComponent = ({
                   X
                 </span>
               )}
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

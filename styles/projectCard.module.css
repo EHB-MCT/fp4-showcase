@@ -167,3 +167,13 @@
 .a_wrapper:hover {
   color: var(--main-lightblue-color);
 }
+
+.neonEffect {
+  /* Existing styles */
+  transition: box-shadow 0.3s ease;
+}
+
+.neonEffect:hover {
+  box-shadow: 0 0 0.2rem #7224be, 0 0 0.2rem #7224be, 0 0 0.2rem #7224be,
+    0 0 0.2rem #7224be, 0 0 0.2rem #7224be, inset 0 0 0.2rem #7224be;
+}
