@@ -18,7 +18,7 @@ const AwardBanner = ({ award }) => {
           <div className={styles.content}>
             <h1>{award.title}</h1>
             <DottedLine />
-            <p>{award.description} </p>
+            <p>{award.description}</p>
           </div>
         </div>
       </div>

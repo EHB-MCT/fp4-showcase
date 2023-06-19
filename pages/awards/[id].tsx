@@ -181,7 +181,7 @@ export default function Award() {
       }
     };
     fetchAllProjects();
-  }, [id, user, projectsToVoteOn]);
+  }, [id, user]); // INFINITE LOOP WAS HERE
 
   const handleStartVotingButtonClick = () => {
     setStartVotingTeacher(true);
@@ -203,8 +203,6 @@ export default function Award() {
         const participatingProject = projects.find(
           (project) => project.awardId === id && project.uid === user.uid
         );
-        console.log("participatingProject", participatingProject);
-        console.log("selectedProject", selectedProject);
 
         // If the selected project is not already participating in this award
         if (participatingProject) {
@@ -470,19 +468,19 @@ export default function Award() {
                   <div className="">{renderMyProjectChoices()}</div>
                 </>
               )}
+            <div className="flex gap-5">
+              <h1>Submitted Projects</h1>
+              {userData &&
+                userData.role === "student" &&
+                currentDate < participateDeadline &&
+                !hasParticipated && (
+                  <ButtonPink
+                    title="Participate"
+                    color="white"
+                    onClick={handleParticipateButtonClick}
+                  />
+                )}
 
-              <div className="flex gap-5">
-                <h1>Projects</h1>
-                {userData &&
-                  userData.role === "student" &&
-                  currentDate < participateDeadline &&
-                  !hasParticipated && (
-                    <ButtonPink
-                      title="Participate"
-                      color="white"
-                      onClick={handleParticipateButtonClick}
-                    />
-                  )}
 
                 {userData &&
                   userData.role === "student" &&
