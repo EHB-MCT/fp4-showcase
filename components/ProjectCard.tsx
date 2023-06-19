@@ -35,7 +35,6 @@ const ProjectCard = ({ project }) => {
   if (!project) return null;
   else
     return (
-
       <div className={`${styles.projectCardWrapper} ${styles.neonEffect}`}>
         <motion.div
           className={`${styles.projectCardWrapper} ${styles.neonEffect}`}
@@ -80,7 +79,8 @@ const ProjectCard = ({ project }) => {
               </div>
             </div>
           </div>
-         {project.tags.slice(0, 4).map(
+          <div className={styles.projectCategoriesContainer}>
+            {project.tags.slice(0, 3).map(
               (
                 tag,
                 index // Use the slice(0, 3) method to get only the first three tags
@@ -90,13 +90,13 @@ const ProjectCard = ({ project }) => {
                 </div>
               )
             )}
-            {project.tags.length > 4 && ( // Check if there are more than 3 tags
+            {project.tags.length > 3 && ( // Check if there are more than 3 tags
               <div className={styles.projectCategoryContainer}>
                 <p>...</p>
               </div>
             )}
+          </div>
         </motion.div>
-
       </div>
     );
 };
