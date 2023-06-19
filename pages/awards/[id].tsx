@@ -356,6 +356,10 @@ export default function Award() {
     setIsModalOpen(false);
   };
 
+  const handleChangeParticipationModalClose = () => {
+    setIsChangeParticipationModalOpen(false);
+  };
+
   const handleChangeParticipateButtonClick = () => {
     setIsChangeParticipationModalOpen(true);
   };
@@ -670,7 +674,10 @@ export default function Award() {
             <div className="bg-black bg-opacity-50 absolute inset-0"></div>
             <div className="bg-slate-900 p-4 rounded shadow-lg relative z-10 w-1/3">
               <div className="flex justify-end">
-                <button className="text-white" onClick={handleModalClose}>
+                <button
+                  className="text-white"
+                  onClick={handleChangeParticipationModalClose}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6"

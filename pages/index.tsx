@@ -1,15 +1,15 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Card from "../components/ProjectCard";
-import TrendingProjectsSlider from "../components/TrendingProjectsSlider";
 import clustersData from "../data/clusters.json";
 import tagsData from "../data/tags.json";
 import styles from "../styles/Home.module.css";
-import DottedLine from "../components/DottedLine";
 import BannerComponent from "../components/BannerComponent";
 import TitleComponent from "../components/TitleComponent";
 import FilterComponent from "../components/FilterComponent";
 import { getAllProjects } from "../lib/projects";
+import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -22,6 +22,7 @@ export default function Home() {
   const [tags, setTags] = useState([...tagsData]);
   const [clusters, setClusters] = useState([...clustersData]);
   const [showClearButton, setShowClearButton] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -50,10 +51,23 @@ export default function Home() {
   const handleSelectedClustersChange = (clusters) => {
     setSelectedClusters(clusters);
   };
+  const staggerVariant = {
+    visible: {
+      opacity: 1,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.1,
+      },
+    },
+    hidden: {
+      opacity: 0,
+    },
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const data = await getAllProjects();
         setProjects(data);
 
@@ -62,8 +76,11 @@ export default function Home() {
           .sort((a, b) => b.likeCount - a.likeCount)
           .slice(0, 3);
         setTrendingProjects(testData);
+
+        setLoading(false);
       } catch (e) {
         console.error(e);
+        setLoading(false);
       }
     };
     fetchData();
@@ -84,14 +101,22 @@ export default function Home() {
         <div className={`${styles.homeTrendingContainer} containerWidth`}>
           <TitleComponent title="Trending" />
           <div className="customGrid">
-            {trendingProjects.map((project) => (
-              <Card key={project.id} project={project} />
-            ))}
+            {loading ? (
+              <>
+                <Skeleton style={{ height: "500px", width: "471px" }} />
+                <Skeleton style={{ height: "500px", width: "471px" }} />
+                <Skeleton style={{ height: "500px", width: "471px" }} />
+              </>
+            ) : (
+              trendingProjects.map((project) => (
+                <Card key={project.id} project={project} />
+              ))
+            )}
           </div>
         </div>
         <BannerComponent
           mobileImage="/images/home-banner-mobile.jpg"
-          desktopImage="/images/home-banner.jpg"
+          desktopImage="/images/banner.png"
           title="Final Show"
         />
         <div className={`${styles.homeAllProjectsContainer} containerWidth`}>

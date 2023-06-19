@@ -119,20 +119,6 @@ export default function Profile() {
               </svg>
             </button>
           </div>
-          <div>
-            <a
-              href="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mr-4 mb-2"
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/429/429088.png?w=740&t=st=1686247100~exp=1686247700~hmac=bf1e0b57dd6a64d69be0bf9ed93781dd72ff1114145ff61b88f58c498decbb4f"
-                alt="Award 1"
-                className="w-16 h-16 rounded-full"
-              />
-            </a>
-          </div>
         </div>
       </div>
       <div className={`${style.content_wrapper} `}>

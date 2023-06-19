@@ -38,10 +38,10 @@ export async function registerUser(email, password) {
             console.log(result);
             return userCredential;
         } else {
-            return null;
+          throw new Error('Failed to register user.');
         }
     } catch (error) {
-        return error;
+        throw error;
         // ..
     }
 }
@@ -52,10 +52,10 @@ export async function loginUser(email, password) {
         if (userCredential) {
             return userCredential;
         } else {
-            return null;
+            throw new Error('Failed to login user.');
         }
     } catch (error) {
-        return error;
+        throw error;
     }
 }
 export async function logoutUser() {

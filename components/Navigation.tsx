@@ -8,6 +8,10 @@ import { UserContext } from '../lib/context';
 import style from '../styles/Navigation.module.css';
 import NavigationDropdown from './NavigationDropdown';
 
+
+
+
+
 const Navigation: React.FC = () => {
     const router = useRouter();
     const currentRoute = router.pathname;
@@ -137,23 +141,14 @@ const Navigation: React.FC = () => {
             <div className={style.navigation_wrapper}>
                 <div className={`${style.navigation} containerWidth`}>
                     <Link href="/">
-                        <svg
-                            onClick={closeDropdown}
-                            className={style.logo}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="111.443"
-                            height="61.413"
-                            viewBox="0 0 111.443 61.413"
-                        >
-                            <path
-                                id="Path_1253"
-                                data-name="Path 1253"
-                                d="M65,0V.009l-.009,0L39.808,45.071,14.163,30.687,46.442,12.616V0L.208,25.895,0,26.011V35.4L46.033,61.179l.407.234,24.9-45.24L97.281,30.72,65.21,48.675,65,48.792V61.408l46.234-25.895.208-.116V26.011L76.653,6.525l.012-.021L67.8,1.569Z"
-                                transform="translate(0)"
-                                fill="#fff"
-                                opacity="0.998"
-                            />
-                        </svg>
+                    <div className="flex items-center align-middle">
+      <a onClick={closeDropdown} className={style.logo}>
+        <img className="w-60" src="/images/ehb_logo_horizontal.png" alt="EHB Logo" />
+      </a>
+      <div className="border-l-purple-800 border-l-2 ml-4 pl-4 flex items-center" style={{height: "75px"}}>
+        <h3 className="h-full flex items-center font-thin">Showcase</h3>
+      </div>
+    </div>
                     </Link>
                     <div className={style.links}>
                         <div className={style.cut}></div>
