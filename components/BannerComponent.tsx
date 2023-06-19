@@ -27,7 +27,7 @@ const BannerComponent = ({ mobileImage, desktopImage, title }) => {
               extravaganza!
             </p>
             <ButtonPink
-              title={"join us"}
+              title={"Join us"}
               color="Pink"
               onClick={() => {}}
             ></ButtonPink>
