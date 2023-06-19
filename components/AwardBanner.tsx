@@ -8,7 +8,12 @@ const AwardBanner = ({ award }) => {
   }
   return (
     <div className={styles.bannerAward}>
-      <div className={styles.bannerImage}>
+      <div
+        className={styles.bannerImage}
+        style={{
+          backgroundImage: `url(${award.bannerImageUrl})`,
+        }}
+      >
         <div className={styles.bannerText}>
           <div className={styles.content}>
             <h1>{award.title}</h1>
