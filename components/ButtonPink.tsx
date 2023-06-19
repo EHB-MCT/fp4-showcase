@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ButtonPink = ({ title, onClick = () => {} }) => {
+const ButtonPink = ({ title, color, onClick = () => {} }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleClick = () => {
