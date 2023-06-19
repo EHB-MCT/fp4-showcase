@@ -1,11 +1,9 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Card from "../components/ProjectCard";
-import TrendingProjectsSlider from "../components/TrendingProjectsSlider";
 import clustersData from "../data/clusters.json";
 import tagsData from "../data/tags.json";
 import styles from "../styles/Home.module.css";
-import DottedLine from "../components/DottedLine";
 import BannerComponent from "../components/BannerComponent";
 import TitleComponent from "../components/TitleComponent";
 import FilterComponent from "../components/FilterComponent";

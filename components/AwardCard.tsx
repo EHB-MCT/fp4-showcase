@@ -1,8 +1,10 @@
-import React,{useState} from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import styles from "../styles/AwardCard.module.css";
+import ButtonPink from "./ButtonPink";
 
-const AwardCard = ({award}) => {
+const AwardCard = ({ award }) => {
   const router = useRouter();
 
   const handleCardClick = () => {
@@ -10,12 +12,17 @@ const AwardCard = ({award}) => {
   };
 
   return (
-    <div className="bg-slate-500 w-full h-full"  onClick={handleCardClick}>
-      <img src={award.cardImageUrl} alt="" className="src" />
-        <h2>{award.title}</h2>
+    <div
+      className={styles.awardCardContainer}
+      style={{ backgroundImage: `url(${award.cardImageUrl})` }}
+    >
+      <div>
+        <h3>{award.title}</h3>
         <p>{award.description}</p>
+      </div>
+      <ButtonPink title="Browse" color="Pink" onClick={handleCardClick} />
     </div>
-  )
-}
+  );
+};
 
-export default AwardCard
+export default AwardCard;
