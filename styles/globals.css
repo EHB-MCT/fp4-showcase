@@ -220,6 +220,7 @@ input:-webkit-autofill:active {
   background-color: transparent !important;
   height: 30px;
   margin-top: 8px;
+
 }
 .skeleton {
   background-color: #f2f2f2;
@@ -248,4 +249,5 @@ input:-webkit-autofill:active {
   body {
     width: 100vw;
   }
+  
 }
