@@ -6,6 +6,7 @@ import styles from "../styles/FilterComponent.module.css";
 import clustersData from "../data/clusters.json";
 import tagsData from "../data/tags.json";
 import DropdownComponent from "./DropdownComponent";
+import { AnimatePresence, motion } from "framer-motion";
 
 const FilterComponent = ({
   showFinalWorkProjects,
@@ -155,14 +156,21 @@ const FilterComponent = ({
         )}
 
         {selectedTags.map((tag, index) => (
-          <div
-            key={index}
-            className={styles.selectedTag}
-            onClick={() => removeSelectedTag(tag)}
-          >
-            {tag}
-            <span className={styles.removeButton}>X</span>
-          </div>
+          <AnimatePresence key={index}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div
+                className={styles.selectedTag}
+                onClick={() => removeSelectedTag(tag)}
+              >
+                {tag}
+                <span className={styles.removeButton}>X</span>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         ))}
 
         {selectedClusters.map((cluster, index) => (
