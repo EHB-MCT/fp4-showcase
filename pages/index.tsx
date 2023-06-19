@@ -116,7 +116,7 @@ export default function Home() {
         </div>
         <BannerComponent
           mobileImage="/images/home-banner-mobile.jpg"
-          desktopImage="/images/home-banner.jpg"
+          desktopImage="/images/banner.png"
           title="Final Show"
         />
         <div className={`${styles.homeAllProjectsContainer} containerWidth`}>
