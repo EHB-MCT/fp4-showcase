@@ -6,6 +6,7 @@ import {
   getDocs,
   setDoc,
   updateDoc,
+  addDoc,
 } from "firebase/firestore";
 import Head from "next/head";
 import Image from "next/image";
@@ -180,7 +181,7 @@ export default function Award() {
       }
     };
     fetchAllProjects();
-  }, [id, user]);
+  }, [id, user, projectsToVoteOn]);
 
   const handleStartVotingButtonClick = () => {
     setStartVotingTeacher(true);
@@ -200,38 +201,47 @@ export default function Award() {
 
       if (selectedProject) {
         const participatingProject = projects.find(
-          (project) => project.awardId === id
+          (project) => project.awardId === id && project.uid === user.uid
         );
+        console.log("participatingProject", participatingProject);
+        console.log("selectedProject", selectedProject);
 
         // If the selected project is not already participating in this award
-        if (
-          !participatingProject ||
-          participatingProject.project_id !== selectedProject.project_id
-        ) {
+        if (participatingProject) {
           const projectRef = doc(
             firestore,
             "projects",
-            selectedProject.project_id
+            participatingProject.project_id
           );
 
           // Set the awardId of the selected project
-          await updateDoc(projectRef, { awardId: id });
+          await updateDoc(projectRef, { awardId: null });
 
           setProjectSelected(null);
           setIsChangeParticipationModalOpen(false);
 
           // Remove the awardId from the previous project with the same awardId
-          const previousProject = projects.find(
-            (project) => project.awardId === id
+          // const previousProject = projects.find(
+          //   (project) =>
+          //     project.awardId === id &&
+          //     participatingProject.project_id == selectedProject.project_id
+          // );
+
+          // add selected project to award
+          const projectRef2 = doc(
+            firestore,
+            "projects",
+            selectedProject.project_id
           );
-          if (previousProject) {
-            const projectRef = doc(
-              firestore,
-              "projects",
-              previousProject.project_id
-            );
-            await updateDoc(projectRef, { awardId: null });
-          }
+          await updateDoc(projectRef2, { awardId: id });
+          // if (previousProject) {
+          //   const projectRef = doc(
+          //     firestore,
+          //     "projects",
+          //     previousProject.project_id
+          //   );
+          //   await updateDoc(projectRef, { awardId: null });
+          // }
 
           // The request was successful, update the projects by fetching them again
           const updatedProjects = await getAllProjects();
@@ -534,7 +544,12 @@ export default function Award() {
                 You are participating with project{" "}
                 <span className="text-fuchsia-600">
                   &#34;
-                  {projects.find((project) => project.awardId === id)?.title}
+                  {
+                    projects.find(
+                      (project) =>
+                        project.awardId === id && project.uid == user.uid
+                    )?.title
+                  }
                   &#34;
                 </span>
                 . You can still change your submission or remove your
