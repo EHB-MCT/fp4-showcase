@@ -121,7 +121,7 @@ function PasswordReset() {
           <label className="text-white" htmlFor="confirmpwInput">
           Confirm password:
         </label>
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} className="mb-4">
           <svg
             width="100%"
             height="50"

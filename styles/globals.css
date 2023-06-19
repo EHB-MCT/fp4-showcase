@@ -144,6 +144,7 @@ input:-webkit-autofill:active {
   background-color: transparent !important;
   height: 30px;
   margin-top: 8px;
+
 }
 
 @media (max-width: 767px) {
@@ -158,4 +159,5 @@ input:-webkit-autofill:active {
   body {
     width: 100vw;
   }
+  
 }
