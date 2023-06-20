@@ -22,12 +22,12 @@ import { firestore } from "../../lib/firebase";
 import styles from "../../styles/Awards.module.css";
 
 const localDateOptions = {
-  participateDeadline: new Date("2023-06-21"),
-  docentVoteDeadline: new Date("2023-06-22"),
-  adminVoteDeadline: new Date("2023-06-24"),
+  participateDeadline: new Date("2023-06-17"),
+  docentVoteDeadline: new Date("2023-06-18"),
+  adminVoteDeadline: new Date("2023-06-19"),
+  winnerAnnouncement: new Date("2023-06-19"),
 };
 
-import { Card } from "react-bootstrap";
 import WithdrawParticipationModal from "../../components/modals/WithdrawParticipationModal";
 import {
   getAllProjects,
@@ -40,6 +40,7 @@ import {
   saveVote,
 } from "../../lib/votes";
 import { getAwardDeadlines } from "../../lib/dates";
+import { saveWinner } from "@/lib/winners";
 
 export default function Award() {
   const router = useRouter();
@@ -70,11 +71,15 @@ export default function Award() {
   const [startVotingTeacher, setStartVotingTeacher] = useState(false);
   const [docentProjectChoices, setDocentProjectChoices] = useState([]);
 
+  // End award
+  const [hasAwardEnded, setHasAwardEnded] = useState(false);
+
   // Positions
   const [first, setFirst] = useState(null);
   const [second, setSecond] = useState(null);
   const [third, setThird] = useState(null);
   const [ranking, setRanking] = useState([]);
+  const [winner, setWinner] = useState(null);
 
   // Global Nominated Projects
   const [top3Projects, setTop3Projects] = useState(null);
@@ -448,7 +453,7 @@ export default function Award() {
       });
     });
     setDocentProjectChoices(myProjectChoices);
-  }, [hasVoted]);
+  }, [hasVoted, ranking]);
 
   const renderMyProjectChoices = () => {
     return (
@@ -467,11 +472,17 @@ export default function Award() {
   useEffect(() => {
     const fetchGlobalNominatedProjects = async () => {
       const data = await getGlobalNominatedProjects(id);
-
+      console.log(data);
       setTop3Projects(data);
     };
     fetchGlobalNominatedProjects();
   }, [id]);
+
+  const handleSubmitWinner = async () => {
+    // Save project id to "winners" collection in database
+    saveWinner(winner.project_id, id);
+    setHasAwardEnded(true);
+  };
 
   return (
     <>
@@ -488,18 +499,55 @@ export default function Award() {
           </header>
 
           <div>
-            <div className={`${styles.awardProjects} flex flex-col`}>
-              {currentDate > adminVoteDeadline && (
-                <div className="">
-                  <h1>Nominated Projects</h1>
-                  <div className="customGrid mt-5 mb-5 ">
-                    {top3Projects &&
-                      top3Projects.map((project, index) => (
-                        <ProjectCard key={index} project={project} />
-                      ))}
+            <div className="flex flex-col">
+              {hasAwardEnded &&
+                currentDate > localDateOptions.winnerAnnouncement && (
+                  <div>
+                    <h1>Award Winner</h1>
+                    <div className=" mt-5 mb-5 ">
+                      {winner && <ProjectCard project={winner} />}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+            </div>
+            <div className={`${styles.awardProjects} flex flex-col`}>
+              {currentDate > localDateOptions.adminVoteDeadline &&
+                userData &&
+                userData.role === "admin" && (
+                  <div className="">
+                    <h1>Nominated Projects</h1>
+                    <div className="customGrid mt-5 mb-5 ">
+                      {top3Projects &&
+                        top3Projects.map((project, index) => (
+                          <ProjectCard key={index} project={project} />
+                        ))}
+                    </div>
+                    <select
+                      name="chooseWinner"
+                      id="chooseWinner"
+                      onChange={(e) => {
+                        const selectedProjectId = e.target.value;
+                        const selectedProject = top3Projects.find(
+                          (project) => project.project_id === selectedProjectId
+                        );
+                        setWinner(selectedProject);
+                      }}
+                    >
+                      <option value="">Choose winner...</option>
+                      {top3Projects &&
+                        top3Projects.map((project, index) => (
+                          <option value={project.project_id} key={index}>
+                            {project.title}
+                          </option>
+                        ))}
+                    </select>
+                    <ButtonPink
+                      title="Submit"
+                      color="white"
+                      onClick={handleSubmitWinner}
+                    />
+                  </div>
+                )}
 
               {userData && userData.role === "docent" && hasVoted && (
                 <>
@@ -511,7 +559,7 @@ export default function Award() {
                 <h1>Submitted Projects</h1>
                 {userData &&
                   userData.role === "student" &&
-                  currentDate < participateDeadline &&
+                  currentDate < localDateOptions.participateDeadline &&
                   !hasParticipated && (
                     <ButtonPink
                       title="Participate"
@@ -522,7 +570,7 @@ export default function Award() {
 
                 {userData &&
                   userData.role === "student" &&
-                  currentDate < participateDeadline &&
+                  currentDate < localDateOptions.participateDeadline &&
                   hasParticipated && (
                     <>
                       <ButtonPink
@@ -541,8 +589,8 @@ export default function Award() {
                 {userData &&
                   userData.role === "docent" &&
                   projectsToVoteOn.length > 0 &&
-                  currentDate > participateDeadline &&
-                  currentDate < docentVoteDeadline &&
+                  currentDate > localDateOptions.participateDeadline &&
+                  currentDate < localDateOptions.docentVoteDeadline &&
                   !startVotingTeacher &&
                   !hasVoted && (
                     <ButtonPink
@@ -578,7 +626,7 @@ export default function Award() {
 
           {userData &&
             userData.role === "student" &&
-            currentDate < participateDeadline &&
+            currentDate < localDateOptions.participateDeadline &&
             hasParticipated && (
               <div className="bg-black  p-2 w-fit mt-3 opacity-80">
                 <p className="font-light ml-2">
