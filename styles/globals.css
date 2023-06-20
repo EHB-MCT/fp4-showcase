@@ -251,8 +251,4 @@ input:-webkit-autofill:active {
   .containerWidth {
     width: 85%;
   }
-
-  body {
-    width: 100vw;
-  }
 }
