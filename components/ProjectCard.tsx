@@ -73,9 +73,12 @@ const ProjectCard = ({ project }) => {
                     <p>{project.title}</p>
                   </a>
                 </div>
+                {/* 
+                // LIKE BUTTON
                 <div className={styles.projectCardInformationLikeContainer}>
                   <LikeProjectBtn project={project} />
-                </div>
+                </div> 
+                */}
               </div>
             </div>
           </div>
