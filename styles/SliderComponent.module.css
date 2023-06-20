@@ -16,12 +16,12 @@
   gap: 1rem;
   flex-shrink: 0;
   transition: transform 0.3s ease;
-  transform: translateX(-${startIndex * 100}%);
+  /* transform: translateX(-${startIndex * 100}%); */
 }
 
-.sliderContainer div {
-  width: calc(25% - 0.5rem);
-}
+/* .sliderContainer div {
+  width: 25%;
+} */
 
 .navigation {
   display: flex;
