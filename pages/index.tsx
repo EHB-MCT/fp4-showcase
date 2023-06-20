@@ -103,9 +103,9 @@ export default function Home() {
           <div className="customGrid">
             {loading ? (
               <>
-                <Skeleton style={{ height: "500px", width: "471px" }} />
-                <Skeleton style={{ height: "500px", width: "471px" }} />
-                <Skeleton style={{ height: "500px", width: "471px" }} />
+                <Skeleton className={styles.skeleton} />
+                <Skeleton className={styles.skeleton} />
+                <Skeleton className={styles.skeleton} />
               </>
             ) : (
               trendingProjects.map((project) => (
