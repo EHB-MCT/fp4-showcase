@@ -468,9 +468,8 @@ export default function Award() {
                   <div className="">{renderMyProjectChoices()}</div>
                 </>
               )}
-
               <div className="flex gap-5">
-                <h1>Projects</h1>
+                <h1>Submitted Projects</h1>
                 {userData &&
                   userData.role === "student" &&
                   currentDate < participateDeadline &&
