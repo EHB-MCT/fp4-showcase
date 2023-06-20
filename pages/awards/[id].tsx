@@ -21,6 +21,12 @@ import { UserContext } from "../../lib/context";
 import { firestore } from "../../lib/firebase";
 import styles from "../../styles/Awards.module.css";
 
+const localDateOptions = {
+  participateDeadline: new Date("2023-06-21"),
+  docentVoteDeadline: new Date("2023-06-22"),
+  adminVoteDeadline: new Date("2023-06-24"),
+};
+
 import { Card } from "react-bootstrap";
 import WithdrawParticipationModal from "../../components/modals/WithdrawParticipationModal";
 import {
@@ -62,7 +68,7 @@ export default function Award() {
 
   //start voting
   const [startVotingTeacher, setStartVotingTeacher] = useState(false);
-  const [nominations, setNominations] = useState([]);
+  const [docentProjectChoices, setDocentProjectChoices] = useState([]);
 
   // Positions
   const [first, setFirst] = useState(null);
@@ -244,6 +250,10 @@ export default function Award() {
           // The request was successful, update the projects by fetching them again
           const updatedProjects = await getAllProjects();
           setProjects(updatedProjects);
+          const projectsToVoteOn = updatedProjects.filter(
+            (projects) => projects.awardId === id
+          );
+          setProjectsToVoteOn(projectsToVoteOn);
         } else {
           setIsChangeParticipationModalOpen(false);
         }
@@ -284,6 +294,10 @@ export default function Award() {
           // Update the projects by fetching them again
           const updatedProjects = await getAllProjects();
           setProjects(updatedProjects);
+          const projectsToVoteOn = updatedProjects.filter(
+            (project) => project.awardId === id
+          );
+          setProjectsToVoteOn(projectsToVoteOn);
         } else {
           console.log(
             "Selected project is already participating in this award"
@@ -345,8 +359,26 @@ export default function Award() {
       await updateDoc(projectRef, { awardId: null });
     }
     // The request was successful, update the projects by fetching them again
-    const updatedProjects = await getAllProjects();
+    // const updatedProjects = await getAllProjects();
+    const updatedProjects = projects.filter(
+      (project) =>
+        project.project_id !== participatingProject.project_id &&
+        project.awardId === id
+    );
+
+    // Change value in userProjects state
+    const updatedUserProjects = [];
+    userProjects.forEach((project) => {
+      if (project.project_id === participatingProject.project_id) {
+        project.awardId = null;
+      }
+      updatedUserProjects.push(project);
+    });
+
+    // update project state
     setProjects(updatedProjects);
+    setProjectsToVoteOn(updatedProjects);
+
     setIsWithdrawModalOpen(false);
   };
 
@@ -381,6 +413,9 @@ export default function Award() {
     if (second?.projectId) vote.order[1] = second.projectId;
     if (third?.projectId) vote.order[2] = third.projectId;
 
+    setHasVoted(true);
+    // Make vote buttons disappear / end voting
+    setStartVotingTeacher(false);
     await saveVote(vote);
   };
 
@@ -399,22 +434,26 @@ export default function Award() {
     // ...
   }, [id, user, projects]);
 
-  const renderMyProjectChoices = () => {
-    // filter projects by awardId from the ones in ranking
-
+  useEffect(() => {
+    // Update the docent projects choices he voted on
+    if (hasVoted == false) return;
     let myProjectChoices = [];
+    if (!ranking) return;
     ranking.forEach((rank, i) => {
       const project = projects.forEach((project) => {
+        if (!rank) return;
         if (rank.projectId === project.project_id) {
           myProjectChoices.push(project);
         }
       });
     });
-    if (!ranking) return;
+    setDocentProjectChoices(myProjectChoices);
+  }, [hasVoted]);
 
+  const renderMyProjectChoices = () => {
     return (
       <div className="customGrid mb-5 mt-5">
-        {myProjectChoices.map((project, index) => {
+        {docentProjectChoices.map((project, index) => {
           return (
             <div key={index}>
               <ProjectCard key={project.project_id} project={project} />
@@ -468,19 +507,18 @@ export default function Award() {
                   <div className="">{renderMyProjectChoices()}</div>
                 </>
               )}
-            <div className="flex gap-5">
-              <h1>Submitted Projects</h1>
-              {userData &&
-                userData.role === "student" &&
-                currentDate < participateDeadline &&
-                !hasParticipated && (
-                  <ButtonPink
-                    title="Participate"
-                    color="white"
-                    onClick={handleParticipateButtonClick}
-                  />
-                )}
-
+              <div className="flex gap-5">
+                <h1>Submitted Projects</h1>
+                {userData &&
+                  userData.role === "student" &&
+                  currentDate < participateDeadline &&
+                  !hasParticipated && (
+                    <ButtonPink
+                      title="Participate"
+                      color="white"
+                      onClick={handleParticipateButtonClick}
+                    />
+                  )}
 
                 {userData &&
                   userData.role === "student" &&
@@ -598,10 +636,10 @@ export default function Award() {
             />
           )}
           {isModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-black bg-opacity-50 absolute inset-0"></div>
-              <div className="bg-slate-900 p-4 rounded shadow-lg relative z-10 w-1/3">
-                <div className="flex justify-end">
+            <div className={styles.participationModalContainer}>
+              <div className={styles.participationModalBackgroundOverlay}></div>
+              <div className={styles.participationModalHeader}>
+                <div className={styles.participationModalHeaderClose}>
                   <button className="text-white" onClick={handleModalClose}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -619,9 +657,12 @@ export default function Award() {
                     </svg>
                   </button>
                 </div>
-                <h2 className="text-xl mb-4">
+                <h2 className={styles.participationModalHeaderTitle}>
                   Participate
-                  <span className="text-sm"> - select your project</span>
+                  <span className={styles.participationModalHeaderTitleSpan}>
+                    {" "}
+                    - select your project
+                  </span>
                 </h2>
                 {userProjects.length === 0 && (
                   <div>
@@ -629,22 +670,27 @@ export default function Award() {
                   </div>
                 )}
 
-                <div className="max-h-72 overflow-y-auto overflow-x-hidden mb-4">
+                <div className={styles.participationModalProjectContainer}>
                   {userProjects.map((project, index) => (
                     <div
-                      className={`flex-shrink-0 w-full h-full bg-slate-800 rounded-sm p-1 mb-2 cursor-pointer ${
+                      className={`${styles.participationModalProjects} ${
                         project.project_id === projectSelected
-                          ? "border-pink-500 border-solid border-2 "
-                          : "border-solid border-2 border-slate-800"
+                          ? `${styles.participationModalProjectSelected}`
+                          : `${styles.participationModalProjectNotSelected}`
                       }`}
                       key={index}
                       onClick={() => handleProjectSelect(project.project_id)}
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-3">
                         <img
                           src={project.previewImageUrl}
                           className="w-24 h-24 rounded-sm mr-2"
                           alt="Project Preview"
+                          style={{
+                            width: "6rem",
+                            height: "6rem",
+                            borderRadius: "0.375rem",
+                          }}
                         />
                         <div className="flex flex-col">
                           <h3 className="text-white">{project.title}</h3>
@@ -672,14 +718,11 @@ export default function Award() {
             </div>
           )}
           {isChangeParticipationModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-black bg-opacity-50 absolute inset-0"></div>
-              <div className="bg-slate-900 p-4 rounded shadow-lg relative z-10 w-1/3">
-                <div className="flex justify-end">
-                  <button
-                    className="text-white"
-                    onClick={handleChangeParticipationModalClose}
-                  >
+            <div className={styles.participationModalContainer}>
+              <div className={styles.participationModalBackgroundOverlay}></div>
+              <div className={styles.participationModalHeader}>
+                <div className={styles.participationModalHeaderClose}>
+                  <button onClick={handleChangeParticipationModalClose}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6"
@@ -696,29 +739,37 @@ export default function Award() {
                     </svg>
                   </button>
                 </div>
-                <h2 className="text-xl mb-4">
-                  Participate
-                  <span className="text-sm"> - select your project</span>
+                <h2 className={styles.participationModalHeaderTitle}>
+                  Change
+                  <span className={styles.participationModalHeaderTitleSpan}>
+                    {" "}
+                    - select your project
+                  </span>
                 </h2>
 
-                <div className="max-h-72 overflow-y-auto overflow-x-hidden mb-4">
+                <div className={styles.participationModalProjectContainer}>
                   {userProjects.map((project, index) => (
                     <div
-                      className={`flex-shrink-0 w-full h-full bg-slate-800 rounded-sm p-1 mb-2 cursor-pointer ${
+                      className={`${styles.participationModalProjects} ${
                         project.project_id === projectSelected
-                          ? "border-pink-500 border-solid border-2 "
-                          : "border-solid border-2 border-slate-800"
+                          ? `${styles.participationModalProjectSelected}`
+                          : `${styles.participationModalProjectNotSelected}`
                       }`}
                       key={index}
                       onClick={() => handleProjectSelect(project.project_id)}
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-3">
                         <img
                           src={project.previewImageUrl}
                           className="w-24 h-24 rounded-sm mr-2"
                           alt="Project Preview"
+                          style={{
+                            width: "6rem",
+                            height: "6rem",
+                            borderRadius: "0.375rem",
+                          }}
                         />
-                        <div className="flex flex-col">
+                        <div className="flex flex-col ">
                           <h3 className="text-white">{project.title}</h3>
                           <p className="text-slate-500">{project.category}</p>
                         </div>
