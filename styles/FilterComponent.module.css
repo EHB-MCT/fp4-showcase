@@ -47,6 +47,55 @@
   width: 80%;
 }
 
+.filterContainer {
+  display: grid;
+  grid-template-columns: 50% 1fr 1fr 1fr;
+  grid-gap: 10px;
+  margin-top: 50px;
+}
+
+.filterContainer > div {
+  /* background-color: var(--main-purple-color); */
+  /* padding: 0 15px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterContainerMob > div select {
+  width: 100%;
+  background-color: var(--main-purple-color);
+  font-family: var(--p-font-family);
+  color: white;
+}
+
+.filterContainerMob > div form {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterContainerMob > div form button {
+  color: white;
+}
+
+.filterContainerMob > div form input {
+  color: white;
+  background-color: var(--main-purple-color);
+  font-family: var(--p-font-family);
+  border: none;
+  margin-top: 0;
+}
+
+.filterContainerMob > div form input[type="text"]::placeholder {
+  color: white;
+}
+
+.filterContainerMob > div form input[type="text"] {
+  width: 80%;
+}
+
 .toggle {
   position: relative;
   cursor: pointer;
@@ -126,17 +175,57 @@
 
 .filterTagsContainer {
   width: 100%;
+  padding: 0;
 }
 
 .toggleOnOff {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: end;
   column-gap: 5px;
+}
+.mobile_filter_margin {
+  display: none;
 }
 
 @media (max-width: 767px) {
   .filterContainer {
     display: none;
+  }
+  .mobile_filter_toggle_style {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--main-purple-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+  }
+  .filterTagsContainer,
+  .filterTagsContainer,
+  .filterCategoriesContainer,
+  .filterSearchContainer {
+    width: 100%;
+    padding-left: 16%;
+    padding-right: 16%;
+    padding-top: 10%;
+  }
+  .filterToggleContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-left: 16% !important;
+    padding-right: 16% !important;
+    padding-top: 10% !important;
+  }
+  .filterSearchContainer form {
+    border-bottom: 1px solid white;
+  }
+  .mobile_filter_margin {
+    margin-bottom: 4%;
+    display: flex;
+  }
+  .filterContainerMob {
+    margin-bottom: 10%;
   }
 }

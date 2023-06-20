@@ -186,7 +186,7 @@ const Navigation: React.FC = () => {
                 className="border-l-purple-800 border-l-2 ml-4 pl-4 flex items-center"
                 style={{ height: "75px" }}
               >
-                <h3 className="h-full flex items-center font-thin">Showcase</h3>
+                <h3 className={style.mobileTitleNav}>Showcase</h3>
               </div>
             </div>
           </Link>

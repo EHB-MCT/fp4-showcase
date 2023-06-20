@@ -58,3 +58,17 @@
   box-sizing: border-box;
   padding: 0 15px;
 }
+
+@media (max-width: 767px) {
+  .dropdownBtn {
+    padding: 0 0;
+  }
+  .dropdownWrapper {
+    border-bottom: 1px solid white;
+  }
+
+  .dropdownContent {
+    color: var(--main-purple-color);
+    background-color: white;
+  }
+}

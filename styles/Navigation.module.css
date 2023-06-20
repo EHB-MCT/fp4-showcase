@@ -125,6 +125,9 @@
 .mobile_menu_toggle {
   display: none;
 }
+.mobileTitleNav {
+  display: flex;
+}
 
 /* Media query for mobile devices */
 @media (max-width: 767px) {
@@ -157,7 +160,7 @@
 
   .mobile_menu_links {
     display: grid;
-    grid-gap: 5em;
+    grid-gap: 1em;
     padding: 13%;
     text-align: center;
     align-items: center;
@@ -222,5 +225,8 @@
     font-size: 20px;
     color: #ffffff;
     cursor: pointer;
+  }
+  .mobileTitleNav {
+    display: none;
   }
 }
