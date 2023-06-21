@@ -20,16 +20,16 @@ const Edit = () => {
           rel="stylesheet"
         />
       </Head>
-      <div
-        className="absolute"
-        style={{ right: "2%", width: "25vw", top: "50%", position: "fixed" }}
-      >
-        <div className="bg-black bg-opacity-50 p-4 rounded shadow-lg h-5">
-          <h2>Info</h2>
-          <p>
-            Updating the &quot;other images&quot; is currently under
-            construction. Please check back later.
-          </p>
+
+      <div className="absolute" style={{right:"2%", width:"25vw", top:"50%", position: "fixed"}} >
+          <div className="bg-black bg-opacity-50 p-4 rounded shadow-lg h-5">
+            <h2>Info</h2>
+            <ul >
+              <li>- Updating the "other images" is currently under construction. Please check back later.</li>
+              <li>- Please find and select your preview image again.</li>
+            </ul>
+           
+         
         </div>
       </div>
 
