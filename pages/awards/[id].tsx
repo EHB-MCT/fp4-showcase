@@ -539,7 +539,8 @@ export default function Award() {
 
           <div>
             <div className="flex flex-col">
-              {hasAwardEnded &&
+              {winner &&
+                hasAwardEnded &&
                 userData.role === "admin" &&
                 currentDate < winnerAnnouncementDeadline && (
                   <div>
@@ -549,14 +550,16 @@ export default function Award() {
                     </div>
                   </div>
                 )}
-              {hasAwardEnded && currentDate > winnerAnnouncementDeadline && (
-                <div>
-                  <h1>Award Winner</h1>
-                  <div className=" mt-5 mb-5 ">
-                    {winner && <ProjectCard project={winner} />}
+              {winner &&
+                hasAwardEnded &&
+                currentDate > winnerAnnouncementDeadline && (
+                  <div>
+                    <h1>Award Winner</h1>
+                    <div className=" mt-5 mb-5 ">
+                      {winner && <ProjectCard project={winner} />}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
             <div className={`${styles.awardProjects} flex flex-col`}>
               {currentDate < adminVoteDeadline &&
