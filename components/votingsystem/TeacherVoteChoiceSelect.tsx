@@ -51,7 +51,7 @@ const TeacherVoteChoiceSelect = ({
   };
 
   return (
-    <div className="bg-black h-auto absolute w-full text-center gap-5 z-40 ">
+    <div className="bg-black h-auto absolute w-full gap-5 text-center z-40 ">
       <p>Your Choice: </p>
 
       <div>{renderChoiceButtons()}</div>
