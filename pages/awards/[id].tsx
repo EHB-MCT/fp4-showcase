@@ -563,6 +563,7 @@ export default function Award() {
             </div>
             <div className={`${styles.awardProjects} flex flex-col`}>
               {currentDate < adminVoteDeadline &&
+                currentDate > docentVoteDeadline &&
                 userData &&
                 userData.role === "admin" && (
                   <div className="">
