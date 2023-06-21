@@ -10,3 +10,8 @@
 .titleSubDiv img {
   width: 100%;
 }
+@media (max-width: 767px) {
+  .titleContainer {
+    margin-top: 7%;
+  }
+}

@@ -21,4 +21,10 @@
     width: 561px;
     height: 275px;
   }
+  .homeTrendingContainer {
+    margin: 0;
+  }
+  .homeAllProjectsContainer {
+    margin: 0;
+  }
 }

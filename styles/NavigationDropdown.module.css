@@ -25,3 +25,9 @@
 .dropdown_wrapper a:hover {
   background-color: var(--main-purple-color);
 }
+
+@media (max-width: 767px) {
+  .dropdown_wrapper {
+    display: flex;
+  }
+}
