@@ -58,10 +58,11 @@ const EditProjectForm = ({ projectId }) => {
       const project = await getProjectById(projectId);
       setProject(project);
       if (!project) return;
-    
-      if (project.uid !== user?.uid){
+      if (!user) return;
+      if (project.uid !== user?.uid) {
         router.push(`/projects/${projectId}`);
-      }
+      } 
+    
     }
 
     fetchData();
@@ -90,6 +91,8 @@ const EditProjectForm = ({ projectId }) => {
       
      
       if (project.pdfUrl !== null){
+
+       
         setPdfFile(project.pdfUrl);
      
         //setPdfFileSelected(true)
@@ -137,7 +140,8 @@ const EditProjectForm = ({ projectId }) => {
       links: addedLinks,
       youtubeLinks: addedYoutubeLinks,
       previewImage: previewImageUrl,
-      pdfFile,
+      pdfFile: pdfFile ? pdfFile : "",
+      
     };
 
     if (previewImageUrlReplaced) {
@@ -430,7 +434,7 @@ const EditProjectForm = ({ projectId }) => {
         </label>
 
         <input
-          
+          required
           ref={previewImageInputRef}
           type="file"
           id="previewImage"
