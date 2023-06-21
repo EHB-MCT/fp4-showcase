@@ -19,9 +19,9 @@
   /* transform: translateX(-${startIndex * 100}%); */
 }
 
-/* .sliderContainer div {
-  width: 25%;
-} */
+.sliderContainer div {
+  width: calc(25% - 0.5rem);
+}
 
 .navigation {
   display: flex;
@@ -59,4 +59,10 @@
 
 .navigationButton:hover .navigationIcon {
   color: #666;
+}
+
+@media (max-width: 1440px) {
+  .sliderContainer div {
+    width: calc(25% - 0.25rem);
+  }
 }

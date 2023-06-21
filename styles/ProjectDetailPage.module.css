@@ -162,6 +162,12 @@
   cursor: pointer;
 }
 
+.projectDetailPageLinkUrl {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 @media (max-width: 767px) {
   .projectDetailPageContainer {
     display: flex;
