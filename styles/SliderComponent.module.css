@@ -19,7 +19,7 @@
   /* transform: translateX(-${startIndex * 100}%); */
 }
 
-.sliderContainer div {
+.sliderContainer > div {
   width: calc(25% - 0.5rem);
 }
 
