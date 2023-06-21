@@ -19,9 +19,10 @@
   /* transform: translateX(-${startIndex * 100}%); */
 }
 
-.sliderContainer div {
+/*  DISABLE THIS FOR LIVE DEPLOYMENT IT CRASHES WITH VERCEL */
+/* .sliderContainer div {
   width: calc(25% - 0.5rem);
-}
+} */
 
 .navigation {
   display: flex;
