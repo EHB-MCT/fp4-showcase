@@ -19,8 +19,9 @@
   /* transform: translateX(-${startIndex * 100}%); */
 }
 
+/*  DISABLE THIS FOR LIVE DEPLOYMENT IT CRASHES WITH VERCEL */
 /* .sliderContainer div {
-  width: 25%;
+  width: calc(25% - 0.5rem);
 } */
 
 .navigation {
@@ -59,4 +60,10 @@
 
 .navigationButton:hover .navigationIcon {
   color: #666;
+}
+
+@media (max-width: 1440px) {
+  .sliderContainer div {
+    width: calc(25% - 0.25rem);
+  }
 }

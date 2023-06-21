@@ -67,6 +67,73 @@
   margin: 160px 0 210px 0;
 }
 
+.participationModalContainer {
+  position: fixed;
+  inset: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 150;
+}
+
+.participationModalBackgroundOverlay {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0px;
+}
+
+.participationModalHeader {
+  background-color: rgb(15 23 42);
+  padding: 16px;
+  border-radius: 0.25rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  position: relative;
+  z-index: 10;
+  width: 33%;
+}
+
+.participationModalHeaderClose {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.participationModalHeaderTitle {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  margin: 1rem 0;
+}
+
+.participationModalHeaderTitleSpan {
+  font-size: 0.875rem /* 14px */;
+  line-height: 1.25rem /* 20px */;
+}
+
+.participationModalProjectContainer {
+  max-height: 18rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-bottom: 2rem;
+}
+
+.participationModalProjects {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(30, 41, 59);
+  border-radius: 0.125rem;
+  padding: 0.25rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.participationModalProjectSelected {
+  border: 2px solid var(--main-pink-color);
+}
+
+.participationModalProjectNotSelected {
+  border: 2px solid rgb(30, 41, 59);
+}
+
 @media (max-width: 768px) {
   .bannerText {
     width: 90%;

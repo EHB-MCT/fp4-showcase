@@ -177,3 +177,26 @@
   box-shadow: 0 0 0.2rem #7224be, 0 0 0.2rem #7224be, 0 0 0.2rem #7224be,
     0 0 0.2rem #7224be, 0 0 0.2rem #7224be, inset 0 0 0.2rem #7224be;
 }
+.BannerText {
+  margin: 10%;
+  width: 25%;
+}
+
+.projectCardInformationTitle {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 767px) {
+  .projectCardContainer {
+    height: 275px;
+  }
+  .BannerText {
+    margin: 0;
+    width: 100%;
+  }
+  .projectCardWrapper {
+    margin-bottom: 14px;
+  }
+}

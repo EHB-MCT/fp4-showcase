@@ -12,3 +12,19 @@
 .homeAllProjectsSubContainer {
   margin-bottom: 100px;
 }
+.skeleton {
+  height: 500px;
+  width: 471px;
+}
+@media (max-width: 767px) {
+  .skeleton {
+    width: 561px;
+    height: 275px;
+  }
+  .homeTrendingContainer {
+    margin: 0;
+  }
+  .homeAllProjectsContainer {
+    margin: 0;
+  }
+}

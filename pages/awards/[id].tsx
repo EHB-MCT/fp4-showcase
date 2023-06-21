@@ -1,12 +1,12 @@
 import {
   FieldValue,
+  addDoc,
   collection,
   doc,
   getDoc,
   getDocs,
   setDoc,
   updateDoc,
-  addDoc,
 } from "firebase/firestore";
 import Head from "next/head";
 import Image from "next/image";
@@ -21,8 +21,16 @@ import { UserContext } from "../../lib/context";
 import { firestore } from "../../lib/firebase";
 import styles from "../../styles/Awards.module.css";
 
-import { Card } from "react-bootstrap";
+const localDateOptions = {
+  participateDeadline: new Date("2023-06-20"),
+  docentVoteDeadline: new Date("2023-06-22"),
+  adminVoteDeadline: new Date("2023-06-23"),
+  winnerAnnouncement: new Date("2023-06-24"),
+};
+
+import { getWinner, saveWinner } from "@/lib/winners";
 import WithdrawParticipationModal from "../../components/modals/WithdrawParticipationModal";
+import { getAwardDeadlines } from "../../lib/dates";
 import {
   getAllProjects,
   getProjectsByUserID,
@@ -33,7 +41,6 @@ import {
   getVotesOnAwardFromDocent,
   saveVote,
 } from "../../lib/votes";
-import { getAwardDeadlines } from "../../lib/dates";
 
 export default function Award() {
   const router = useRouter();
@@ -62,13 +69,18 @@ export default function Award() {
 
   //start voting
   const [startVotingTeacher, setStartVotingTeacher] = useState(false);
-  const [nominations, setNominations] = useState([]);
+  const [docentProjectChoices, setDocentProjectChoices] = useState([]);
+
+  // End award
+  const [hasAwardEnded, setHasAwardEnded] = useState(false);
 
   // Positions
   const [first, setFirst] = useState(null);
   const [second, setSecond] = useState(null);
   const [third, setThird] = useState(null);
   const [ranking, setRanking] = useState([]);
+  const [tempWinner, setTempWinner] = useState(null);
+  const [winner, setWinner] = useState(null);
 
   // Global Nominated Projects
   const [top3Projects, setTop3Projects] = useState(null);
@@ -78,6 +90,8 @@ export default function Award() {
   const [participateDeadline, setParticipateDeadline] = useState(null);
   const [docentVoteDeadline, setDocentVoteDeadline] = useState(null);
   const [adminVoteDeadline, setAdminVoteDeadline] = useState(null);
+  const [winnerAnnouncementDeadline, setWinnerAnnouncementDeadline] =
+    useState(null);
 
   useEffect(() => {
     const fetchDates = async () => {
@@ -87,6 +101,9 @@ export default function Award() {
         setParticipateDeadline(new Date(deadlines.participate.seconds * 1000));
         setDocentVoteDeadline(new Date(deadlines.docentVote.seconds * 1000));
         setAdminVoteDeadline(new Date(deadlines.adminVote.seconds * 1000));
+        setWinnerAnnouncementDeadline(
+          new Date(deadlines.winnerAnnouncement.seconds * 1000)
+        );
       } catch (error) {
         console.error("Error fetching dates:", error);
       }
@@ -103,6 +120,7 @@ export default function Award() {
   useEffect(() => {
     const fetchVotes = async () => {
       try {
+        if (!id && !user) return;
         const votes = await getVotesOnAwardFromDocent(id, user.uid);
         if (votes) {
           const docentId = user.uid;
@@ -127,7 +145,7 @@ export default function Award() {
           });
         }
       } catch (e) {
-        e;
+        console.log(e);
       }
     };
     fetchVotes();
@@ -136,6 +154,7 @@ export default function Award() {
   useEffect(() => {
     const fetchAward = async () => {
       try {
+        if (!id && !user && user == null) return;
         const response = await fetch(`/api/awards/${id}`);
         const data = await response.json();
         setAward(data);
@@ -149,6 +168,7 @@ export default function Award() {
 
     const fetchUserData = async () => {
       try {
+        if (!id && !user) return;
         const response = await fetch(`/api/users/${user.uid}`);
         const data = await response.json();
         setUserData(data);
@@ -160,6 +180,7 @@ export default function Award() {
 
     const fetchUserProjects = async () => {
       try {
+        if (!id && !user && user == null) return;
         const projects = await getProjectsByUserID(user.uid);
         setUserProjects(projects);
       } catch (error) {
@@ -176,11 +197,35 @@ export default function Award() {
           (project) => project.awardId === id
         );
         setProjectsToVoteOn(projectsWithAwardId);
+
+        if (!id && !user) return;
+        const winner = await getWinner(id);
+        if (winner) {
+          console.log("winner", winner);
+          console.log("projects", projects);
+
+          const winnerProject = projects.find(
+            (project) => project.project_id === winner.project_id
+          );
+          console.log("winnerProject", winnerProject);
+
+          setWinner(winnerProject);
+          setHasAwardEnded(true);
+          console.log("winnerstate", winner);
+        }
       } catch (error) {
         console.error("Error fetching all projects:", error);
       }
     };
     fetchAllProjects();
+
+    const fetchWinner = async () => {
+      try {
+      } catch (error) {
+        console.error("Error fetching winner:", error);
+      }
+    };
+    fetchWinner();
   }, [id, user]); // INFINITE LOOP WAS HERE
 
   const handleStartVotingButtonClick = () => {
@@ -195,6 +240,7 @@ export default function Award() {
 
   const handleConfirmChangeParticipationButtonClick = async () => {
     try {
+      if (!id && !user && user == null) return;
       const selectedProject = userProjects.find(
         (project) => project.project_id === projectSelected
       );
@@ -244,6 +290,10 @@ export default function Award() {
           // The request was successful, update the projects by fetching them again
           const updatedProjects = await getAllProjects();
           setProjects(updatedProjects);
+          const projectsToVoteOn = updatedProjects.filter(
+            (projects) => projects.awardId === id
+          );
+          setProjectsToVoteOn(projectsToVoteOn);
         } else {
           setIsChangeParticipationModalOpen(false);
         }
@@ -284,6 +334,10 @@ export default function Award() {
           // Update the projects by fetching them again
           const updatedProjects = await getAllProjects();
           setProjects(updatedProjects);
+          const projectsToVoteOn = updatedProjects.filter(
+            (project) => project.awardId === id
+          );
+          setProjectsToVoteOn(projectsToVoteOn);
         } else {
           console.log(
             "Selected project is already participating in this award"
@@ -345,8 +399,26 @@ export default function Award() {
       await updateDoc(projectRef, { awardId: null });
     }
     // The request was successful, update the projects by fetching them again
-    const updatedProjects = await getAllProjects();
+    // const updatedProjects = await getAllProjects();
+    const updatedProjects = projects.filter(
+      (project) =>
+        project.project_id !== participatingProject.project_id &&
+        project.awardId === id
+    );
+
+    // Change value in userProjects state
+    const updatedUserProjects = [];
+    userProjects.forEach((project) => {
+      if (project.project_id === participatingProject.project_id) {
+        project.awardId = null;
+      }
+      updatedUserProjects.push(project);
+    });
+
+    // update project state
     setProjects(updatedProjects);
+    setProjectsToVoteOn(updatedProjects);
+
     setIsWithdrawModalOpen(false);
   };
 
@@ -381,6 +453,9 @@ export default function Award() {
     if (second?.projectId) vote.order[1] = second.projectId;
     if (third?.projectId) vote.order[2] = third.projectId;
 
+    setHasVoted(true);
+    // Make vote buttons disappear / end voting
+    setStartVotingTeacher(false);
     await saveVote(vote);
   };
 
@@ -399,22 +474,26 @@ export default function Award() {
     // ...
   }, [id, user, projects]);
 
-  const renderMyProjectChoices = () => {
-    // filter projects by awardId from the ones in ranking
-
+  useEffect(() => {
+    // Update the docent projects choices he voted on
+    if (hasVoted == false) return;
     let myProjectChoices = [];
+    if (!ranking) return;
     ranking.forEach((rank, i) => {
       const project = projects.forEach((project) => {
+        if (!rank) return;
         if (rank.projectId === project.project_id) {
           myProjectChoices.push(project);
         }
       });
     });
-    if (!ranking) return;
+    setDocentProjectChoices(myProjectChoices);
+  }, [hasVoted, ranking]);
 
+  const renderMyProjectChoices = () => {
     return (
       <div className="customGrid mb-5 mt-5">
-        {myProjectChoices.map((project, index) => {
+        {docentProjectChoices.map((project, index) => {
           return (
             <div key={index}>
               <ProjectCard key={project.project_id} project={project} />
@@ -427,12 +506,22 @@ export default function Award() {
 
   useEffect(() => {
     const fetchGlobalNominatedProjects = async () => {
+      if (!id && !user) return;
       const data = await getGlobalNominatedProjects(id);
-
+      console.log(data);
       setTop3Projects(data);
     };
     fetchGlobalNominatedProjects();
   }, [id]);
+
+  const handleSubmitWinner = async () => {
+    // Save project id to "winners" collection in database
+    console.log("tempwinner", tempWinner);
+
+    saveWinner(tempWinner.project_id, id);
+    setWinner(tempWinner);
+    setHasAwardEnded(true);
+  };
 
   return (
     <>
@@ -449,18 +538,77 @@ export default function Award() {
           </header>
 
           <div>
-            <div className={`${styles.awardProjects} flex flex-col`}>
-              {currentDate > adminVoteDeadline && (
-                <div className="">
-                  <h1>Nominated Projects</h1>
-                  <div className="customGrid mt-5 mb-5 ">
-                    {top3Projects &&
-                      top3Projects.map((project, index) => (
-                        <ProjectCard key={index} project={project} />
-                      ))}
+            <div className="flex flex-col">
+              {winner &&
+                hasAwardEnded &&
+                userData.role === "admin" &&
+                currentDate < winnerAnnouncementDeadline && (
+                  <div>
+                    <h1>Award Winner</h1>
+                    <div className=" mt-5 mb-5 ">
+                      {winner && <ProjectCard project={winner} />}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              {winner &&
+                hasAwardEnded &&
+                currentDate > winnerAnnouncementDeadline && (
+                  <div>
+                    <h1>Award Winner</h1>
+                    <div className=" mt-5 mb-5 ">
+                      {winner && <ProjectCard project={winner} />}
+                    </div>
+                  </div>
+                )}
+            </div>
+            <div className={`${styles.awardProjects} flex flex-col`}>
+              {currentDate < adminVoteDeadline &&
+                userData &&
+                userData.role === "admin" && (
+                  <div className="">
+                    <h1>Nominated Projects</h1>
+                    <div className="customGrid mt-5 mb-5 ">
+                      {top3Projects &&
+                        top3Projects.map((project, index) => (
+                          <ProjectCard key={index} project={project} />
+                        ))}
+                    </div>
+                    {!winner && (
+                      <div>
+                        <div className="customGrid mt-5 mb-5">
+                          <select
+                            name="chooseWinner"
+                            id="chooseWinner"
+                            className="border-gray-300  p-2  rounded-l-sm bg-gray-700 text-white"
+                            onChange={(e) => {
+                              const selectedProjectId = e.target.value;
+                              const selectedProject = top3Projects.find(
+                                (project) =>
+                                  project.project_id === selectedProjectId
+                              );
+                              setTempWinner(selectedProject);
+                            }}
+                          >
+                            <option value="">Choose winner...</option>
+                            {top3Projects &&
+                              top3Projects.map((project, index) => (
+                                <option value={project.project_id} key={index}>
+                                  {project.title}
+                                </option>
+                              ))}
+                          </select>
+                          <div>
+                            <ButtonPink
+                              title="Submit"
+                              color="white"
+                              onClick={handleSubmitWinner}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
               {userData && userData.role === "docent" && hasVoted && (
                 <>
@@ -468,19 +616,18 @@ export default function Award() {
                   <div className="">{renderMyProjectChoices()}</div>
                 </>
               )}
-            <div className="flex gap-5">
-              <h1>Submitted Projects</h1>
-              {userData &&
-                userData.role === "student" &&
-                currentDate < participateDeadline &&
-                !hasParticipated && (
-                  <ButtonPink
-                    title="Participate"
-                    color="white"
-                    onClick={handleParticipateButtonClick}
-                  />
-                )}
-
+              <div className="flex gap-5">
+                <h1>Submitted Projects</h1>
+                {userData &&
+                  userData.role === "student" &&
+                  currentDate < participateDeadline &&
+                  !hasParticipated && (
+                    <ButtonPink
+                      title="Participate"
+                      color="white"
+                      onClick={handleParticipateButtonClick}
+                    />
+                  )}
 
                 {userData &&
                   userData.role === "student" &&
@@ -561,13 +708,17 @@ export default function Award() {
               </div>
             )}
 
-          <div className="customGrid mt-5 mb-5 ">
+          <div className="customGrid mt-5 mb-5 gap-5 ">
             {award &&
               projects.length > 0 &&
               projectsToVoteOn.map((project, index) => {
                 return (
                   <>
-                    <div className="relative" key={index}>
+                    <div
+                      className="relative"
+                      key={index}
+                      style={startVotingTeacher ? { marginBottom: "5rem" } : {}}
+                    >
                       <ProjectCard key={project.project_id} project={project} />
                       {startVotingTeacher && (
                         <TeacherVoteChoiceSelect
@@ -598,10 +749,10 @@ export default function Award() {
             />
           )}
           {isModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-black bg-opacity-50 absolute inset-0"></div>
-              <div className="bg-slate-900 p-4 rounded shadow-lg relative z-10 w-1/3">
-                <div className="flex justify-end">
+            <div className={styles.participationModalContainer}>
+              <div className={styles.participationModalBackgroundOverlay}></div>
+              <div className={styles.participationModalHeader}>
+                <div className={styles.participationModalHeaderClose}>
                   <button className="text-white" onClick={handleModalClose}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -619,9 +770,12 @@ export default function Award() {
                     </svg>
                   </button>
                 </div>
-                <h2 className="text-xl mb-4">
+                <h2 className={styles.participationModalHeaderTitle}>
                   Participate
-                  <span className="text-sm"> - select your project</span>
+                  <span className={styles.participationModalHeaderTitleSpan}>
+                    {" "}
+                    - select your project
+                  </span>
                 </h2>
                 {userProjects.length === 0 && (
                   <div>
@@ -629,22 +783,27 @@ export default function Award() {
                   </div>
                 )}
 
-                <div className="max-h-72 overflow-y-auto overflow-x-hidden mb-4">
+                <div className={styles.participationModalProjectContainer}>
                   {userProjects.map((project, index) => (
                     <div
-                      className={`flex-shrink-0 w-full h-full bg-slate-800 rounded-sm p-1 mb-2 cursor-pointer ${
+                      className={`${styles.participationModalProjects} ${
                         project.project_id === projectSelected
-                          ? "border-pink-500 border-solid border-2 "
-                          : "border-solid border-2 border-slate-800"
+                          ? `${styles.participationModalProjectSelected}`
+                          : `${styles.participationModalProjectNotSelected}`
                       }`}
                       key={index}
                       onClick={() => handleProjectSelect(project.project_id)}
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-3">
                         <img
                           src={project.previewImageUrl}
                           className="w-24 h-24 rounded-sm mr-2"
                           alt="Project Preview"
+                          style={{
+                            width: "6rem",
+                            height: "6rem",
+                            borderRadius: "0.375rem",
+                          }}
                         />
                         <div className="flex flex-col">
                           <h3 className="text-white">{project.title}</h3>
@@ -672,14 +831,11 @@ export default function Award() {
             </div>
           )}
           {isChangeParticipationModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-black bg-opacity-50 absolute inset-0"></div>
-              <div className="bg-slate-900 p-4 rounded shadow-lg relative z-10 w-1/3">
-                <div className="flex justify-end">
-                  <button
-                    className="text-white"
-                    onClick={handleChangeParticipationModalClose}
-                  >
+            <div className={styles.participationModalContainer}>
+              <div className={styles.participationModalBackgroundOverlay}></div>
+              <div className={styles.participationModalHeader}>
+                <div className={styles.participationModalHeaderClose}>
+                  <button onClick={handleChangeParticipationModalClose}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6"
@@ -696,29 +852,37 @@ export default function Award() {
                     </svg>
                   </button>
                 </div>
-                <h2 className="text-xl mb-4">
-                  Participate
-                  <span className="text-sm"> - select your project</span>
+                <h2 className={styles.participationModalHeaderTitle}>
+                  Change
+                  <span className={styles.participationModalHeaderTitleSpan}>
+                    {" "}
+                    - select your project
+                  </span>
                 </h2>
 
-                <div className="max-h-72 overflow-y-auto overflow-x-hidden mb-4">
+                <div className={styles.participationModalProjectContainer}>
                   {userProjects.map((project, index) => (
                     <div
-                      className={`flex-shrink-0 w-full h-full bg-slate-800 rounded-sm p-1 mb-2 cursor-pointer ${
+                      className={`${styles.participationModalProjects} ${
                         project.project_id === projectSelected
-                          ? "border-pink-500 border-solid border-2 "
-                          : "border-solid border-2 border-slate-800"
+                          ? `${styles.participationModalProjectSelected}`
+                          : `${styles.participationModalProjectNotSelected}`
                       }`}
                       key={index}
                       onClick={() => handleProjectSelect(project.project_id)}
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-3">
                         <img
                           src={project.previewImageUrl}
                           className="w-24 h-24 rounded-sm mr-2"
                           alt="Project Preview"
+                          style={{
+                            width: "6rem",
+                            height: "6rem",
+                            borderRadius: "0.375rem",
+                          }}
                         />
-                        <div className="flex flex-col">
+                        <div className="flex flex-col ">
                           <h3 className="text-white">{project.title}</h3>
                           <p className="text-slate-500">{project.category}</p>
                         </div>
