@@ -25,11 +25,14 @@ export async function getWinner(awardId) {
 
         if (!winnerSnap.empty) {
             const winner = winnerSnap.docs[0].data();
-            console.log(winner);
 
-            return winner;
+            // get winner from db
+            const projectRef = doc(firestore, 'projects', winner.project_id);
+            const projectSnap = await getDoc(projectRef);
+            const project = projectSnap.data();
+
+            return project;
         }
-        return null;
     } catch (e) {
         console.log(e);
     }
