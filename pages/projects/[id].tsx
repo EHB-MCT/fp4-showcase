@@ -100,7 +100,11 @@ export default function Project() {
     : "";
 
   function handleEditProjectButtonClick() {
-    console.log("test");
+    if (project && id) {
+      router.push(`/projects/edit?id=${id}`);
+    } else {
+      console.log("Project ID is not available.");
+    }
   }
 
   return (
