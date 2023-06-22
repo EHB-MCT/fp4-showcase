@@ -1,0 +1,121 @@
+.trendingCardContainer {
+  height: 500px;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  background-color: black;
+  overflow: hidden;
+}
+
+.trendingCardInformationContainer {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  row-gap: 30px;
+}
+
+.trendingCardInformationContainer h3 {
+  color: var(--main-pink-color);
+}
+
+.trendingCardInformationContainer p {
+  line-height: 1.6 !important;
+  font-size: 16px !important;
+}
+
+.trendingBtnsContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  justify-content: space-between;
+}
+
+.projectCategoryContainer,
+.projectCategoryContainerr {
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  border-radius: 4px;
+  padding: 2px 10px;
+  margin: 4px;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.projectCategoryContainer p,
+.projectCategoryContainerr p {
+  color: #ffffff;
+  font-family: var(--p-font-family);
+  font-size: 14px !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.trendingCardCategoriesContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.trendingCardImageContainer {
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+
+.projectDetailPageTitle {
+  font-size: var(--h1-font-size) !important;
+  font-family: var(--h3-font-family);
+  margin-bottom: 0;
+  color: #ffffff !important;
+  cursor: pointer;
+}
+
+.projectDetailPageTitle:hover {
+  color: var(--main-lightblue-color) !important;
+}
+
+.projectDetailPageAuthorMobile {
+  cursor: pointer;
+}
+
+.trendingCardDescriptionContainer {
+  width: 70%;
+}
+
+@media (max-width: 767px) {
+  .trendingCardContainer {
+    height: 700px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 40% 60%;
+    margin: 0 0 50px 0;
+  }
+
+  .trendingCardDescriptionContainer {
+    width: 100%;
+  }
+
+  .trendingBtnsContainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    justify-content: space-between;
+  }
+
+  .trendingCardInformationContainer {
+    padding: 20px;
+    row-gap: 20px;
+  }
+
+  .projectDetailPageTitle {
+    font-size: 26px !important;
+  }
+
+  .projectCategoryContainer:nth-child(n + 3) {
+    display: none;
+  }
+}

@@ -10,6 +10,8 @@ import FilterComponent from "../components/FilterComponent";
 import { getAllProjects } from "../lib/projects";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import TrendingSlider from "@/components/TrendingSlider";
+import TrendingCard from "@/components/TrendingCard";
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -23,6 +25,7 @@ export default function Home() {
   const [clusters, setClusters] = useState([...clustersData]);
   const [showClearButton, setShowClearButton] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -51,6 +54,7 @@ export default function Home() {
   const handleSelectedClustersChange = (clusters) => {
     setSelectedClusters(clusters);
   };
+
   const staggerVariant = {
     visible: {
       opacity: 1,
@@ -71,11 +75,31 @@ export default function Home() {
         const data = await getAllProjects();
         setProjects(data);
 
+        // Extract the project IDs from the data
+        const projectIds = data.map((project) => project.project_id);
+
+        // Save the project IDs in local storage
+        localStorage.setItem("projectIds", JSON.stringify(projectIds));
+
         let testData = [...data];
-        testData = testData
-          .sort((a, b) => b.likeCount - a.likeCount)
-          .slice(0, 3);
-        setTrendingProjects(testData);
+
+        // Sort the testData based on likeCount in descending order
+        testData.sort((a, b) => b.likeCount - a.likeCount);
+
+        // Get the top 5 items
+        const topFive = testData.slice(0, 5);
+
+        // Shuffle the topFive using the Fisher-Yates shuffle algorithm
+        for (let i = topFive.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [topFive[i], topFive[j]] = [topFive[j], topFive[i]];
+        }
+
+        // Take the first 3 items from the shuffled topFive
+        const topThree = topFive.slice(0, 3);
+
+        // Set the shuffled topThree as the trending projects
+        setTrendingProjects(topThree);
 
         setLoading(false);
       } catch (e) {
@@ -84,6 +108,22 @@ export default function Home() {
       }
     };
     fetchData();
+
+    // Check if the window width is less than or equal to 768px (adjust the value if needed)
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Listen for window resize events
+    window.addEventListener("resize", handleResize);
+
+    // Call handleResize initially
+    handleResize();
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
@@ -100,19 +140,16 @@ export default function Home() {
       <main>
         <div className={`${styles.homeTrendingContainer} containerWidth`}>
           <TitleComponent title="Trending" />
-          <div className="customGrid">
-            {loading ? (
-              <>
-                <Skeleton className={styles.skeleton} />
-                <Skeleton className={styles.skeleton} />
-                <Skeleton className={styles.skeleton} />
-              </>
-            ) : (
-              trendingProjects.map((project) => (
-                <Card key={project.project_id} project={project} />
-              ))
-            )}
-          </div>
+
+
+          {isMobile ? (
+            trendingProjects.length > 0 && (
+              <TrendingCard project={trendingProjects[0]} />
+            )
+          ) : (
+            <TrendingSlider trendingProjects={trendingProjects} />
+          )}
+
         </div>
         <BannerComponent
           mobileImage="/images/home-banner-mobile.jpg"

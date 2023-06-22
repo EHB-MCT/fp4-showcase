@@ -9,6 +9,7 @@ import { UserContext } from "../lib/context";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from 'next/router'
 
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -60,6 +61,9 @@ const UploadProjectForm = () => {
 
   const [imageSelected, setImageSelected] = useState(false);
 
+  
+  // router
+  const router = useRouter()
   // tooltips usestates
 
   const [titleTooltipVisible, setTitleTooltipVisible] = useState(false);
@@ -178,7 +182,7 @@ const UploadProjectForm = () => {
       const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
 
       // Check if the new link matches the URL pattern
-
+        
       if (urlPattern.test(newLink)) {
         setLinkError(false);
 
@@ -326,6 +330,9 @@ const UploadProjectForm = () => {
       // Additional logic after successful upload
 
       setUploadStatus("success");
+      setTimeout(() => {
+        router.push(`/profile/${user.uid}`);
+      }, 2000);
     } catch (error) {
       console.error("Error uploading project:", error);
 
@@ -382,7 +389,7 @@ const UploadProjectForm = () => {
     if (uploadStatus) {
       timer = setTimeout(() => {
         setUploadStatus(null);
-      }, 5000);
+      }, 2000);
     }
 
     return () => clearTimeout(timer);

@@ -15,9 +15,8 @@ export default function Project() {
   const { id } = router.query;
   const [project, setProject] = useState(null);
   const [projectUser, setUser] = useState(null);
+  const [projectsIds, setProjectsIds] = useState(null);
   const { user } = useContext(UserContext);
-  // under construction pop up usestate
-  const [showUnderConstruction, setShowUnderConstruction] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -26,6 +25,7 @@ export default function Project() {
       const project = await getProjectById(id);
       setProject(project);
     }
+
     fetchData();
   }, [id]);
 
@@ -35,10 +35,15 @@ export default function Project() {
 
       const projectUser = await getUserById(project.uid);
       setUser(projectUser);
-      console.log(projectUser);
     }
     fetchData();
   }, [project]);
+
+  useEffect(() => {
+    const projectIdsString = localStorage.getItem("projectIds");
+    const projectIds = JSON.parse(projectIdsString);
+    setProjectsIds(projectIds);
+  }, []);
 
   const [showFullText, setShowFullText] = useState(false);
   const fullText = project?.description || "";
@@ -62,7 +67,6 @@ export default function Project() {
     urls: project?.imageUrls || [],
     preview: project?.previewImageUrl || "",
   };
-  console.log(projectImages);
 
   const youtubeUrls = project?.youtubeLinks || [];
   const videoIds = youtubeUrls.map((url) => {
@@ -71,7 +75,6 @@ export default function Project() {
     );
     return matches ? matches[1] : null;
   });
-  console.log(videoIds);
 
   function getProjectBelongsToText(projectBelongsTo) {
     switch (projectBelongsTo) {
@@ -87,8 +90,6 @@ export default function Project() {
         return "";
     }
   }
-  console.log(user?.uid);
-  console.log(projectUser?.uid);
   const showEditButton = user?.uid === projectUser?.uid;
 
   const publishedDate = project?.createdAt
@@ -107,6 +108,25 @@ export default function Project() {
     }
   }
 
+  function handleNextProjectButtonClick() {
+    if (id && projectsIds) {
+      const currentIndex = projectsIds.indexOf(id);
+      const nextIndex = (currentIndex + 1) % projectsIds.length;
+      const nextProjectId = projectsIds[nextIndex];
+      router.push(`/projects/${nextProjectId}`);
+    }
+  }
+
+  function handlePreviousProjectButtonClick() {
+    if (id && projectsIds) {
+      const currentIndex = projectsIds.indexOf(id);
+      const previousIndex =
+        (currentIndex - 1 + projectsIds.length) % projectsIds.length;
+      const previousProjectId = projectsIds[previousIndex];
+      router.push(`/projects/${previousProjectId}`);
+    }
+  }
+
   return (
     <>
       <Head>
@@ -121,6 +141,20 @@ export default function Project() {
       <main className={style.projectDetailPageMain}>
         {project != null && (
           <div className="containerWidth">
+            <div className={style.backContainer}>
+              <div
+                className={style.goBackBtn}
+                onClick={handlePreviousProjectButtonClick}
+              >
+                <p>Previous project</p>
+              </div>
+              <div
+                className={style.goNextBtn}
+                onClick={handleNextProjectButtonClick}
+              >
+                <p>Next project</p>
+              </div>
+            </div>
             <div className={style.projectDetailPageTitleContainer}>
               <div>
                 <h3 className={style.projectDetailPageTitle}>
@@ -128,6 +162,7 @@ export default function Project() {
                 </h3>
                 {projectUser && (
                   <p
+                    className={style.projectDetailPageAuthorMobile}
                     onClick={() => {
                       router.push(`/profile/${project.uid}`);
                     }}
@@ -136,7 +171,7 @@ export default function Project() {
                   </p>
                 )}
               </div>
-              <div>
+              <div className={style.editContainer}>
                 {showEditButton && (
                   <ButtonPink
                     title="Edit project"
@@ -154,6 +189,21 @@ export default function Project() {
                 />
               </div>
               <div className={style.projectDetailPageInformationContainer}>
+                <div>
+                  <h1 className={style.projectDetailPageTitleDesktop}>
+                    {project.title}
+                  </h1>
+                  {projectUser && (
+                    <p
+                      className={style.projectDetailPageAuthorDesktop}
+                      onClick={() => {
+                        router.push(`/profile/${project.uid}`);
+                      }}
+                    >
+                      {projectUser.username}
+                    </p>
+                  )}
+                </div>
                 <div
                   className={
                     style.projectDetailPageInformationFirstSubContainer

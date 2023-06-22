@@ -82,7 +82,9 @@ const EditProjectForm = ({ projectId }) => {
     if (project) {
       setTitle(project.title);
       setDescription(project.description);
-      setPreviewImageUrl(project.previewImageUrl);
+      setPreviewImageUrl(project?.previewImageUrl || "");
+      setPreviewImage(project?.previewImageUrl ||"");
+
       setProjectBelongsTo(project.projectBelongsTo);
       setCategory(project.category);
       setSelectedTags(project.tags);
@@ -139,7 +141,7 @@ const EditProjectForm = ({ projectId }) => {
       tags: selectedTags,
       links: addedLinks,
       youtubeLinks: addedYoutubeLinks,
-      previewImage: previewImageUrl,
+      previewImage: previewImage  ? previewImage : "",
       pdfFile: pdfFile ? pdfFile : "",
       
     };
@@ -157,6 +159,9 @@ const EditProjectForm = ({ projectId }) => {
       // Additional logic after successful upload
 
       setUploadStatus("success");
+      setTimeout(() => {
+        router.push(`/projects/${projectId}`);
+      }, 2000);
     } catch (error) {
       console.error("Error uploading project:", error);
 
@@ -175,7 +180,7 @@ const EditProjectForm = ({ projectId }) => {
     if (uploadStatus) {
       timer = setTimeout(() => {
         setUploadStatus(null);
-      }, 5000);
+      }, 2000);
     }
 
     return () => clearTimeout(timer);
@@ -434,7 +439,7 @@ const EditProjectForm = ({ projectId }) => {
         </label>
 
         <input
-          required
+         
           ref={previewImageInputRef}
           type="file"
           id="previewImage"

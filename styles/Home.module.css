@@ -23,6 +23,7 @@
   }
   .homeTrendingContainer {
     margin: 0;
+    row-gap: 20px;
   }
   .homeAllProjectsContainer {
     margin: 0;

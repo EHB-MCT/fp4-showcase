@@ -125,6 +125,7 @@
 
 .projectDetailPageDescriptionContainer p {
   line-height: 1.6 !important;
+  font-size: 16px !important;
 }
 
 .projectDetailPageDescriptionContainer a {
@@ -133,8 +134,14 @@
 }
 
 .projectDetailPageTitle {
-  color: var(--main-pink-color);
-  margin-bottom: 0 !important;
+  font-size: var(--h1-font-size) !important;
+  font-family: var(--h3-font-family);
+  margin-bottom: 0;
+  display: none;
+}
+
+.projectDetailPageAuthorMobile {
+  display: none;
 }
 
 .projectDetailPagePdfContainer {
@@ -166,6 +173,38 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.projectDetailPageTitleDesktop {
+  font-size: var(--h1-font-size) !important;
+  font-family: var(--h3-font-family);
+  margin-bottom: 0;
+}
+
+.projectDetailPageAuthorDesktop {
+  cursor: pointer;
+}
+
+.goBackBtn,
+.goNextBtn {
+  /* background-color: var(--main-purple-color); */
+  padding: 2px 20px;
+  width: fit-content;
+  cursor: pointer;
+  background: linear-gradient(135deg, transparent 7px, var(--main-pink-color) 0)
+      top left,
+    linear-gradient(-45deg, transparent 7px, var(--main-pink-color) 0) top right;
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+}
+
+.backContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.editContainer {
+  margin-top: 20px;
 }
 
 @media (max-width: 767px) {
@@ -207,5 +246,20 @@
     box-shadow: none;
     padding: 50px 0 0 0;
     height: fit-content;
+  }
+
+  .projectDetailPageTitleDesktop {
+    display: none;
+  }
+  .projectDetailPageAuthorDesktop {
+    display: none;
+  }
+
+  .projectDetailPageTitle {
+    display: block;
+  }
+
+  .projectDetailPageAuthorMobile {
+    display: block;
   }
 }
