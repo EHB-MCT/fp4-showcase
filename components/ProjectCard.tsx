@@ -50,6 +50,7 @@ const ProjectCard = ({ project }) => {
 
     const showEllipsis = project.tags.length > truncatedTags.length;
 
+
     return (
       <div className={`${styles.projectCardWrapper} ${styles.neonEffect}`}>
         <motion.div
@@ -73,6 +74,7 @@ const ProjectCard = ({ project }) => {
               <div className={styles.projectCardInformationSubContainer}>
                 <div className={styles.projectCardInformationTitleContainer}>
                   <a
+
                     href={`/projects/${project.project_id}`}
                     key={project.id}
                     className={styles.a_wrapper}
@@ -91,10 +93,18 @@ const ProjectCard = ({ project }) => {
                     </p>
                   </a>
                 </div>
+
+                 
+                {/* // LIKE BUTTON */}
+                <div className={styles.projectCardInformationLikeContainer}>
+                  <LikeProjectBtn project={project} />
+                </div>
+
               </div>
             </div>
           </div>
           <div className={styles.projectCategoriesContainer}>
+
             {truncatedTags.map((tag, index) => (
               <div className={styles.projectCategoryContainer} key={index}>
                 <p>{tag}</p>

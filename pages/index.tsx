@@ -141,6 +141,7 @@ export default function Home() {
         <div className={`${styles.homeTrendingContainer} containerWidth`}>
           <TitleComponent title="Trending" />
 
+
           {isMobile ? (
             trendingProjects.length > 0 && (
               <TrendingCard project={trendingProjects[0]} />
@@ -148,6 +149,7 @@ export default function Home() {
           ) : (
             <TrendingSlider trendingProjects={trendingProjects} />
           )}
+
         </div>
         <BannerComponent
           mobileImage="/images/home-banner-mobile.jpg"

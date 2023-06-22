@@ -6,11 +6,16 @@
   cursor: pointer;
   width: 100%;
   height: 100%;
+  transition: transform 0.3s ease-in-out;
 }
 
 .likeBtnContainer svg,
 .likeBtnContainer p {
   position: absolute;
+}
+
+.likeBtnContainer:hover {
+  animation: wiggle 0.5s infinite;
 }
 
 .likeBtnContainer p {
@@ -21,4 +26,19 @@
 
 .likeBtnContainer svg {
   scale: 0.85;
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotateZ(0);
+  }
+  25% {
+    transform: rotateZ(-3deg);
+  }
+  75% {
+    transform: rotateZ(3deg);
+  }
+  100% {
+    transform: rotateZ(0);
+  }
 }
