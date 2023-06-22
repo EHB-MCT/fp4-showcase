@@ -157,6 +157,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  margin-bottom: -7px !important;
 }
 
 .a_wrapper {
@@ -180,12 +181,6 @@
 .BannerText {
   margin: 10%;
   width: 25%;
-}
-
-.projectCardInformationTitle {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 @media (max-width: 767px) {

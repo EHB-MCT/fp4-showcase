@@ -1,0 +1,58 @@
+.slider {
+  position: relative;
+  width: 100%;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.navigationButton {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.previousButton {
+  position: absolute;
+  left: -4rem;
+  top: 230px;
+}
+
+.nextButton {
+  position: absolute;
+  right: -4rem;
+  top: 230px;
+}
+
+.projectContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: hidden;
+}
+
+.sliderContainer {
+  width: 100%;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 767px) {
+  .previousButton {
+    position: absolute;
+    left: 0;
+    bottom: -475px;
+  }
+
+  .nextButton {
+    position: absolute;
+    right: 0;
+    bottom: -475px;
+  }
+}
