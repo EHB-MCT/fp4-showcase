@@ -25,7 +25,9 @@ const BannerComponent = ({ mobileImage, desktopImage, title }) => {
             <ButtonPink
               title={"Join us"}
               color="Pink"
-              onClick={() => {}}
+              onClick={() => {
+                window.open("https://www.finalshow.be", "_blank");
+              }}
             ></ButtonPink>
           </div>
         </div>

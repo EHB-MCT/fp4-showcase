@@ -20,9 +20,9 @@
 }
 
 /*  DISABLE THIS FOR LIVE DEPLOYMENT IT CRASHES WITH VERCEL */
-/* .sliderContainer div {
+.sliderContainer > div {
   width: calc(25% - 0.5rem);
-} */
+}
 
 .navigation {
   display: flex;
@@ -63,7 +63,7 @@
 }
 
 @media (max-width: 1440px) {
-  .sliderContainer div {
+  .sliderContainer > div {
     width: calc(25% - 0.25rem);
   }
 }
