@@ -333,7 +333,7 @@ const EditProfileForm = ({ uid }) => {
           value={aboutMe}
           onChange={handleAboutMeChange}
           className=" border-gray-300 p-2 w-90 h-40 resize-none w-full rounded-sm bg-gray-700 text-white "
-          required
+          
           maxLength={maxCharAboutMe}
         />
       </div>
