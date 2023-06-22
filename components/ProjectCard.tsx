@@ -33,7 +33,24 @@ const ProjectCard = ({ project }) => {
   }, [project]);
 
   if (!project) return null;
-  else
+  else {
+    const tags = project.tags.slice(0, 2); // Limit to a maximum of 2 tags
+    let remainingCharacters = 25;
+    const truncatedTags = [];
+    for (let i = 0; i < tags.length; i++) {
+      const tag = tags[i];
+      if (tag.length <= remainingCharacters) {
+        truncatedTags.push(tag);
+        remainingCharacters -= tag.length;
+      } else {
+        truncatedTags.push(tag.substring(0, remainingCharacters));
+        break;
+      }
+    }
+
+    const showEllipsis = project.tags.length > truncatedTags.length;
+
+
     return (
       <div className={`${styles.projectCardWrapper} ${styles.neonEffect}`}>
         <motion.div
@@ -57,15 +74,7 @@ const ProjectCard = ({ project }) => {
               <div className={styles.projectCardInformationSubContainer}>
                 <div className={styles.projectCardInformationTitleContainer}>
                   <a
-                    href={`/profile/${project.uid}`}
-                    key={project.uid}
-                    className={styles.a_wrapper}
-                  >
-                    <p className={styles.projectCardInformationName}>
-                      {user && user.username}
-                    </p>
-                  </a>
-                  <a
+
                     href={`/projects/${project.project_id}`}
                     key={project.id}
                     className={styles.a_wrapper}
@@ -74,26 +83,34 @@ const ProjectCard = ({ project }) => {
                       {project.title}
                     </p>
                   </a>
+                  <a
+                    href={`/profile/${project.uid}`}
+                    key={project.uid}
+                    className={styles.a_wrapper}
+                  >
+                    <p className={styles.projectCardInformationName}>
+                      {user && user.username}
+                    </p>
+                  </a>
                 </div>
+
+                 
                 {/* // LIKE BUTTON */}
                 <div className={styles.projectCardInformationLikeContainer}>
                   <LikeProjectBtn project={project} />
                 </div>
+
               </div>
             </div>
           </div>
           <div className={styles.projectCategoriesContainer}>
-            {project.tags.slice(0, 3).map(
-              (
-                tag,
-                index // Use the slice(0, 3) method to get only the first three tags
-              ) => (
-                <div className={styles.projectCategoryContainer} key={index}>
-                  <p>{tag}</p>
-                </div>
-              )
-            )}
-            {project.tags.length > 3 && ( // Check if there are more than 3 tags
+
+            {truncatedTags.map((tag, index) => (
+              <div className={styles.projectCategoryContainer} key={index}>
+                <p>{tag}</p>
+              </div>
+            ))}
+            {showEllipsis && (
               <div className={styles.projectCategoryContainer}>
                 <p>...</p>
               </div>
@@ -102,6 +119,7 @@ const ProjectCard = ({ project }) => {
         </motion.div>
       </div>
     );
+  }
 };
 
 export default ProjectCard;
