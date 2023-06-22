@@ -109,7 +109,7 @@ export default function Home() {
               </>
             ) : (
               trendingProjects.map((project) => (
-                <Card key={project.id} project={project} />
+                <Card key={project.project_id} project={project} />
               ))
             )}
           </div>
