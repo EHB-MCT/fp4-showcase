@@ -4,9 +4,17 @@ import LoginForm from "../components/LoginForm";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
 import SignedIn from "../components/SignedIn";
+import { useRouter } from "next/router";
 
 export default function Register() {
   const { user } = useContext(UserContext);
+  const router = useRouter();
+
+  const redirect = () => {
+    router.push("/");
+    return null;
+  };
+
   return (
     <>
       <Head>
@@ -15,7 +23,7 @@ export default function Register() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex items-center justify-center">
-        {user ? <SignedIn /> : <LoginForm />}
+        {user ? redirect() : <LoginForm />}
       </div>
     </>
   );
