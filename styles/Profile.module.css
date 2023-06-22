@@ -51,8 +51,9 @@
 
 }
 
-
-
+.about_me{
+    word-break: break-all;
+}
 .title a:hover {
     color: var(--main-pink-color);
 }

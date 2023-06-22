@@ -59,15 +59,15 @@ const EditProfileForm = ({ uid }) => {
 
   useEffect(() => {
     if (userObject) {
-      setAboutMe(userObject.aboutMe);
-      setSelectedInterests(userObject.interests);
+      setAboutMe(userObject?.aboutMe ||" ");
+      setSelectedInterests(userObject?.interests || []);
       setAddedLinks(userObject?.socials || []);
       setPreviewImage(userObject?.previewImageUrl ||"");
       setPreviewImageUrl(userObject?.previewImageUrl || "");
       setBannerImage(userObject?.bannerImageUrl ||"");
       setBannerImageUrl(userObject?.bannerImageUrl || "");
 
-      const remainingCharsCount = maxCharAboutMe - userObject.aboutMe.length;
+      const remainingCharsCount = maxCharAboutMe - aboutMe.length;
       setRemainingChars(remainingCharsCount);
     }
   }, userObject);
