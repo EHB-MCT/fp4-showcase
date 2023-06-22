@@ -156,6 +156,39 @@ const FilterComponent = ({
         </div>
       </div>
 
+      <div className={styles.mobile_filter_toggle}>
+        <div className={styles.mobile_filter_margin}>
+          <div className={styles.filterSearchContainer}>
+            <form onSubmit={handleSearchSubmit}>
+              <input
+                type="text"
+                placeholder="Project title"
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+              <button type="submit" className={styles.searchButton}>
+                <span className="material-icons">search</span>
+              </button>
+            </form>
+          </div>
+          <div className={styles.mobilefilterIcon} onClick={toggleMobileFilter}>
+            <p>Filter</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+            >
+              <path
+                id="Icon_awesome-filter"
+                data-name="Icon awesome-filter"
+                d="M34.311,0H1.689A1.689,1.689,0,0,0,.5,2.881l13,13.006V30.375a1.688,1.688,0,0,0,.72,1.382l5.625,3.936A1.689,1.689,0,0,0,22.5,34.311V15.886l13-13.006A1.689,1.689,0,0,0,34.311,0Z"
+                fill="#fff"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
       <div className={styles.selectedTagsContainer}>
         {showClearButton && (
           <div
@@ -194,39 +227,6 @@ const FilterComponent = ({
             <span className={styles.removeButton}>X</span>
           </div>
         ))}
-      </div>
-      <div className={styles.mobile_filter_toggle}>
-        <div className={styles.mobile_filter_margin}>
-          <div className={styles.filterSearchContainer}>
-            <form onSubmit={handleSearchSubmit}>
-              <input
-                type="text"
-                placeholder="Project title"
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
-              <button type="submit" className={styles.searchButton}>
-                <span className="material-icons">search</span>
-              </button>
-            </form>
-          </div>
-          <div className={styles.mobilefilterIcon} onClick={toggleMobileFilter}>
-            <p>Filter</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="36"
-              height="36"
-              viewBox="0 0 36 36"
-            >
-              <path
-                id="Icon_awesome-filter"
-                data-name="Icon awesome-filter"
-                d="M34.311,0H1.689A1.689,1.689,0,0,0,.5,2.881l13,13.006V30.375a1.688,1.688,0,0,0,.72,1.382l5.625,3.936A1.689,1.689,0,0,0,22.5,34.311V15.886l13-13.006A1.689,1.689,0,0,0,34.311,0Z"
-                fill="#fff"
-              />
-            </svg>
-          </div>
-        </div>
       </div>
       {isMobileFilterOpen && (
         <div className={styles.mobile_filter_toggle_style}>
@@ -274,16 +274,15 @@ const FilterComponent = ({
                 </span>
               </div>
             </div>
-            <div style={{ margin: "auto", width: "70%" }}>
+            <div className={styles.filterMobileSaveChangesBtn}>
               <p
-                className="text-center"
                 style={{ border: "1px solid white" }}
                 onClick={closeMobileFilter}
               >
                 Save your changes
               </p>
             </div>
-            <div className={styles.selectedTagsContainer}>
+            <div className={styles.selectedTagsContainerPop}>
               {showClearButton && (
                 <div
                   className={`${styles.selectedTag} ${styles.clearBtn}`}

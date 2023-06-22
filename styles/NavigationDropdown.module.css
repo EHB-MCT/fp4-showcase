@@ -30,4 +30,11 @@
   .dropdown_wrapper {
     display: flex;
   }
+
+  .dropdown_wrapper a {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    /* justify-content: center; */
+  }
 }

@@ -191,13 +191,24 @@
 @media (max-width: 767px) {
   .mobilefilterIcon {
     display: flex;
+    justify-content: center;
+    margin-left: 10px;
   }
+  .mobilefilterIcon p {
+    display: none;
+  }
+  .mobilefilterIcon svg {
+    width: 60%;
+  }
+
   .filterSearchContainer {
     width: 100%;
+    display: flex;
+    align-items: center;
   }
   .filterSearchContainer form {
     display: flex;
-    padding-top: 1%;
+    width: 100%;
     justify-content: space-between;
   }
   .filterContainer {
@@ -228,12 +239,38 @@
     padding-left: 16% !important;
     padding-right: 16% !important;
     padding-top: 10% !important;
+    align-items: center;
   }
   .mobile_filter_margin {
-    margin-bottom: 4%;
+    margin-bottom: 10px;
+    margin-top: 40px;
     display: flex;
   }
   .filterContainerMob {
     margin-bottom: 10%;
+  }
+  .filterMobileSaveChangesBtn {
+    text-align: center;
+    padding-top: 20px;
+    margin: auto;
+    width: 70%;
+  }
+
+  .selectedTagsContainer {
+    margin-bottom: 30px;
+  }
+
+  .selectedTagsContainerPop {
+    padding-top: 20px;
+    margin: auto;
+    width: 70%;
+
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .selectedTagsContainerPop .selectedTag,
+  .selectedTagsContainerPop .selectedCluster {
+    background-color: var(--main-purple-color);
   }
 }

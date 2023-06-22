@@ -56,11 +56,25 @@ export default function Awards() {
       <main>
         <div className="containerWidth">
           <div className={styles.awardsAwardsContainer}>
-            <SliderComponent awards={awards} />
+            <div className={styles.awardsDesktop}>
+              <SliderComponent awards={awards} />
+            </div>
+          </div>
+          <div className={styles.awardsMobile}>
+            {awards.map((award) => (
+              <AwardCard award={award} key={award.id} />
+            ))}
           </div>
           <div className={styles.awardsPastAwardsContainer}>
             <TitleComponent title={"Past Awards"} />
-            <SliderComponent awards={awards} />
+            <div className={styles.awardsDesktop}>
+              <SliderComponent awards={awards} />
+            </div>
+          </div>
+          <div className={styles.awardsMobile}>
+            {awards.map((award) => (
+              <AwardCard award={award} key={award.id} />
+            ))}
           </div>
         </div>
       </main>

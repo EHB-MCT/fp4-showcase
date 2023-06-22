@@ -22,3 +22,10 @@
 .awardCardContainer p {
   line-height: 1.6;
 }
+
+@media (max-width: 768px) {
+  .awardCardContainer {
+    height: 500px;
+    padding: 130px 45px 50px 45px;
+  }
+}
