@@ -21,7 +21,6 @@ const ResetForm = () => {
         if (mode === 'reset') {
             try {
                 let data = await passwordReset(email);
-                console.log(data);
                 setEmailMessage(true);
             } catch (error: any) {
                 if (error.code === 'auth/user-not-found') {
@@ -88,7 +87,9 @@ const ResetForm = () => {
                         />
                     </div>
 
-                    <ButtonPink title="Submit" color="white" onClick={onClick} />
+                    <div>
+                        <ButtonPink title="Submit" color="white" onClick={onClick} />
+                    </div>
                 </form>
             )}
         </>
