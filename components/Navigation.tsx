@@ -208,10 +208,11 @@ const Navigation: React.FC = () => {
                 Awards
               </a>
             </Link>
-            <Link href="/about">
+            <Link href="https://www.erasmushogeschool.be/nl/opleidingen/multimedia-creatieve-technologie">
               <a
                 onClick={closeDropdown}
                 className={currentRoute === "/about" ? `${style.active}` : ""}
+                target="_blank"
               >
                 About
               </a>
