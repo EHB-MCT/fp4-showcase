@@ -29,7 +29,6 @@ const FilterComponent = ({
     setSelectedTags([...selectedTags, tag]);
     const updatedTags = tags.filter((t) => t !== tag);
     setTags(updatedTags);
-    console.log(selectedTags);
     setShowClearButton(true);
 
     // Invoke the callback function and pass the updated selected tags

@@ -87,7 +87,6 @@ export async function getProjectById(project_id) {
     if (docSnap.exists()) {
       return docSnap.data();
     } else {
-      console.log("No such document!");
       return null;
     }
   } catch (e) {

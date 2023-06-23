@@ -42,8 +42,6 @@ const EditProfileForm = ({ uid }) => {
   const [bannerImageUrlReplaced, setBannerImageUrlReplaced] = useState(false);
   const [bannerImage, setBannerImage] = useState(null);
 
-
-
   useEffect(() => {
     async function fetchData() {
       if (uid === user?.uid) {
@@ -59,12 +57,12 @@ const EditProfileForm = ({ uid }) => {
 
   useEffect(() => {
     if (userObject) {
-      setAboutMe(userObject?.aboutMe ||" ");
+      setAboutMe(userObject?.aboutMe || " ");
       setSelectedInterests(userObject?.interests || []);
       setAddedLinks(userObject?.socials || []);
-      setPreviewImage(userObject?.previewImageUrl ||"");
+      setPreviewImage(userObject?.previewImageUrl || "");
       setPreviewImageUrl(userObject?.previewImageUrl || "");
-      setBannerImage(userObject?.bannerImageUrl ||"");
+      setBannerImage(userObject?.bannerImageUrl || "");
       setBannerImageUrl(userObject?.bannerImageUrl || "");
 
       const remainingCharsCount = maxCharAboutMe - aboutMe.length;
@@ -72,32 +70,21 @@ const EditProfileForm = ({ uid }) => {
     }
   }, userObject);
 
-  // console log changes to inputfield in the form
-  useEffect(() => {
-    console.log(aboutMe);
-    console.log(selectedInterests);
-    console.log(previewImage);
-      console.log(bannerImage);
-  }, [aboutMe, previewImage,bannerImage, selectedInterests]);
-
   // submit form handling
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitLoading(true);
-    console.log("submitted the form");
     const userObject = {
       uid,
       aboutMe,
       socials: addedLinks,
       interests: selectedInterests,
-      previewImage: previewImage  ? previewImage : "",
+      previewImage: previewImage ? previewImage : "",
       bannerImage: bannerImage ? bannerImage : "",
     };
 
     try {
       await editProfile(userObject);
-
-      console.log("Project uploaded successfully");
 
       // Additional logic after successful upload
 
@@ -227,7 +214,6 @@ const EditProfileForm = ({ uid }) => {
       reader.readAsDataURL(file);
     } else {
       setPreviewImage(null);
-     
     }
   };
 
@@ -255,7 +241,6 @@ const EditProfileForm = ({ uid }) => {
       reader.readAsDataURL(file);
     } else {
       setBannerImage(null);
-
     }
   };
 
@@ -269,7 +254,6 @@ const EditProfileForm = ({ uid }) => {
     }
   };
 
-
   useEffect(() => {
     let timer;
 
@@ -282,11 +266,9 @@ const EditProfileForm = ({ uid }) => {
     return () => clearTimeout(timer);
   }, [uploadFormStatus]);
 
-
   if (isPageLoading) {
     return <div>Loading...</div>;
   }
-
 
   //
 
@@ -333,7 +315,6 @@ const EditProfileForm = ({ uid }) => {
           value={aboutMe}
           onChange={handleAboutMeChange}
           className=" border-gray-300 p-2 w-90 h-40 resize-none w-full rounded-sm bg-gray-700 text-white "
-          
           maxLength={maxCharAboutMe}
         />
       </div>
@@ -462,7 +443,6 @@ const EditProfileForm = ({ uid }) => {
       <div className="flex flex-col gap-2 items-start w-full relative">
         <label className="text-white flex items-top" htmlFor="previewImage">
           Profile image:{" "}
-
           <span className="font-thin ml-3 text-gray-500">
             (preferably square)
           </span>
@@ -470,7 +450,6 @@ const EditProfileForm = ({ uid }) => {
         </label>
 
         <input
-       
           ref={previewImageInputRef}
           type="file"
           id="previewImage"
@@ -501,47 +480,43 @@ const EditProfileForm = ({ uid }) => {
         </div>
       )}
 
+      <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
 
-<hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
+      <div className="flex flex-col gap-2 items-start w-full relative">
+        <label className="text-white flex items-top" htmlFor="previewImage">
+          Banner image:{" "}
+        </label>
 
-<div className="flex flex-col gap-2 items-start w-full relative">
-  <label className="text-white flex items-top" htmlFor="previewImage">
-    Banner image:{" "}
-    
-  </label>
+        <input
+          ref={bannerImageInputRef}
+          type="file"
+          id="previewImage"
+          name="previewImage"
+          onChange={handleBannerImageChange}
+          accept="image/*"
+          className="border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
+        />
+      </div>
 
-  <input
-   
-    ref={bannerImageInputRef}
-    type="file"
-    id="previewImage"
-    name="previewImage"
-    onChange={handleBannerImageChange}
-    accept="image/*"
-    className="border-gray-300 w-full rounded-sm bg-gray-700 text-white py-1 px-3"
-  />
-</div>
+      {bannerImageUrl && typeof window !== "undefined" && (
+        <div className="grid grid-cols-2 gap-3 w-full">
+          <div className="relative h-40 overflow-hidden bg-gray-400 bg-opacity-10 rounded-lg">
+            <img
+              src={bannerImageUrl}
+              alt="Project Preview Image"
+              className="absolute top-0 left-0 h-full w-full object-contain pt-1"
+            />
 
-{bannerImageUrl && typeof window !== "undefined" && (
-  <div className="grid grid-cols-2 gap-3 w-full">
-    <div className="relative h-40 overflow-hidden bg-gray-400 bg-opacity-10 rounded-lg">
-      <img
-        src={bannerImageUrl}
-        alt="Project Preview Image"
-        className="absolute top-0 left-0 h-full w-full object-contain pt-1"
-      />
-
-      <button
-        type="button"
-        onClick={handleRemoveBannerImage}
-        className="absolute top-0 right-2 text-red-500 text-3xl p-1 cursor-pointer ml-2"
-      >
-        X
-      </button>
-    </div>
-  </div>
-)}
-
+            <button
+              type="button"
+              onClick={handleRemoveBannerImage}
+              className="absolute top-0 right-2 text-red-500 text-3xl p-1 cursor-pointer ml-2"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      )}
 
       {submitLoading && <div className="text-white">Loading...</div>}
 

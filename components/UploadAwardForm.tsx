@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext ,useRef} from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import tagsData from "../data/tags.json";
 import { firestore, uploadProject, uploadAward } from "../lib/firebase";
 import { UserContext } from "../lib/context";
@@ -23,35 +23,28 @@ const UploadAwardForm = () => {
   // for the spinner loader animation
   const [loading, setLoading] = useState(false);
 
-
   // file refs for each input field
   const cardImageRef = useRef(null);
   const bannerImageRef = useRef(null);
-  const winnerBadgeImageRef = useRef(null)
-
+  const winnerBadgeImageRef = useRef(null);
 
   // does the award have a category, "yes" = true
   const [awardBelongsToCategory, setAwardBelongsToCategory] = useState(false);
 
- 
-
   const handleCategorySelect = (event) => {
-
     const selectedCategory = event.target.value;
 
     setCategory(selectedCategory);
-
   };
 
-
   const handleAwardBelongsToSelect = (event) => {
-    const value = event.target.value === 'true';
-    if (!value){
+    const value = event.target.value === "true";
+    if (!value) {
       setCategory("");
     }
     setAwardBelongsToCategory(value);
   };
-  
+
   const handleCardImageChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -120,7 +113,6 @@ const UploadAwardForm = () => {
     try {
       await uploadAward(project);
       setUploadStatus("success");
-      console.log("Project uploaded successfully");
     } catch (error) {
       setUploadStatus("error");
       console.error("Error uploading project:", error);
@@ -141,15 +133,8 @@ const UploadAwardForm = () => {
     // Reset the file input field
     cardImageRef.current.value = "";
     bannerImageRef.current.value = "";
-    winnerBadgeImageRef.current.value = ""; 
-
+    winnerBadgeImageRef.current.value = "";
   };
-
-  useEffect (( ) => {
-    console.log(awardBelongsToCategory);
-    console.log(category);
-  
-  },[category,awardBelongsToCategory,title,description])
 
   useEffect(() => {
     let timer;
@@ -161,9 +146,7 @@ const UploadAwardForm = () => {
     return () => clearTimeout(timer);
   }, [uploadStatus]);
 
-  const onClick = () => {
-    console.log("clicked");
-  };
+  const onClick = () => {};
 
   return (
     <form
@@ -251,44 +234,40 @@ const UploadAwardForm = () => {
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
 
       <div>
-      <label className="text-white flex items-top" htmlFor="category">
-        Does the award belong to a category?:
-       
-      </label>
+        <label className="text-white flex items-top" htmlFor="category">
+          Does the award belong to a category?:
+        </label>
 
-      <div>
-        <input
-          type="radio"
-          id="yes"
-          name="awardBelongsTo"
-          value="true"
-          checked={awardBelongsToCategory === true}
-          onChange={handleAwardBelongsToSelect}
-        />
-        <label htmlFor="yes">Yes</label>
-      </div>
+        <div>
+          <input
+            type="radio"
+            id="yes"
+            name="awardBelongsTo"
+            value="true"
+            checked={awardBelongsToCategory === true}
+            onChange={handleAwardBelongsToSelect}
+          />
+          <label htmlFor="yes">Yes</label>
+        </div>
 
-      <div>
-        <input
-          type="radio"
-          id="no"
-          name="awardBelongsTo"
-          value="false"
-          checked={awardBelongsToCategory === false}
-          onChange={handleAwardBelongsToSelect}
-        />
-        <label htmlFor="no">No</label>
+        <div>
+          <input
+            type="radio"
+            id="no"
+            name="awardBelongsTo"
+            value="false"
+            checked={awardBelongsToCategory === false}
+            onChange={handleAwardBelongsToSelect}
+          />
+          <label htmlFor="no">No</label>
+        </div>
       </div>
-    </div>
 
       {awardBelongsToCategory !== false ? (
         <div className="flex flex-col gap-2 items-start w-full relative">
           <label className="text-white flex items-top" htmlFor="category">
             Choose Category:
             <span className="font-thin ml-3 text-pink-500">*</span>
-           
-          
-         
           </label>
 
           <select
@@ -310,12 +289,11 @@ const UploadAwardForm = () => {
             <option value="Emerging Technology">Emerging Technology</option>
 
             <option value="Extended Reality">Extended Reality</option>
-            
+
             <option value="Finalwork">Finalwork</option>
           </select>
         </div>
       ) : null}
-
 
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
       <div className="flex flex-col gap-2 items-start w-full">
@@ -413,7 +391,8 @@ const UploadAwardForm = () => {
       <hr className="h-px my-3 bg-gray-200 border-0 w-full" />
       <div className="flex flex-col gap-2 items-start w-full">
         <label className="text-white" htmlFor="images">
-          Winner Badge Image : <span className="font-thin ml-3 text-pink-500">*</span>
+          Winner Badge Image :{" "}
+          <span className="font-thin ml-3 text-pink-500">*</span>
         </label>
         <div style={{ position: "relative" }}>
           <svg

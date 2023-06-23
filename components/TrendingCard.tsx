@@ -18,7 +18,6 @@ const TrendingCard = ({ project }) => {
 
       const projectUser = await getUserById(project.uid);
       setUser(projectUser);
-      console.log(projectUser);
     }
     fetchData();
   }, [project]);

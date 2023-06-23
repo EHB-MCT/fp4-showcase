@@ -9,7 +9,7 @@ import { UserContext } from "../lib/context";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
@@ -61,9 +61,8 @@ const UploadProjectForm = () => {
 
   const [imageSelected, setImageSelected] = useState(false);
 
-  
   // router
-  const router = useRouter()
+  const router = useRouter();
   // tooltips usestates
 
   const [titleTooltipVisible, setTitleTooltipVisible] = useState(false);
@@ -182,7 +181,7 @@ const UploadProjectForm = () => {
       const urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
 
       // Check if the new link matches the URL pattern
-        
+
       if (urlPattern.test(newLink)) {
         setLinkError(false);
 
@@ -325,8 +324,6 @@ const UploadProjectForm = () => {
     try {
       await uploadProject(project);
 
-      console.log("Project uploaded successfully");
-
       // Additional logic after successful upload
 
       setUploadStatus("success");
@@ -342,7 +339,6 @@ const UploadProjectForm = () => {
     }
 
     setLoading(false);
-
 
     // Reset the form fields
 
@@ -382,7 +378,7 @@ const UploadProjectForm = () => {
 
     previewImageInputRef.current.value = "";
   };
-  
+
   useEffect(() => {
     let timer;
 
@@ -681,7 +677,7 @@ const UploadProjectForm = () => {
           ))}
         </div>
       </div>
-        
+
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
 
       <div className="flex flex-col gap-2 items-start w-full relative">

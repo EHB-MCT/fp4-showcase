@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { getProjectById } from "../lib/projects";
 import { firestore, editProject } from "../lib/firebase";
 import tagsData from "../data/tags.json";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import { UserContext } from "../lib/context";
 import Image from "next/image";
 
@@ -10,12 +10,11 @@ const EditProjectForm = ({ projectId }) => {
   const [project, setProject] = useState(null);
   const [previewImageUrl, setPreviewImageUrl] = useState(null);
 
-
   // user data
   const { user } = useContext(UserContext);
 
   // router
-  const router = useRouter()
+  const router = useRouter();
 
   // input refs
   const previewImageInputRef = useRef(null);
@@ -41,15 +40,14 @@ const EditProjectForm = ({ projectId }) => {
   // errors
   const [linkError, setLinkError] = useState(false);
   const [youtubeLinkError, setYoutubeLinkError] = useState(false);
-  // upload project tsatus 
+  // upload project tsatus
   const [uploadStatus, setUploadStatus] = useState(null);
   // loading state
   const [loading, setLoading] = useState(false);
   // preview image url replaced
   const [previewImageUrlReplaced, setPreviewImageUrlReplaced] = useState(false);
-  // use ref file 
+  // use ref file
   const fileInputRef = useRef(null);
-
 
   useEffect(() => {
     async function fetchData() {
@@ -61,72 +59,35 @@ const EditProjectForm = ({ projectId }) => {
       if (!user) return;
       if (project.uid !== user?.uid) {
         router.push(`/projects/${projectId}`);
-      } 
-    
+      }
     }
 
     fetchData();
-
-   
-    
-
-   
   }, [projectId]);
-
 
   const handleGoBackClick = () => {
     router.push(`/projects/${projectId}`);
   };
   useEffect(() => {
-    console.log(project);
     if (project) {
       setTitle(project.title);
       setDescription(project.description);
       setPreviewImageUrl(project?.previewImageUrl || "");
-      setPreviewImage(project?.previewImageUrl ||"");
+      setPreviewImage(project?.previewImageUrl || "");
 
       setProjectBelongsTo(project.projectBelongsTo);
       setCategory(project.category);
       setSelectedTags(project.tags);
       setAddedLinks(project.links);
       setAddedYoutubeLinks(project.youtubeLinks);
-      
-     
-      if (project.pdfUrl !== null){
 
-       
+      if (project.pdfUrl !== null) {
         setPdfFile(project.pdfUrl);
-     
+
         //setPdfFileSelected(true)
       }
-     
     }
-    console.log(description);
   }, [project]);
-
-  useEffect(() => {
-    console.log(title);
-    console.log(description);
-    console.log(previewImage);
-    console.log(projectBelongsTo);
-    console.log(category);
-    console.log(selectedTags);
-    console.log(addedLinks);
-    console.log(addedYoutubeLinks);
-    console.log(pdfFileReplaced);
-    console.log("pdf", pdfFile);
-  }, [
-    title,
-    description,
-    previewImage,
-    projectBelongsTo,
-    category,
-    selectedTags,
-    addedLinks,
-    addedYoutubeLinks,
-    previewImageUrl,
-    pdfFile
-  ]);
 
   // submit the form
   const handleSubmit = async (event) => {
@@ -141,20 +102,16 @@ const EditProjectForm = ({ projectId }) => {
       tags: selectedTags,
       links: addedLinks,
       youtubeLinks: addedYoutubeLinks,
-      previewImage: previewImage  ? previewImage : "",
+      previewImage: previewImage ? previewImage : "",
       pdfFile: pdfFile ? pdfFile : "",
-      
     };
 
     if (previewImageUrlReplaced) {
       project.previewImage = previewImage;
     }
-    console.log("submit update form");
 
     try {
       await editProject(project);
-
-      console.log("Project uploaded successfully");
 
       // Additional logic after successful upload
 
@@ -170,8 +127,6 @@ const EditProjectForm = ({ projectId }) => {
       // Additional error handling
     }
     setLoading(false);
-  
-
   };
 
   useEffect(() => {
@@ -223,7 +178,7 @@ const EditProjectForm = ({ projectId }) => {
 
     if (projectBelongsTo !== "1") {
       setCategory(project.category);
-    } else if (projectBelongsTo == "1"){
+    } else if (projectBelongsTo == "1") {
       setCategory("");
     }
   };
@@ -378,21 +333,23 @@ const EditProjectForm = ({ projectId }) => {
   };
 
   return (
-    
     <form
       onSubmit={handleSubmit}
       className="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-3xl 2xl:max-w-3xl mx-auto flex flex-col gap-4 items-center bg-gray-900 p-5 rounded-xl mb-5 mt-5 relative"
     >
       <h1 className="text-center text-white text-2xl">Edit Project </h1>
-      <button  onClick={handleGoBackClick} style={{position:"absolute",left:"6%"}}>
-          <Image
-          style={{rotate:"180deg"}}
-            src="/images/sliderNext.svg"
-            alt="Your SVG"
-            width={30}
-            height={30}
-            
-          /></button>
+      <button
+        onClick={handleGoBackClick}
+        style={{ position: "absolute", left: "6%" }}
+      >
+        <Image
+          style={{ rotate: "180deg" }}
+          src="/images/sliderNext.svg"
+          alt="Your SVG"
+          width={30}
+          height={30}
+        />
+      </button>
       <hr className="h-px my-3 bg-gray-200 border-0 w-full "></hr>
 
       <div className="flex flex-col gap-2 items-start w-full relative">
@@ -439,7 +396,6 @@ const EditProjectForm = ({ projectId }) => {
         </label>
 
         <input
-         
           ref={previewImageInputRef}
           type="file"
           id="previewImage"
@@ -701,11 +657,11 @@ const EditProjectForm = ({ projectId }) => {
 
         {pdfFileReplaced ? (
           <span className="text-gray-400">{pdfFile ? pdfFile.name : ""}</span>
-        ) : <span className="text-gray-400">{pdfFile}</span>}
+        ) : (
+          <span className="text-gray-400">{pdfFile}</span>
+        )}
       </div>
 
-      
-      
       {loading && <div className="text-white">Loading...</div>}
 
       {uploadStatus === "success" && (
